@@ -421,16 +421,15 @@ class cliqueMain(tk.Frame):
                     outfile.write(line)
 
         def run_clique(infile):
-            log_window.insert(INSERT, f"Working on: {infile}\n")
+            log_window.insert(INSERT, f"Loaded: {infile}\n")
             #set up output directory
             outdir = set_up_output(infile)
             #convert background
             file_name = infile.split('/')[-1]
             bg_convert_file = f"{outdir}/1_{file_name.replace('.png', '')}_bg.png"
             background_data = get_background_data()
-            log_window.insert(INSERT, f"Converting background...\n")
             utils.background_converter(infile, background_data[0], background_data[1], bg_convert_file)
-            log_window.insert(INSERT, f"Background converted: {bg_convert_file}\n")
+            log_window.insert(INSERT, f"Background converted from {background_data[0]} to {background_data[1]}\n")
 
             #perform image adjustments
             image_adjustments = get_image_adjustments()
@@ -448,19 +447,19 @@ class cliqueMain(tk.Frame):
                     outfile = f"{outdir}/{operation_order+1}_{file_name.replace('.png', '')}_cont.png"
                     utils.contrast_adjuster(previous_file, factor, outfile)
                     previous_file = outfile
-                    log_window.insert(INSERT, f"Adjusting Contrast...\n")
+                    log_window.insert(INSERT, f"Contrast Adjusted by: {factor}\n")
                 
                 if operation == 'Sharpness':
                     outfile = f"{outdir}/{operation_order+1}_{file_name.replace('.png', '')}_shrp.png"
                     utils.sharpness_adjuster(previous_file, factor, outfile)
                     previous_file = outfile
-                    log_window.insert(INSERT, f"Adjusting Sharpness...\n")
+                    log_window.insert(INSERT, f"Sharpness adjusted by {factor}\n")
                 
                 if operation == 'Saturation':
                     outfile = f"{outdir}/{operation_order+1}_{file_name.replace('.png', '')}_satu.png"
                     utils.sharpness_adjuster(previous_file, factor, outfile)
                     previous_file = outfile
-                    log_window.insert(INSERT, f"Adjusting Saturation...\n")
+                    log_window.insert(INSERT, f"Saturation adjusted by {factor}\n")
             
             #get segmentation parameters
             segmentation_parameters = get_segmentation_parameters()
@@ -468,12 +467,14 @@ class cliqueMain(tk.Frame):
             k = segmentation_parameters[0]
             outfile = f"{outdir}/5_{file_name.replace('.png', '')}_kmc.png"
             utils.kmeans_transformer(previous_file, k, outfile)
+            log_window.insert(INSERT, f"Colors clustered to {k} clusters\n")
             previous_file = outfile
 
             #draw segmentation boundaries
             boundary_color = segmentation_parameters[1]
             outfile = f"{outdir}/6_{file_name.replace('.png', '')}_bnd.png"
             utils.boundary_tracer(previous_file, boundary_color, outfile)
+            log_window.insert(INSERT, f"Boundary traced in {boundary_color}\n")
             previous_file = outfile
 
             #get metadata file location
@@ -507,6 +508,7 @@ class cliqueMain(tk.Frame):
             metadata_file_path = metadata_create_input.get()
             metadata_file = f"{metadata_file_path}/{metadata_file_name}"
             add_metadata_header(metadata_file)
+            log_window.insert(INSERT, f"Done.\n")
 
         #create button to execute program
         run_button = tk.Button(self, text="Run", command=clique_main)

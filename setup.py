@@ -20,5 +20,5 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     install_requires = ['matplotlib', 'numpy', 'opencv-python'],
-    scripts = ['bin/cliqueUI']
+    scripts = ['bin/clique-ui']
 )

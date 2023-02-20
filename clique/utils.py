@@ -58,7 +58,7 @@ def saturation_adjuster(image, factor, outfile):
     enhanced_image.save(outfile)
 
 #a function to perform k-means clustering on an image and recolor based on the average values of the clusters
-def kmeans_transformer(image, k, outfile):
+def kmeans_transformer(image, k, outfile, iterations, epsilon, attempts):
     #read image
     image_load = cv2.imread(image)
     #convert to RGB
@@ -67,10 +67,10 @@ def kmeans_transformer(image, k, outfile):
     pixel_values = image_load.reshape((-1,3))
     #convert pixel values to float
     pixel_values = np.float32(pixel_values)
-    #define run parameters: run for 100 iterations or until epislon become 85%
-    criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 100, 0.85)
+    #define run criteria
+    criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, iterations, epsilon)
     #perform kmeans clustering
-    retval, labels, centers = cv2.kmeans(pixel_values, k, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
+    retval, labels, centers = cv2.kmeans(pixel_values, k, None, criteria, attempts, cv2.KMEANS_RANDOM_CENTERS)
     # convert data into 8-bit values
     centers = np.uint8(centers)
     segmented_data = centers[labels.flatten()]

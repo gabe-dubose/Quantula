@@ -76,19 +76,19 @@ def color_counter(pixel_values, color_mapping):
     return [color_counts, pixel_classifications]
 
 #function to get color fractions based on specified input of colors to quantify
-def get_color_fractions(color_counts, fractioning_colors):
+def get_color_fractions(color_counts, exclude):
     #initialize dictionary to hold output
     color_fractions = {'fractions' : {}}
 
     #calculate total pixels to count in fraction calculations
     fractioning_total = 0
     for color in color_counts:
-        if color in fractioning_colors:
+        if color not in exclude:
             fractioning_total += color_counts[color]
     
     #calculate color fractions
     for color in color_counts:
-        if color in fractioning_colors:
+        if color not in exclude:
             color_fractions['fractions'][color] = color_counts[color] / fractioning_total
     
     #add fractioned pixels counter to output

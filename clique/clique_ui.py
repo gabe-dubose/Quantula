@@ -374,7 +374,7 @@ advanced_segmentation_options = {'epsilon_input' : 0.85, 'kmeans_iterations' : 1
 def show_advanced_segmentation_window():
     advancedWindow = Toplevel(root)
     advancedWindow.title("Advanced Color Segmentation Options")
-    advancedWindow.geometry('400x400')
+    advancedWindow.geometry('325x400')
 
     #ADVANCED K-MEANS CLUSTERING LABELED FRAME
     advancedKmeansFrame = tk.LabelFrame(advancedWindow, text="K-means clustering advanced options")
@@ -801,6 +801,163 @@ def clique_main():
 #button to run clique
 runButton = tk.Button(colorSegmentationTab, text="Run", command=clique_main)
 runButton.grid(row=6, column=0, sticky = "ew", pady=5, padx=10)
+
+
+
+####################   COLOR QUANTIFICATION TAB   ####################
+
+#IMAGE INPUT LABELED FRAME
+imageInputFrameQT = tk.LabelFrame(colorQuantificationTab, text="Image Upload")
+imageInputFrameQT.grid(row=1, column=0, sticky = "ew", pady=5, padx=10)
+
+#add prompt to select image file
+imageSelectPromptQT = tk.Label(imageInputFrameQT, text="Image File:")
+imageSelectPromptQT.grid(row=1, column=1, pady=5, padx=10)
+
+#function to select image
+def select_image_fileQT():
+    filetypes = (('PNG File', '*.png'), ('All files', '*.*'))
+    image_file = filedialog.askopenfilename(title="Open Files", initialdir = home_path, filetypes = filetypes)
+    image_file_inputQT.delete(0, END)
+    image_file_inputQT.insert(0, image_file)
+
+#add entry for image file
+image_file_inputQT = tk.Entry(imageInputFrameQT)
+image_file_inputQT.grid(row=1, column=2, padx=10, pady=5)
+
+#add button for selecting images
+imageFileSelectButtonQT = tk.Button(imageInputFrameQT, text="Select File", command=select_image_fileQT)
+imageFileSelectButtonQT.grid(row=1, column=3, padx=10, pady=5, sticky="w")
+
+#add prompt to select directory containing images
+imageDirSelectPromptQT = tk.Label(imageInputFrameQT, text="Directory:")
+imageDirSelectPromptQT.grid(row=2, column=1, padx=10, pady=5)
+
+#function to select image directory
+def select_image_dirQT():
+    image_dir = filedialog.askdirectory(title="Open Directories", initialdir = home_path)
+    image_dir_inputQT.delete(0, END)
+    image_dir_inputQT.insert(0, image_dir)
+
+#add entry for selecting directory containing images
+image_dir_inputQT = tk.Entry(imageInputFrameQT)
+image_dir_inputQT.grid(row=2, column=2, padx=10, pady=5)
+
+#add button for selecting directory containing images
+imageDirSelectButtonQT = tk.Button(imageInputFrameQT, text="Select Folder", command=select_image_dirQT)
+imageDirSelectButtonQT.grid(row=2, column=3, padx=10, pady=5, sticky="w")
+
+#BACKGROUND CONVERSION LABELED FRAME
+colorClassificationFrame = tk.LabelFrame(colorQuantificationTab, text="Color Classification")
+colorClassificationFrame.grid(row=2, column=0, sticky = "ew", pady=5, padx=10)
+
+#add table for specifying colors
+colorClassifiersTable = ttk.Treeview(colorClassificationFrame, columns=(1,2), show="headings")
+colorClassifiersTable.heading(1, text="RGB")
+colorClassifiersTable.column(1, anchor=CENTER, width=208)
+colorClassifiersTable.heading(2, text="Name")
+colorClassifiersTable.column(2, anchor=CENTER, width=208)
+colorClassifiersTable.grid(row=1, column=1, pady=10, padx=10, sticky='new')
+
+#initialize a dictionary to hold color mappings
+color_mappings = {}
+
+#cache for added colors
+added_colors = []
+
+#function to add color classification
+def add_color_classification_entry():
+    #initialize error status 
+    error = 0
+    #collect input
+    color_rgb = new_color_rgb_input.get()
+    color_name = new_color_name_input.get()
+    #check that input was specified
+    if color_rgb == '' or color_name == '':
+        tk.messagebox.showerror("Input Error", f"Error: Missing RGB value or color designation.")
+        error += 1
+    #check that rgb value is valid
+    if error == 0:
+        rgb_value = check_rgb_input(color_rgb)
+        if rgb_value == 'Error_RGB_value':
+            tk.messagebox.showerror("Input Error", f"Error: ({color_rgb}) is an invalid RGB value.")
+            error += 1
+        elif rgb_value == 'Error_format':
+            tk.messagebox.showerror("Input Error", f"Error: ({color_rgb}) is in an invalid format.")
+            error += 1
+        elif color_name in added_colors:
+            tk.messagebox.showerror("Input Error", f"Error: ({color_name}) has already been added.")
+            error += 1
+        else:
+            color_mappings[color_name] = rgb_value
+            added_colors.append(color_name)
+
+#function to delete color classification
+def delete_color_classification_entry():
+    selected_color = colorClassifiersTable.selection()
+    for selection in selected_color:
+        delete_color = colorClassifiersTable.item(selection)['values'][1]
+        del color_mappings[delete_color]
+        colorClassifiersTable.delete(selection)
+        #remove from recorded colors
+        added_colors.remove(delete_color)
+
+#function for delete option popup
+def delete_option(event):
+    deleteOptionMenu.tk_popup(event.x_root, event.y_root)
+    
+#add delete option to table window
+colorClassifiersTable.bind("<Button-2>", delete_option)
+colorClassifiersTable.bind("<Button-3>", delete_option)
+
+#function for adding color classification to table
+def update_color_classification_view():
+    add_color_classification_entry()
+    #clear current entry
+    for color in colorClassifiersTable.get_children():
+        colorClassifiersTable.delete(color)
+    #refresh entry
+    for color in color_mappings:
+        color_name = color
+        color_rgb = ",".join([str(value) for value in color_mappings[color]])
+        colorClassifiersTable.insert("", 'end', values=(color_rgb, color_name))
+
+#Button for adding color
+addColorPrompt = tk.Button(colorClassificationFrame, text="Add Color", command=update_color_classification_view)
+addColorPrompt.grid(row=2, column=1, pady=5, padx=10)
+
+#New color adding labels
+newColorRGBColumn = tk.Label(colorClassificationFrame, text="RGB")
+newColorRGBColumn.grid(row=2, column=1, sticky='w', pady=5, padx=10)
+
+#New color adding labels
+newColorNameColumn = tk.Label(colorClassificationFrame, text="Name")
+newColorNameColumn.grid(row=2, column=1, sticky='e', pady=5, padx=10)
+
+#entry for specifying color RGB
+new_color_rgb_input = tk.Entry(colorClassificationFrame)
+new_color_rgb_input.grid(row=4, column=1, sticky='w', pady=5, padx=10)
+
+#entry for specifying color designation
+new_color_name_input = tk.Entry(colorClassificationFrame)
+new_color_name_input.grid(row=4, column=1, sticky='e', pady=5, padx=10)
+
+#options for deleting colors
+deleteOptionMenu = tk.Menu(colorClassificationFrame)
+deleteOptionMenu.add_command(label="Delete", command=delete_color_classification_entry)
+
+#LOGGING
+#add progress bar
+colorSegmentationProgressBarQT = Progressbar(colorQuantificationTab, orient=HORIZONTAL, mode='indeterminate', length=300)
+colorSegmentationProgressBarQT.grid(row=0, column=1, sticky = "sew", pady=0, padx=10)
+
+#LOG WINDOW LABELED FRAME
+logWindowFrameQT = tk.LabelFrame(colorQuantificationTab, text="Log Window")
+logWindowFrameQT.grid(row=1, column=1, sticky = "new", pady=5, padx=10, rowspan=50)
+
+#add log window
+log_window_qt = tk.Text(logWindowFrameQT, width=65, height=30)
+log_window_qt.grid(row=0, column=0)
 
 
 #run app

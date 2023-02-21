@@ -7,7 +7,8 @@ from tkinter.ttk import *
 from tkinter import DISABLED, END, INSERT, filedialog
 import os
 from PIL import Image
-from clique import utils
+from clique import sutils
+from clique import qutils
 import time
 
 #initialize master
@@ -365,6 +366,7 @@ def reset_run():
     #reset metadata directory entry
     metadata_dir_input.delete(0, END)
 
+####################   ADVANCED SEGMENTATION OPTIONS WINDOW   ####################
 #initialize dictionary for advacned segmentaiton options
 advanced_segmentation_options = {'epsilon_input' : 0.85, 'kmeans_iterations' : 100, 'kmeans_attempts' : 10}
 
@@ -448,6 +450,8 @@ def save_advanced_segmentation_options():
         advanced_segmentation_options['kmeans_attempts'] = kmeans_attempts
     except:
         tk.messagebox.showerror("Input Error", f"Error: {kmeans_iterations_input.get()} is an attempts iterations value.")
+
+####################   COLOR SEGMENTATION TAB   ####################
 
 #add advanced options
 advancedOptionsButton = tk.Button(colorSegmentationTab, text="Advanced options", command=show_advanced_segmentation_window)
@@ -698,7 +702,7 @@ def run_clique(image, input, advanced_options):
         log_window.insert(INSERT, f"Converting background...\n")
         log_window.update()
         outfile = f"{full_output_path}/{operation_counter}_{sample_name}_bg.png"
-        utils.background_converter(image=current_file, from_color=input['bg_from'], to_color=input['bg_to'], outfile=outfile)
+        sutils.background_converter(image=current_file, from_color=input['bg_from'], to_color=input['bg_to'], outfile=outfile)
         log_window.insert(INSERT, f"Background converted.\n")
         log_window.update()
         current_file = outfile
@@ -718,7 +722,7 @@ def run_clique(image, input, advanced_options):
                 log_window.insert(INSERT, f"Adjusting Contrast...\n")
                 log_window.update()
                 outfile = f"{full_output_path}/{operation_counter}_{sample_name}_con.png"
-                utils.contrast_adjuster(image=current_file, factor=operation[1], outfile=outfile)
+                sutils.contrast_adjuster(image=current_file, factor=operation[1], outfile=outfile)
                 log_window.insert(INSERT, f"Contrast adjusted.\n")
                 log_window.update()
                 current_file = outfile
@@ -729,7 +733,7 @@ def run_clique(image, input, advanced_options):
                 log_window.insert(INSERT, f"Adjusting Sharpness...\n")
                 log_window.update()
                 outfile = f"{full_output_path}/{operation_counter}_{sample_name}_shrp.png"
-                utils.contrast_adjuster(image=current_file, factor=operation[1], outfile=outfile)
+                sutils.contrast_adjuster(image=current_file, factor=operation[1], outfile=outfile)
                 log_window.insert(INSERT, f"Sharpness adjusted.\n")
                 log_window.update()
                 current_file = outfile
@@ -740,7 +744,7 @@ def run_clique(image, input, advanced_options):
                 log_window.insert(INSERT, f"Adjusting Saturation...\n")
                 log_window.update()
                 outfile = f"{full_output_path}/{operation_counter}_{sample_name}_sat.png"
-                utils.contrast_adjuster(image=current_file, factor=operation[1], outfile=outfile)
+                sutils.contrast_adjuster(image=current_file, factor=operation[1], outfile=outfile)
                 log_window.insert(INSERT, f"Saturation adjusted.\n")
                 log_window.update()
                 current_file = outfile
@@ -751,7 +755,7 @@ def run_clique(image, input, advanced_options):
         log_window.insert(INSERT, f"Performing K-means clustering...\n")
         log_window.update()
         outfile = f"{full_output_path}/{operation_counter}_{sample_name}_clst.png"
-        utils.kmeans_transformer(image=current_file, k=input['color_number'], outfile=outfile, iterations=advanced_options['kmeans_iterations'], epsilon=advanced_options['epsilon_input'], attempts=advanced_options['kmeans_attempts'])
+        sutils.kmeans_transformer(image=current_file, k=input['color_number'], outfile=outfile, iterations=advanced_options['kmeans_iterations'], epsilon=advanced_options['epsilon_input'], attempts=advanced_options['kmeans_attempts'])
         log_window.insert(INSERT, f"Color clustering complete.\n")
         log_window.update()
         current_file = outfile
@@ -762,7 +766,7 @@ def run_clique(image, input, advanced_options):
         log_window.insert(INSERT, f"Tracing color boundaries...\n")
         log_window.update()
         outfile = f"{full_output_path}/{operation_counter}_{sample_name}_bnd.png"
-        utils.boundary_tracer(image=current_file, color=input['boundary_tracing_color'], outfile=outfile)
+        sutils.boundary_tracer(image=current_file, color=input['boundary_tracing_color'], outfile=outfile)
         log_window.insert(INSERT, f"Boundary tracing complete.\n")
         log_window.update()
         current_file = outfile

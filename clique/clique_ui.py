@@ -847,7 +847,7 @@ image_dir_inputQT.grid(row=2, column=2, padx=10, pady=5)
 imageDirSelectButtonQT = tk.Button(imageInputFrameQT, text="Select Folder", command=select_image_dirQT)
 imageDirSelectButtonQT.grid(row=2, column=3, padx=10, pady=5, sticky="w")
 
-#BACKGROUND CONVERSION LABELED FRAME
+#COLOR CLASSIFICATION LABELED FRAME
 colorClassificationFrame = tk.LabelFrame(colorQuantificationTab, text="Color Classification")
 colorClassificationFrame.grid(row=2, column=0, sticky = "ew", pady=5, padx=10)
 
@@ -898,7 +898,12 @@ def delete_color_classification_entry():
     for selection in selected_color:
         delete_color = colorClassifiersTable.item(selection)['values'][1]
         del color_mappings[delete_color]
-        colorClassifiersTable.delete(selection)
+        try:
+            colorClassifiersTable.delete(selection)
+            colorQuantificationTableInclude.delete(selection)
+        except:
+            pass
+                
         #remove from recorded colors
         added_colors.remove(delete_color)
 
@@ -915,12 +920,18 @@ def update_color_classification_view():
     add_color_classification_entry()
     #clear current entry
     for color in colorClassifiersTable.get_children():
-        colorClassifiersTable.delete(color)
+        try:
+            colorClassifiersTable.delete(color)
+            colorQuantificationTableInclude.delete(color)
+        except:
+            pass
+
     #refresh entry
     for color in color_mappings:
         color_name = color
         color_rgb = ",".join([str(value) for value in color_mappings[color]])
         colorClassifiersTable.insert("", 'end', values=(color_rgb, color_name))
+        colorQuantificationTableInclude.insert("", 'end', values=(color_name))
 
 #Button for adding color
 addColorPrompt = tk.Button(colorClassificationFrame, text="Add Color", command=update_color_classification_view)
@@ -931,7 +942,7 @@ newColorRGBColumn = tk.Label(colorClassificationFrame, text="RGB")
 newColorRGBColumn.grid(row=2, column=1, sticky='w', pady=5, padx=10)
 
 #New color adding labels
-newColorNameColumn = tk.Label(colorClassificationFrame, text="Name")
+newColorNameColumn = tk.Label(colorClassificationFrame, text="Color Designation")
 newColorNameColumn.grid(row=2, column=1, sticky='e', pady=5, padx=10)
 
 #entry for specifying color RGB
@@ -945,6 +956,68 @@ new_color_name_input.grid(row=4, column=1, sticky='e', pady=5, padx=10)
 #options for deleting colors
 deleteOptionMenu = tk.Menu(colorClassificationFrame)
 deleteOptionMenu.add_command(label="Delete", command=delete_color_classification_entry)
+
+#COLOR EXCLUSION LABELED FRAME
+colorQuantificationFrame = tk.LabelFrame(colorQuantificationTab, text="Color Quantification Parameters")
+colorQuantificationFrame.grid(row=3, column=0, sticky = "ew", pady=5, padx=10)
+
+#add prompt for displaying colors to exclude in quantification
+colorsToExcludePrompt = tk.Label(colorQuantificationFrame, text="Exclude")
+colorsToExcludePrompt.grid(row=1, column=1, pady=5, padx=10)
+
+#add display for selecting colors to include/exclude from quantification
+#include display
+colorQuantificationTableInclude = ttk.Treeview(colorQuantificationFrame, columns=(1), show="headings")
+colorQuantificationTableInclude.heading(1, text="Include")
+colorQuantificationTableInclude.column(1, anchor=CENTER, width=208)
+colorQuantificationTableInclude.grid(row=1, column=1, pady=10, padx=10, sticky='new')
+
+#exclude display
+colorQuantificationTableExclude = ttk.Treeview(colorQuantificationFrame, columns=(1), show="headings")
+colorQuantificationTableExclude.heading(1, text="Exclude")
+colorQuantificationTableExclude.column(1, anchor=CENTER, width=208)
+colorQuantificationTableExclude.grid(row=1, column=2, pady=10, padx=10, sticky='new')
+
+#function to exclude color
+def exclude_color_option(event):
+    excludeColorOptionMenu.tk_popup(event.x_root, event.y_root)
+
+#add exclude option to table window
+colorQuantificationTableInclude.bind("<Button-2>", exclude_color_option)
+colorQuantificationTableInclude.bind("<Button-3>", exclude_color_option)
+
+#function to move color from include to exclude
+def exclude_color():
+    selected_color = colorQuantificationTableInclude.selection()
+    for selection in selected_color:
+        exclude_color = colorQuantificationTableInclude.item(selection)['values'][0]
+        colorQuantificationTableExclude.insert("", 'end', values=(exclude_color))
+        colorQuantificationTableInclude.delete(selection)
+
+#option menu for excluding colors
+excludeColorOptionMenu = tk.Menu(colorQuantificationFrame)
+excludeColorOptionMenu.add_command(label="Exclude", command=exclude_color)
+
+#function to include color
+def include_color_option(event):
+    includeColorOptionMenu.tk_popup(event.x_root, event.y_root)
+
+#add include option to table window
+colorQuantificationTableExclude.bind("<Button-2>", include_color_option)
+colorQuantificationTableExclude.bind("<Button-3>", include_color_option)
+
+#function to move color from exclude to include
+def include_color():
+    selected_color = colorQuantificationTableExclude.selection()
+    for selection in selected_color:
+        include_color = colorQuantificationTableExclude.item(selection)['values'][0]
+        colorQuantificationTableInclude.insert("", 'end', values=(include_color))
+        colorQuantificationTableExclude.delete(selection)
+
+#option menu for including colors
+includeColorOptionMenu = tk.Menu(colorQuantificationFrame)
+includeColorOptionMenu.add_command(label="Include", command=include_color)
+
 
 #LOGGING
 #add progress bar

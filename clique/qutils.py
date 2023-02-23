@@ -99,20 +99,12 @@ def get_color_fractions(color_counts, exclude):
 
     return color_fractions
 
-#function to get colors to exclude from quantification
-def get_colors_to_exclude(colorQuantificationTableExclude):
-    colors_to_exclude = []
-    for color in colorQuantificationTableExclude.get_children():
-        colors_to_exclude.append(colorQuantificationTableExclude.item(color)["values"][0])
-    return colors_to_exclude
-
 #function to quantify colors
-def quantify_colors_ui(image, color_mappings, colorQuantificationTableExclude):
+def quantify_colors_ui(image, input):
     #load data
     color_data = load_pixels(image)
     #get color quantification
-    color_counts = color_counter(color_data, color_mappings)
-    #get colors to exclude in fractioning
-    colors_to_exclude = get_colors_to_exclude(colorQuantificationTableExclude)
+    color_counts = color_counter(color_data, input['color_mappings'])
     #get color fractions
-    color_fractions = get_color_fractions(color_counts[0], colors_to_exclude)
+    color_fractions = get_color_fractions(color_counts[0], exclude=input['colors_to_exclude'])
+    print(color_fractions)

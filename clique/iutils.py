@@ -345,13 +345,48 @@ def include_color(colorQuantificationTableExclude, colorQuantificationTableInclu
         colorQuantificationTableInclude.insert("", 'end', values=(include_color))
         colorQuantificationTableExclude.delete(selection)
 
+#function to get colors to exclude from quantification
+def get_colors_to_exclude(colorQuantificationTableExclude):
+    colors_to_exclude = []
+    for color in colorQuantificationTableExclude.get_children():
+        colors_to_exclude.append(colorQuantificationTableExclude.item(color)["values"][0])
+    return colors_to_exclude
+
 #function to get a check uder input for quantification
-def get_standard_user_quantification_input(image_file_inputQT):
-
-    #initialize dictionary to store input option
-    standard_user_input = {}
-
-    #get input image
-    input_image = image_file_inputQT.get()
-
+#function to get data for quantification run
+def get_quantification_parameters(image_file_inputQT, image_dir_inputQT, colorQuantificationTableExclude, color_mappings):
     
+    quantification_parameters = {}
+
+    #get image file
+    image_file = image_file_inputQT.get()
+    #get image directory
+    image_directory = image_dir_inputQT.get()
+    #get colors to exclude from fraction calculations
+    colors_to_exclude = get_colors_to_exclude(colorQuantificationTableExclude)
+
+    error = 0
+    if image_file != "" and image_directory != "":
+        tk.messagebox.showerror("Input Error", f"Error: Both image file and directory specified.")
+        error += 1
+    
+    elif image_file == "" and image_directory == "" and error == 0:
+        tk.messagebox.showerror("Input Error", f"Error: No input specified.")
+        error += 1
+    
+    elif image_file != "" and image_directory == "" and error == 0:
+        #check that image file is readable
+        try:
+            Image.open(image_file, 'r')
+            quantification_parameters['image_file'] = image_file
+        except:
+            tk.messagebox.showerror("Input Error", f"Error: Could not read image {image_file}")
+            error += 1
+    
+    elif image_directory != "" and image_file == "" and error == 0:
+        quantification_parameters['image_directory'] = image_file
+    
+    quantification_parameters['colors_to_exclude'] = colors_to_exclude
+    quantification_parameters['color_mappings'] = color_mappings
+
+    return quantification_parameters

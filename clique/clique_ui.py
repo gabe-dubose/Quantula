@@ -456,8 +456,15 @@ logWindowFrameQT.grid(row=1, column=1, sticky = "new", pady=5, padx=10, rowspan=
 log_window_qt = tk.Text(logWindowFrameQT, width=65, height=30)
 log_window_qt.grid(row=0, column=0)
 
-#button to run clique
-runQuantificationButton = tk.Button(colorQuantificationTab, text="Run", command=lambda: qutils.quantify_colors_ui(color_mappings, colorQuantificationTableExclude))
+def clique_quantification():
+    input = iutils.get_quantification_parameters(image_file_inputQT, image_dir_inputQT, colorQuantificationTableExclude, color_mappings)
+    
+    #single image run
+    if 'image_file' in input:
+        qutils.quantify_colors_ui(image=input['image_file'], input=input)
+
+#button to run quantification
+runQuantificationButton = tk.Button(colorQuantificationTab, text="Run", command=clique_quantification)
 runQuantificationButton.grid(row=4, column=0, sticky = "ew", pady=5, padx=10)
 
 #run app

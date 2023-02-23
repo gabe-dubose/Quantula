@@ -290,7 +290,7 @@ clearRunButton.grid(row=6, column=1, sticky = "ew", pady=5, padx=10)
 
 def clique_segmentation():
     #get input
-    input = iutils.get_standard_user_input(image_file_input, image_dir_input, background_color_input, color_convert_input, contrast_input, contrast_order_input, sharpness_input, sharpness_order_input, saturation_input, saturation_order_input, color_number_input, boundary_color_input, out_dir_input, rename_input, metadata_file_input, metadata_dir_input)
+    input = iutils.get_standard_user_segmentation_input(image_file_input, image_dir_input, background_color_input, color_convert_input, contrast_input, contrast_order_input, sharpness_input, sharpness_order_input, saturation_input, saturation_order_input, color_number_input, boundary_color_input, out_dir_input, rename_input, metadata_file_input, metadata_dir_input)
     if input != 0:
         log_window.insert(INSERT, f"All input loaded successfully.\n")
         log_window.update()
@@ -313,9 +313,9 @@ def clique_segmentation():
                 sutils.segment_colors_ui(image=image, input=input, advanced_options=advanced_segmentation_options, log_window=log_window)
 
 
-#button to run clique
-runButton = tk.Button(colorSegmentationTab, text="Run", command=clique_segmentation)
-runButton.grid(row=6, column=0, sticky = "ew", pady=5, padx=10)
+#button to run clique color segmentation
+runSegmentationButton = tk.Button(colorSegmentationTab, text="Run", command=clique_segmentation)
+runSegmentationButton.grid(row=6, column=0, sticky = "ew", pady=5, padx=10)
 
 
 ####################   COLOR QUANTIFICATION TAB   ####################
@@ -408,13 +408,13 @@ colorsToExcludePrompt.grid(row=1, column=1, pady=5, padx=10)
 
 #add display for selecting colors to include/exclude from quantification
 #include display
-colorQuantificationTableInclude = ttk.Treeview(colorQuantificationFrame, columns=(1), show="headings")
+colorQuantificationTableInclude = ttk.Treeview(colorQuantificationFrame, columns=(1), show="headings", height=7)
 colorQuantificationTableInclude.heading(1, text="Include")
 colorQuantificationTableInclude.column(1, anchor=CENTER, width=208)
 colorQuantificationTableInclude.grid(row=1, column=1, pady=10, padx=10, sticky='new')
 
 #exclude display
-colorQuantificationTableExclude = ttk.Treeview(colorQuantificationFrame, columns=(1), show="headings")
+colorQuantificationTableExclude = ttk.Treeview(colorQuantificationFrame, columns=(1), show="headings", height=7)
 colorQuantificationTableExclude.heading(1, text="Exclude")
 colorQuantificationTableExclude.column(1, anchor=CENTER, width=208)
 colorQuantificationTableExclude.grid(row=1, column=2, pady=10, padx=10, sticky='new')
@@ -456,6 +456,9 @@ logWindowFrameQT.grid(row=1, column=1, sticky = "new", pady=5, padx=10, rowspan=
 log_window_qt = tk.Text(logWindowFrameQT, width=65, height=30)
 log_window_qt.grid(row=0, column=0)
 
+#button to run clique
+runQuantificationButton = tk.Button(colorQuantificationTab, text="Run", command=lambda: qutils.quantify_colors_ui(color_mappings, colorQuantificationTableExclude))
+runQuantificationButton.grid(row=4, column=0, sticky = "ew", pady=5, padx=10)
 
 #run app
 root.mainloop()

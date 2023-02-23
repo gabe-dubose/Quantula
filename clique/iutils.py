@@ -81,7 +81,7 @@ def check_image_file(image_file):
         return 0
 
 #function to get and check user input
-def get_standard_user_input(image_file_input, image_dir_input, background_color_input, color_convert_input, contrast_input, contrast_order_input, sharpness_input, sharpness_order_input, saturation_input, saturation_order_input, color_number_input, boundary_color_input, out_dir_input, rename_input, metadata_file_input, metadata_dir_input):
+def get_standard_user_segmentation_input(image_file_input, image_dir_input, background_color_input, color_convert_input, contrast_input, contrast_order_input, sharpness_input, sharpness_order_input, saturation_input, saturation_order_input, color_number_input, boundary_color_input, out_dir_input, rename_input, metadata_file_input, metadata_dir_input):
 
     #initialize dictionary to store input option
     standard_user_input = {}
@@ -344,3 +344,14 @@ def include_color(colorQuantificationTableExclude, colorQuantificationTableInclu
         include_color = colorQuantificationTableExclude.item(selection)['values'][0]
         colorQuantificationTableInclude.insert("", 'end', values=(include_color))
         colorQuantificationTableExclude.delete(selection)
+
+#function to get a check uder input for quantification
+def get_standard_user_quantification_input(image_file_inputQT):
+
+    #initialize dictionary to store input option
+    standard_user_input = {}
+
+    #get input image
+    input_image = image_file_inputQT.get()
+
+    

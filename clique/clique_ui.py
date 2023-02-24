@@ -463,6 +463,34 @@ def clique_quantification():
     if 'image_file' in input:
         qutils.quantify_colors_ui(image=input['image_file'], input=input)
 
+#OUTPUT LABELED FRAME
+outputQuantificationFrame = tk.LabelFrame(colorQuantificationTab, text="Output Options")
+outputQuantificationFrame.grid(row=3, column=1, sticky = "new", pady=5, padx=10)
+
+#add prompt to load output file
+outputSelectPrompt = tk.Label(outputQuantificationFrame, text="Load Output:")
+outputSelectPrompt.grid(row=1, column=1, pady=5, padx=10, sticky="w")
+
+#add entry for loading output file
+output_file_input = tk.Entry(outputQuantificationFrame)
+output_file_input.grid(row=1, column=2, padx=10, pady=5)
+
+#add output select button
+outputSelectButton = tk.Button(outputQuantificationFrame, text="Select File", command=lambda: iutils.select_csv_file(output_file_input, home_path))
+outputSelectButton.grid(row=1, column=3, pady=10, sticky="w")
+
+#add prompt to select output dir
+outputDirSelectPrompt = tk.Label(outputQuantificationFrame, text="New File:")
+outputDirSelectPrompt.grid(row=2, column=1, pady=5, padx=10, sticky="w")
+
+#add entry for output directory
+new_output_dir_input = tk.Entry(outputQuantificationFrame)
+new_output_dir_input.grid(row=2, column=2, padx=10, pady=5)
+
+#add new output select button
+newOutputDirSelectButton = tk.Button(outputQuantificationFrame, text="Select Folder", command=lambda: iutils.select_directory(new_output_dir_input, home_path))
+newOutputDirSelectButton.grid(row=2, column=3, pady=5, padx=(0,10))
+
 #button to run quantification
 runQuantificationButton = tk.Button(colorQuantificationTab, text="Run", command=clique_quantification)
 runQuantificationButton.grid(row=4, column=0, sticky = "ew", pady=5, padx=10)

@@ -1,4 +1,4 @@
-# clique
+# Quantula
 A package for color segmentation and quantitative image analysis 
 
 ### Installation

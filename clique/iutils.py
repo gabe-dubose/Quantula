@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import *
 from tkinter import DISABLED, END, INSERT, filedialog
 from PIL import Image
+import os
 
 #function to select image
 def select_image_file(input_box, home_path):
@@ -354,7 +355,7 @@ def get_colors_to_exclude(colorQuantificationTableExclude):
 
 #function to get a check uder input for quantification
 #function to get data for quantification run
-def get_quantification_parameters(image_file_inputQT, image_dir_inputQT, colorQuantificationTableExclude, color_mappings):
+def get_quantification_parameters(image_file_inputQT, image_dir_inputQT, colorQuantificationTableExclude, color_mappings, output_file_input, new_output_dir_input):
     
     quantification_parameters = {}
 
@@ -364,6 +365,9 @@ def get_quantification_parameters(image_file_inputQT, image_dir_inputQT, colorQu
     image_directory = image_dir_inputQT.get()
     #get colors to exclude from fraction calculations
     colors_to_exclude = get_colors_to_exclude(colorQuantificationTableExclude)
+    #get output parameters
+    new_output = new_output_dir_input.get()
+    load_output = output_file_input.get()
 
     error = 0
     if image_file != "" and image_directory != "":
@@ -384,7 +388,26 @@ def get_quantification_parameters(image_file_inputQT, image_dir_inputQT, colorQu
             error += 1
     
     elif image_directory != "" and image_file == "" and error == 0:
-        quantification_parameters['image_directory'] = image_file
+        images = os.listdir(image_directory)
+        image_paths = []
+        for image in images:
+            image_path = f"{image_directory}/{image}"
+            image_paths.append(image_path)
+        quantification_parameters['image_directory'] = image_paths
+
+    if new_output != "" and load_output != "" and error == 0:
+        tk.messagebox.showerror("Input Error", f"Error: Both new output file and load prior output file specified.")
+        error += 1
+
+    elif new_output == "" and load_output == "" and error == 0:
+        tk.messagebox.showerror("Input Error", f"Error: No output directions specified.")
+        error += 1
+    
+    elif new_output != "" and error == 0:
+        quantification_parameters['new_output'] = new_output
+    
+    elif load_output != "" and error == 0:
+        quantification_parameters['load_output'] = load_output
     
     quantification_parameters['colors_to_exclude'] = colors_to_exclude
     quantification_parameters['color_mappings'] = color_mappings

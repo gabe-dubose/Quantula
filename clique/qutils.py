@@ -1,4 +1,6 @@
 from PIL import Image
+import pandas as pd
+from tkinter import DISABLED, END, INSERT, filedialog
 
 #function to load image and return pixel values
 def load_pixels(image):
@@ -99,12 +101,44 @@ def get_color_fractions(color_counts, exclude):
 
     return color_fractions
 
+#function to write new quantification output file
+def write_new_quantification_output(sample, quantifications, fract_outfile):
+    pixel_fractions = quantifications['fractions']
+    pixel_fractions['sample'] = sample
+    outdf = pd.DataFrame([pixel_fractions])
+    sample_column = outdf.pop('sample')
+    outdf.insert(0, 'sample', sample_column)
+    outdf.to_csv(fract_outfile, index=False)
+
+#function to add to previous quantification output file
+def add_to_quantification_output(sample, quantifications, previous_output_file):
+    pixel_fractions = quantifications['fractions']
+    pixel_fractions['sample'] = sample
+    outdf = pd.DataFrame([pixel_fractions])
+    sample_column = outdf.pop('sample')
+    outdf.insert(0, 'sample', sample_column)
+
+    prev_outdf = pd.read_csv(previous_output_file)
+    new_outdf = pd.concat([prev_outdf, outdf])
+    new_outdf.to_csv(previous_output_file, index=False)
+
 #function to quantify colors
-def quantify_colors_ui(image, input):
+def quantify_colors_ui(image, input, log_window):
     #load data
+    log_window.insert(INSERT, f"Loading image...\n")
+    log_window.update()
     color_data = load_pixels(image)
+    log_window.insert(INSERT, f"Done.\n")
+    log_window.insert(INSERT, f"Quantifying pixel values...\n")
+    log_window.update()
     #get color quantification
     color_counts = color_counter(color_data, input['color_mappings'])
+    log_window.insert(INSERT, f"Done.\n")
+    log_window.insert(INSERT, f"Calculating color fractions...\n")
+    log_window.update()
     #get color fractions
     color_fractions = get_color_fractions(color_counts[0], exclude=input['colors_to_exclude'])
-    print(color_fractions)
+    log_window.insert(INSERT, f"Done.\n")
+    log_window.update()
+
+    return color_fractions

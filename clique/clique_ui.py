@@ -303,7 +303,6 @@ def clique_segmentation():
 
     #run clique for input directory
     elif 'image_dir_input' in input:
-        #MAKE INPUT FOR LATER
         file_extensions = ['png', 'jpg']
         for image in input['image_dir_input']:
             image_extension = image.split('/')[-1].split('.')[-1].lower()
@@ -456,13 +455,6 @@ logWindowFrameQT.grid(row=1, column=1, sticky = "new", pady=5, padx=10, rowspan=
 log_window_qt = tk.Text(logWindowFrameQT, width=65, height=30)
 log_window_qt.grid(row=0, column=0)
 
-def clique_quantification():
-    input = iutils.get_quantification_parameters(image_file_inputQT, image_dir_inputQT, colorQuantificationTableExclude, color_mappings)
-    
-    #single image run
-    if 'image_file' in input:
-        qutils.quantify_colors_ui(image=input['image_file'], input=input)
-
 #OUTPUT LABELED FRAME
 outputQuantificationFrame = tk.LabelFrame(colorQuantificationTab, text="Output Options")
 outputQuantificationFrame.grid(row=3, column=1, sticky = "new", pady=5, padx=10)
@@ -490,6 +482,40 @@ new_output_dir_input.grid(row=2, column=2, padx=10, pady=5)
 #add new output select button
 newOutputDirSelectButton = tk.Button(outputQuantificationFrame, text="Select Folder", command=lambda: iutils.select_directory(new_output_dir_input, home_path))
 newOutputDirSelectButton.grid(row=2, column=3, pady=5, padx=(0,10))
+
+def clique_quantification():
+    input = iutils.get_quantification_parameters(image_file_inputQT, image_dir_inputQT, colorQuantificationTableExclude, color_mappings, output_file_input, new_output_dir_input)
+    #single image run
+    if 'image_file' in input:
+        color_quantifications = qutils.quantify_colors_ui(image=input['image_file'], input=input, log_window=log_window_qt)
+        sample = input['image_file'].split('/')[-1].split('.')[0]
+        
+        #write output
+        if 'new_output' in input:
+            qutils.write_new_quantification_output(sample=sample, quantifications=color_quantifications, fract_outfile=input['new_output'])
+        
+        elif 'load_output' in input:
+            qutils.add_to_quantification_output(sample=sample, quantifications=color_quantifications, previous_output_file=input['load_output'])
+    
+    #image directory run
+    elif 'image_directory' in input:
+        image_log = 0
+        file_extensions = ['png', 'jpg']
+        for image in input['image_directory']:
+            image_extension = image.split('/')[-1].split('.')[-1].lower()
+            if image_extension in file_extensions:
+                log_window_qt.insert(INSERT, f"Working on {image}.\n")
+                log_window_qt.update()
+                color_quantifications = qutils.quantify_colors_ui(image=image, input=input, log_window=log_window_qt)
+                sample = image.split('/')[-1].split('.')[0]
+
+                if 'new_output' in input and image_log == 0:
+                    qutils.write_new_quantification_output(sample=sample, quantifications=color_quantifications, fract_outfile=input['new_output'])
+                    image_log += 1
+                elif 'new_output' in input and image_log != 0:
+                    qutils.add_to_quantification_output(sample=sample, quantifications=color_quantifications, previous_output_file=input['new_output'])
+                elif 'load_output' in input:
+                    qutils.add_to_quantification_output(sample=sample, quantifications=color_quantifications, previous_output_file=input['load_output'])
 
 #button to run quantification
 runQuantificationButton = tk.Button(colorQuantificationTab, text="Run", command=clique_quantification)

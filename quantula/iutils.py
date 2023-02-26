@@ -188,10 +188,7 @@ def get_standard_user_segmentation_input(image_file_input, image_dir_input, back
     
     #check that number of colors is a number
     if error == 0:
-        if color_number == "":
-            tk.messagebox.showerror("Input Error", f"Error: Number of color clusters not specified.")
-            error += 1
-        else:
+        if color_number != "":
             try:
                 color_number = int(color_number)
             except:
@@ -209,10 +206,10 @@ def get_standard_user_segmentation_input(image_file_input, image_dir_input, back
                 tk.messagebox.showerror("Input Error", f"Error: ({boundary_color}) is an invalid RGB value.")
                 error += 1  
 
-    #check that new and existing metadata files were not both specified
+    #check that metadata was specified correctly
     if error == 0:
-        if metadata_file != "" and metadata_dir != "":
-            tk.messagebox.showerror("Input Error", "Error: Both existing and new metadata options were specified.")
+        if metadata_file != "" and metadata_dir == "":
+            tk.messagebox.showerror("Input Error", "Error. Metadata file specified but save to location was not.")
             error += 1
 
     #check that single input image can be read (images in directory will be checked at their runtime)
@@ -251,19 +248,27 @@ def get_standard_user_segmentation_input(image_file_input, image_dir_input, back
         standard_user_input['saturation_factor'] = saturation_factor
         standard_user_input['saturation_adjust_order'] = saturation_adjust_order
 
-        standard_user_input['color_number'] = color_number
+        if color_number != "":
+            standard_user_input['color_number'] = color_number
+        elif color_number == "":
+            standard_user_input['color_number'] = color_number = 'NA'
 
         if boundary_color != "":
             standard_user_input['boundary_tracing_color'] = boundary_tracing_color
         else:
             standard_user_input['boundary_tracing_color'] = 'NA'
 
+        standard_user_input['rename'] = rename
         standard_user_input['out_dir'] = out_dir
                 
         if metadata_file != "":
             standard_user_input['metadata_file'] = metadata_file
-        elif metadata_dir != "":
-            standard_user_input['new_metadata_dir'] = metadata_dir
+        else:
+            standard_user_input['metadata_file'] = 'quantula_metadata'
+            
+        if metadata_dir != "":
+            standard_user_input['metadata_dir'] = metadata_dir
+        
 
         return standard_user_input
 

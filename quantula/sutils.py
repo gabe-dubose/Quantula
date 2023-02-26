@@ -5,6 +5,7 @@ import numpy as np
 import cv2
 import os
 from tkinter import DISABLED, END, INSERT, filedialog
+import pandas as pd
 
 #function to convert change background pixels
 def background_converter(image, from_color, to_color, outfile):
@@ -172,6 +173,9 @@ def segment_colors_ui(image, input, advanced_options, log_window):
         sample_name = 'quantula_out'
 
     #set up output
+    if input['rename'] != '':
+        sample_name = input['rename']
+    
     full_output_path = f"{input['out_dir']}/{sample_name}"
     os.system(f'mkdir {full_output_path}')
 
@@ -229,7 +233,7 @@ def segment_colors_ui(image, input, advanced_options, log_window):
                 operation_counter += 1
 
     #perform k-means clustering if specified
-    if input['color_number'] > 0:
+    if input['color_number'] != "NA":
         log_window.insert(INSERT, f"Performing K-means clustering...\n")
         log_window.update()
         outfile = f"{full_output_path}/{operation_counter}_{sample_name}_clst.png"
@@ -249,3 +253,37 @@ def segment_colors_ui(image, input, advanced_options, log_window):
         log_window.update()
         current_file = outfile
         operation_counter += 1
+
+#function to write metadata file
+def write_metadata(input):
+    output_file = f"{input['metadata_dir']}/{input['metadata_file']}.csv"
+    metadata = pd.DataFrame([input])
+    metadata.to_csv(output_file, index=False)
+
+#function to add to existing metadata file
+def add_to_metadata(input, image, count):
+    metadata_file = f"{input['metadata_dir']}/{input['metadata_file']}.csv"
+
+    if count == 0:
+        metadata_df = pd.DataFrame([input])
+        metadata_df.drop(['image_dir_input'], axis=1, inplace=True)
+        metadata_df['image_file_input'] = image
+        sample_column = metadata_df.pop('image_file_input')
+        metadata_df.insert(0, 'image_file_input', sample_column)
+        metadata_df.to_csv(metadata_file, index=False)
+    else:
+        current_metadata_df = pd.read_csv(metadata_file)
+
+        new_metadata_df = pd.DataFrame([input])
+        new_metadata_df.drop(['image_dir_input'], axis=1, inplace=True)
+        new_metadata_df['image_file_input'] = image 
+
+        new_outdf = pd.concat([current_metadata_df, new_metadata_df])
+        new_outdf.to_csv(metadata_file, index=False)
+
+        
+
+
+        
+
+    

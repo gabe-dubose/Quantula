@@ -79,9 +79,6 @@ backgroundColorPrompt.grid(row=1, column=1, pady=5, padx=10, sticky="w")
 background_color_input = tk.Entry(backgroundConversionFrame, width=14)
 background_color_input.grid(row=1, column=2, padx=10, pady=5, sticky="w")
 
-#set default background color
-background_color_input.insert(0, '0,0,0')
-
 #add background color checker
 bgColorDisplay = Canvas(backgroundConversionFrame, highlightthickness=1, highlightbackground="black", width=40, height=10)
 bgColorDisplay.grid(row=1, column=4, padx=10)
@@ -97,9 +94,6 @@ backgroundColorPrompt.grid(row=2, column=1, pady=5, padx=10, sticky="w")
 #Entry box for background color specification
 color_convert_input = tk.Entry(backgroundConversionFrame, width=14)
 color_convert_input.grid(row=2, column=2, padx=10, pady=5, sticky="w")
-
-#set default background color
-color_convert_input.insert(0, '0,0,255')
 
 #add background color checker
 bgColorConvertDisplay = Canvas(backgroundConversionFrame, highlightthickness=1, highlightbackground="black", width=40, height=10)
@@ -176,13 +170,12 @@ colorSegmentationFrame = tk.LabelFrame(colorSegmentationTab, text="Color Cluster
 colorSegmentationFrame.grid(row=4, column=0, sticky = "ew", pady=5, padx=10)
 
 #add prompt to get color number
-colorNumberPrompt = tk.Label(colorSegmentationFrame, text="Number of colors:", padx=10, pady=5)
+colorNumberPrompt = tk.Label(colorSegmentationFrame, text="Number of Colors:", padx=10, pady=5)
 colorNumberPrompt.grid(row=1, column=1, pady=5, padx=5, sticky="w")
 
 #add entry for specifying the number of colors for K-means clustering
 color_number_input = tk.Entry(colorSegmentationFrame, width = 13)
 color_number_input.grid(row=1, column=2, padx=0, pady=5, sticky="w")
-color_number_input.insert(0, 0)
 
 #prompt for boundary color specification
 boundaryColorPrompt = tk.Label(colorSegmentationFrame, text="Boundary Color (R,G,B):", padx=10, pady=5)
@@ -191,9 +184,6 @@ boundaryColorPrompt.grid(row=2, column=1, pady=5, padx=(5,0), sticky="w")
 #Entry box for boundary color specification
 boundary_color_input = tk.Entry(colorSegmentationFrame, width=13)
 boundary_color_input.grid(row=2, column=2, padx=0, pady=5, sticky="w")
-
-#set default background color
-boundary_color_input.insert(0, '255,0,0')
 
 #add background color checker
 boundaryColorConvertDisplay = Canvas(colorSegmentationFrame, highlightthickness=1, highlightbackground="black", width=40, height=10)
@@ -207,27 +197,25 @@ bgColorConvertViewButton.grid(row=2, column=3, pady=10, padx=5)
 outputFrame = tk.LabelFrame(colorSegmentationTab, text="Output Options")
 outputFrame.grid(row=5, column=0, sticky = "ew", pady=5, padx=10)
 
-#add prompt to select output directory 
-imageDirSelectPrompt = tk.Label(outputFrame, text="Directory:", padx=10, pady=5)
-imageDirSelectPrompt.grid(row=1, column=1, padx=10, pady=5)
-
-#add entry for selecting output directory 
-out_dir_input = tk.Entry(outputFrame)
-out_dir_input.grid(row=1, column=2, padx=10, pady=5)
-out_dir_input.insert(0, home_path)
-
-#add button for selecting output directory 
-outDirSelectButton = tk.Button(outputFrame, text="Select Folder", command=lambda: iutils.select_directory(out_dir_input, home_path))
-outDirSelectButton.grid(row=1, column=3, padx=10, pady=5, sticky="w")
-
 #add prompt to rename output
-renameOutputPrompt = tk.Label(outputFrame, text="Rename:", padx=10, pady=5)
-renameOutputPrompt.grid(row=2, column=1, padx=10, pady=5)
+renameOutputPrompt = tk.Label(outputFrame, text="Name:", padx=10, pady=5)
+renameOutputPrompt.grid(row=1, column=1, padx=10, pady=5, sticky="w")
 
 #add entry for renaming option
 rename_input = tk.Entry(outputFrame)
-rename_input.grid(row=2, column=2, padx=10, pady=5)
+rename_input.grid(row=1, column=2, padx=10, pady=5)
 
+#add prompt to select output directory 
+imageDirSelectPrompt = tk.Label(outputFrame, text="Save to:", padx=10, pady=5)
+imageDirSelectPrompt.grid(row=2, column=1, padx=10, pady=5)
+
+#add entry for selecting output directory 
+out_dir_input = tk.Entry(outputFrame)
+out_dir_input.grid(row=2, column=2, padx=10, pady=5)
+
+#add button for selecting output directory 
+outDirSelectButton = tk.Button(outputFrame, text="Select Folder", command=lambda: iutils.select_directory(out_dir_input, home_path))
+outDirSelectButton.grid(row=2, column=3, padx=10, pady=5, sticky="w")
 
 #LOGGING
 #add progress bar
@@ -246,23 +234,23 @@ log_window.grid(row=0, column=0)
 metaDataFrame = tk.LabelFrame(colorSegmentationTab, text="Metadata Options")
 metaDataFrame.grid(row=4, column=1, sticky = "new", pady=5, padx=10)
 
-#add prompt to select metadata file
-metadataSelectPrompt = tk.Label(metaDataFrame, text="Metadata File:")
-metadataSelectPrompt.grid(row=1, column=1, pady=5, padx=10, sticky="w")
+#add prompt to select metadata dir
+metadataFileSelectPrompt = tk.Label(metaDataFrame, text="File Name:")
+metadataFileSelectPrompt.grid(row=1, column=1, pady=5, padx=10, sticky="w")
 
-#add entry for metadata file
+#add extension visualization
+metadataExtenstionVisualization = tk.Label(metaDataFrame, text=".csv")
+metadataExtenstionVisualization.grid(row=1, column=3, pady=5, padx=0, sticky="w")
+
+#add entry for image file
 metadata_file_input = tk.Entry(metaDataFrame)
 metadata_file_input.grid(row=1, column=2, padx=10, pady=5)
 
-#add metadata select button
-metadataSelectButton = tk.Button(metaDataFrame, text="Select File", command=lambda: iutils.select_csv_file(metadata_file_input, home_path))
-metadataSelectButton.grid(row=1, column=3, pady=10, sticky="w")
+#add prompt to select metadata file
+metadataSelectPrompt = tk.Label(metaDataFrame, text="Save to:")
+metadataSelectPrompt.grid(row=2, column=1, pady=5, padx=10, sticky="w")
 
-#add prompt to select metadata dir
-metadataDirSelectPrompt = tk.Label(metaDataFrame, text="New File:")
-metadataDirSelectPrompt.grid(row=2, column=1, pady=5, padx=10, sticky="w")
-
-#add entry for image file
+#add entry for metadata file
 metadata_dir_input = tk.Entry(metaDataFrame)
 metadata_dir_input.grid(row=2, column=2, padx=10, pady=5)
 
@@ -280,7 +268,7 @@ advancedOptionsButton.grid(row=5, column=1, sticky = "sew", pady=5, padx=10)
 #store sets of common resets
 image_adjustment_scales = [contrastAdjustmentScale, sharpnessAdjustmentScale, saturationAdjustmentScale]
 inputs_to_blank = [image_file_input, image_dir_input, rename_input, metadata_file_input, metadata_dir_input, out_dir_input]
-value_resets = [[background_color_input, '0,0,0'], [color_convert_input, '0,0,255'], [boundary_color_input, '255,0,0'], [color_number_input, 0]]
+value_resets = [[background_color_input, ''], [color_convert_input, ''], [boundary_color_input, ''], [color_number_input, '']]
 operation_boxes = [contrast_order_input, sharpness_order_input, saturation_order_input]
 text_resets = [log_window]
 
@@ -291,6 +279,7 @@ clearRunButton.grid(row=6, column=1, sticky = "ew", pady=5, padx=10)
 def quantula_segmentation():
     #get input
     input = iutils.get_standard_user_segmentation_input(image_file_input, image_dir_input, background_color_input, color_convert_input, contrast_input, contrast_order_input, sharpness_input, sharpness_order_input, saturation_input, saturation_order_input, color_number_input, boundary_color_input, out_dir_input, rename_input, metadata_file_input, metadata_dir_input)
+    
     if input != 0:
         log_window.insert(INSERT, f"All input loaded successfully.\n")
         log_window.update()
@@ -300,10 +289,14 @@ def quantula_segmentation():
         log_window.insert(INSERT, f"Working on {input['image_file_input']}.\n")
         log_window.update()
         sutils.segment_colors_ui(image=input['image_file_input'], input=input, advanced_options=advanced_segmentation_options, log_window=log_window)
+        #write metadata
+        if input['metadata_dir'] != "":
+            sutils.write_metadata(input)
 
     #run quantula for input directory
     elif 'image_dir_input' in input:
         file_extensions = ['png', 'jpg']
+        image_count = 0
         for image in input['image_dir_input']:
             image_extension = image.split('/')[-1].split('.')[-1].lower()
             if image_extension in file_extensions:
@@ -311,6 +304,9 @@ def quantula_segmentation():
                 log_window.update()
                 sutils.segment_colors_ui(image=image, input=input, advanced_options=advanced_segmentation_options, log_window=log_window)
 
+                if input['metadata_dir'] != "":
+                    sutils.add_to_metadata(input, image, image_count)
+                    image_count += 1
 
 #button to run quantula color segmentation
 runSegmentationButton = tk.Button(colorSegmentationTab, text="Run", command=quantula_segmentation)
@@ -459,29 +455,29 @@ log_window_qt.grid(row=0, column=0)
 outputQuantificationFrame = tk.LabelFrame(colorQuantificationTab, text="Output Options")
 outputQuantificationFrame.grid(row=3, column=1, sticky = "new", pady=5, padx=10)
 
-#add prompt to load output file
-outputSelectPrompt = tk.Label(outputQuantificationFrame, text="Load Output:")
-outputSelectPrompt.grid(row=1, column=1, pady=5, padx=10, sticky="w")
-
-#add entry for loading output file
-output_file_input = tk.Entry(outputQuantificationFrame)
-output_file_input.grid(row=1, column=2, padx=10, pady=5)
-
-#add output select button
-outputSelectButton = tk.Button(outputQuantificationFrame, text="Select File", command=lambda: iutils.select_csv_file(output_file_input, home_path))
-outputSelectButton.grid(row=1, column=3, pady=10, sticky="w")
-
 #add prompt to select output dir
 outputDirSelectPrompt = tk.Label(outputQuantificationFrame, text="New File:")
-outputDirSelectPrompt.grid(row=2, column=1, pady=5, padx=10, sticky="w")
+outputDirSelectPrompt.grid(row=1, column=1, pady=5, padx=10, sticky="w")
 
 #add entry for output directory
 new_output_dir_input = tk.Entry(outputQuantificationFrame)
-new_output_dir_input.grid(row=2, column=2, padx=10, pady=5)
+new_output_dir_input.grid(row=1, column=2, padx=10, pady=5)
 
 #add new output select button
 newOutputDirSelectButton = tk.Button(outputQuantificationFrame, text="Select Folder", command=lambda: iutils.select_directory(new_output_dir_input, home_path))
-newOutputDirSelectButton.grid(row=2, column=3, pady=5, padx=(0,10))
+newOutputDirSelectButton.grid(row=1, column=3, pady=5, padx=(0,10))
+
+#add prompt to load output file
+outputSelectPrompt = tk.Label(outputQuantificationFrame, text="Load Output:")
+outputSelectPrompt.grid(row=2, column=1, pady=5, padx=10, sticky="w")
+
+#add entry for loading output file
+output_file_input = tk.Entry(outputQuantificationFrame)
+output_file_input.grid(row=2, column=2, padx=10, pady=5)
+
+#add output select button
+outputSelectButton = tk.Button(outputQuantificationFrame, text="Select File", command=lambda: iutils.select_csv_file(output_file_input, home_path))
+outputSelectButton.grid(row=2, column=3, pady=10, sticky="w")
 
 def quantula_quantification():
     input = iutils.get_quantification_parameters(image_file_inputQT, image_dir_inputQT, colorQuantificationTableExclude, color_mappings, output_file_input, new_output_dir_input)

@@ -155,7 +155,7 @@ def boundary_tracer(image, color, outfile):
     image.save(outfile)
 
 
-#function to run clique segmentation
+#function to run quantula segmentation
 def segment_colors_ui(image, input, advanced_options, log_window):
 
     operation_counter = 0
@@ -169,7 +169,7 @@ def segment_colors_ui(image, input, advanced_options, log_window):
         except:
             pass
     except:
-        sample_name = 'clique_out'
+        sample_name = 'quantula_out'
 
     #set up output
     full_output_path = f"{input['out_dir']}/{sample_name}"

@@ -5,14 +5,14 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="clique",
+    name="quantula",
     version="2023.02",
     author="Gabe DuBose",
     author_email="gabe.dubose.sci@gmail.com",
     description="A package for qunatitative image analysis",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/gabe-dubose/clique",
+    url="https://github.com/gabe-dubose/quantula",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -20,5 +20,5 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     install_requires = ['matplotlib', 'numpy', 'opencv-python', 'pandas'],
-    scripts = ['bin/clique-ui']
+    scripts = ['bin/quantula-ui']
 )

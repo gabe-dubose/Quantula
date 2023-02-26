@@ -7,15 +7,15 @@ from tkinter.ttk import *
 from tkinter import DISABLED, END, INSERT, filedialog
 import os
 from PIL import Image
-from clique import sutils
-from clique import qutils
-from clique import iutils
-from clique import windows
+from quantula import sutils
+from quantula import qutils
+from quantula import iutils
+from quantula import windows
 import time
 
 #initialize master
 root = tk.Tk()
-root.title("clique")
+root.title("Quantula")
 root.geometry("1025x800")
 
 #set up tab control
@@ -288,20 +288,20 @@ text_resets = [log_window]
 clearRunButton = tk.Button(colorSegmentationTab, text="Reset Run", command=lambda: iutils.reset_run(image_adjustment_scales, inputs_to_blank, value_resets, operation_boxes, text_resets))
 clearRunButton.grid(row=6, column=1, sticky = "ew", pady=5, padx=10)
 
-def clique_segmentation():
+def quantula_segmentation():
     #get input
     input = iutils.get_standard_user_segmentation_input(image_file_input, image_dir_input, background_color_input, color_convert_input, contrast_input, contrast_order_input, sharpness_input, sharpness_order_input, saturation_input, saturation_order_input, color_number_input, boundary_color_input, out_dir_input, rename_input, metadata_file_input, metadata_dir_input)
     if input != 0:
         log_window.insert(INSERT, f"All input loaded successfully.\n")
         log_window.update()
 
-    #run clique for single input file
+    #run quantula for single input file
     if 'image_file_input' in input:
         log_window.insert(INSERT, f"Working on {input['image_file_input']}.\n")
         log_window.update()
         sutils.segment_colors_ui(image=input['image_file_input'], input=input, advanced_options=advanced_segmentation_options, log_window=log_window)
 
-    #run clique for input directory
+    #run quantula for input directory
     elif 'image_dir_input' in input:
         file_extensions = ['png', 'jpg']
         for image in input['image_dir_input']:
@@ -312,8 +312,8 @@ def clique_segmentation():
                 sutils.segment_colors_ui(image=image, input=input, advanced_options=advanced_segmentation_options, log_window=log_window)
 
 
-#button to run clique color segmentation
-runSegmentationButton = tk.Button(colorSegmentationTab, text="Run", command=clique_segmentation)
+#button to run quantula color segmentation
+runSegmentationButton = tk.Button(colorSegmentationTab, text="Run", command=quantula_segmentation)
 runSegmentationButton.grid(row=6, column=0, sticky = "ew", pady=5, padx=10)
 
 
@@ -483,7 +483,7 @@ new_output_dir_input.grid(row=2, column=2, padx=10, pady=5)
 newOutputDirSelectButton = tk.Button(outputQuantificationFrame, text="Select Folder", command=lambda: iutils.select_directory(new_output_dir_input, home_path))
 newOutputDirSelectButton.grid(row=2, column=3, pady=5, padx=(0,10))
 
-def clique_quantification():
+def quantula_quantification():
     input = iutils.get_quantification_parameters(image_file_inputQT, image_dir_inputQT, colorQuantificationTableExclude, color_mappings, output_file_input, new_output_dir_input)
     #single image run
     if 'image_file' in input:
@@ -518,7 +518,7 @@ def clique_quantification():
                     qutils.add_to_quantification_output(sample=sample, quantifications=color_quantifications, previous_output_file=input['load_output'])
 
 #button to run quantification
-runQuantificationButton = tk.Button(colorQuantificationTab, text="Run", command=clique_quantification)
+runQuantificationButton = tk.Button(colorQuantificationTab, text="Run", command=quantula_quantification)
 runQuantificationButton.grid(row=4, column=0, sticky = "ew", pady=5, padx=10)
 
 #run app

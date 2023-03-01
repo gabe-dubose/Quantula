@@ -10,14 +10,14 @@ from PIL import Image, ImageTk
 #initialize main window
 root = tk.Tk()
 root.title("Quantula")
-root.geometry("505x500")
+root.geometry("525x535")
 
 style = Style()
 style.theme_create("tabformat", settings={
         "TNotebook": {"configure": {"tabmargins": [0, 0, 0, 0]}},
         "TNotebook.Tab": {"configure": {"padding": [2, 2]},
                           "map" : {
-                            "background" : [("active", "#ececec"), ("selected", "#ececec"), ("!disabled", "#ffffff")]
+                            "background" : [("selected", "#ececec"), ("!disabled", "#ffffff")]
                           }}})
 
 style.theme_use("tabformat")
@@ -25,6 +25,8 @@ style.configure('TFrame', background='#ececec')
 
 #set up tab control
 tabControl = ttk.Notebook(root, height=415)
+#add tabs
+tabControl.grid(column=0, row=0, pady=25, padx=25, sticky="nsew")
 
 #set up data management tab
 dataManagementTab = ttk.Frame(tabControl)
@@ -53,9 +55,6 @@ quantImage=Image.open('../art/quant.png')
 quantImage=quantImage.resize((35, 35))
 quantIcon = ImageTk.PhotoImage(quantImage)
 tabControl.add(colorQuantificationTab, text ='Color Quantification', image=quantIcon, compound=TOP)
-
-#add tabs
-tabControl.grid(column=0, row=0, pady=10, padx=20)
 
 #####   DATA UPLOAD LABELED FRAME #####
 dataUploadFrame = tk.LabelFrame(dataManagementTab, text="Data Import")

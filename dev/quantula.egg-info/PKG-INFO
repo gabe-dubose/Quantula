@@ -1,0 +1,20 @@
+Metadata-Version: 2.1
+Name: quantula
+Version: 2023.2
+Summary: A package for qunatitative image analysis
+Home-page: https://github.com/gabe-dubose/quantula
+Author: Gabe DuBose
+Author-email: gabe.dubose.sci@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+
+# *Quantula*
+A package for color segmentation and quantitative image analysis 
+
+### Installation
+
+```
+pip3 install git+https://github.com/gabe-dubose/Quantula.git
+```

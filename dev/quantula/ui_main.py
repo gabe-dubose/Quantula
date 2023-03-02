@@ -126,7 +126,7 @@ kmeansCluteringButton = tk.Button(colorClusteringFrame, text="K-means clustering
 kmeansCluteringButton.grid(row=2, column=0, padx=10, pady=(0,5), sticky="w")
 
 #Button for euclidian minimization
-euclidianMinimizationButton = tk.Button(colorClusteringFrame, text="Euclidian minimization", width=10, height=2, justify=CENTER, wraplength=100)
+euclidianMinimizationButton = tk.Button(colorClusteringFrame, text="Euclidian minimization", width=10, height=2, justify=CENTER, wraplength=100, command=lambda: windows.euclidian_minimization_recoloring_window(root))
 euclidianMinimizationButton.grid(row=3, column=0, padx=10, pady=(5,10), sticky="w")
 
 #####   COLOR BOUNDARY TRACING LABELED FRAME #####

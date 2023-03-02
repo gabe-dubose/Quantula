@@ -1,4 +1,5 @@
-import tkinter as tk	
+import tkinter as tk
+from tkinter import ttk	
 from tkinter import *
 from tkinter import INSERT
 from quantula import uiutils
@@ -8,7 +9,7 @@ from quantula import iutils
 def import_data_window(parent):
     window = Toplevel(parent)
     window.title("Import Data")
-    window.geometry('500x250')
+    window.geometry('500x400')
 
     #IMAGE DIRECTORY LABELED FRAME
     dataUploadFrame = tk.LabelFrame(window, text="Upload Data")
@@ -385,6 +386,111 @@ def k_means_transformation_window(parent):
 
     #add run button
     runButton = tk.Button(window, text="Perform K-means Clustering", command=lambda: uiutils.kmeans_transform(image_qcd_input, color_number_input, output_file_input, output_dir_input, epsilon_input, iterations_input, attempts_input))
+    runButton.grid(row=4, column=0, padx=10, pady=5, sticky='ew')
+
+#re-coloring with euclidian minimization window
+def euclidian_minimization_recoloring_window(parent):
+    window = Toplevel(parent)
+    window.title("Euclidian Minimization Re-coloring")
+    window.geometry('495x575')
+
+    #EUCLIDIAN MINIMIZATION RECOLORING FRAME
+    euclidianMinimizationFrame = tk.LabelFrame(window, text="Image Upload")
+    euclidianMinimizationFrame.grid(row=1, column=0, sticky = "ew", pady=5, padx=10)
+
+    #add prompt to select image qcd
+    imageQCDSelectPrompt = tk.Label(euclidianMinimizationFrame, text="Images (qcd):")
+    imageQCDSelectPrompt.grid(row=1, column=1, pady=5, padx=10, sticky="w")
+
+    #add entry for image qcd
+    image_qcd_input = tk.Entry(euclidianMinimizationFrame)
+    image_qcd_input.grid(row=1, column=2, padx=10, pady=5, sticky="w")
+
+    #add button for selecting images qcd
+    imageQCDSelectButton = tk.Button(euclidianMinimizationFrame, text="Select File", command=lambda: uiutils.select_qcd_file(image_qcd_input))
+    imageQCDSelectButton.grid(row=1, column=3, padx=5, pady=5, sticky="w") 
+
+    #COLOR CLASSIFICATION LABELED FRAME
+    colorClassificationFrame = tk.LabelFrame(window, text="Color Classifications")
+    colorClassificationFrame.grid(row=2, column=0, sticky = "ew", pady=5, padx=10)
+
+    #set style
+    style = ttk.Style(colorClassificationFrame)
+    style.configure("Treeview.Heading", background="#ececec", foreground="black")
+    style.map('Treeview', background=[('selected', '#BFBFBF')])
+    
+    #add table for specifying colors
+    colorClassifiersTable = ttk.Treeview(colorClassificationFrame, columns=(1,2), show="headings")
+    colorClassifiersTable.heading(1, text="Color")
+    colorClassifiersTable.column(1, anchor=CENTER, width=208)
+    colorClassifiersTable.heading(2, text="RGB Value")
+    colorClassifiersTable.column(2, anchor=CENTER, width=208)
+    colorClassifiersTable.grid(row=1, column=1, pady=10, padx=10, sticky='new')
+
+    #initialize a dictionary to hold color mappings
+    color_mappings = {}
+
+    #cache for added colors
+    added_colors = []
+
+    #function for delete option popup
+    def delete_option(event):
+        deleteOptionMenu.tk_popup(event.x_root, event.y_root)
+        
+    #add delete option to table window
+    colorClassifiersTable.bind("<Button-2>", delete_option)
+    colorClassifiersTable.bind("<Button-3>", delete_option)
+
+    #Button for adding color
+    addColorPrompt = tk.Button(colorClassificationFrame, text="Add Color", command=lambda: uiutils.update_color_classification_view(added_colors, new_color_rgb_input, new_color_name_input, color_mappings, colorClassifiersTable))
+    addColorPrompt.grid(row=2, column=1, pady=5, padx=10)
+
+    #New color adding labels
+    newColorRGBColumn = tk.Label(colorClassificationFrame, text="Color")
+    newColorRGBColumn.grid(row=2, column=1, sticky='w', pady=5, padx=10)
+
+    #New color adding labels
+    newColorNameColumn = tk.Label(colorClassificationFrame, text="RGB Value")
+    newColorNameColumn.grid(row=2, column=1, sticky='e', pady=5, padx=10)
+
+    #entry for specifying color RGB
+    new_color_rgb_input = tk.Entry(colorClassificationFrame)
+    new_color_rgb_input.grid(row=4, column=1, sticky='e', pady=5, padx=10)
+
+    #entry for specifying color designation
+    new_color_name_input = tk.Entry(colorClassificationFrame)
+    new_color_name_input.grid(row=4, column=1, sticky='w', pady=5, padx=10)
+
+    #options for deleting colors
+    deleteOptionMenu = tk.Menu(colorClassificationFrame)
+    deleteOptionMenu.add_command(label="Delete", command=lambda: uiutils.delete_color_classification_entry(color_mappings, added_colors, colorClassifiersTable))
+
+    #EUCLIDIAN MINIMIZATION OUTPUT FRAME
+    euclidianMinimizationOutputFrame = tk.LabelFrame(window, text="Output options")
+    euclidianMinimizationOutputFrame.grid(row=3, column=0, sticky = "ew", pady=5, padx=10)
+
+    #add prompt to save output file
+    outputFilePrompt = tk.Label(euclidianMinimizationOutputFrame, text="Output Name:")
+    outputFilePrompt.grid(row=1, column=1, pady=5, padx=10, sticky="w")
+
+    #add entry for output file
+    output_file_input = tk.Entry(euclidianMinimizationOutputFrame)
+    output_file_input.grid(row=1, column=2, padx=10, pady=5)
+
+    #add prompt for output directory
+    outputDirPrompt = tk.Label(euclidianMinimizationOutputFrame, text="Save To:")
+    outputDirPrompt.grid(row=2, column=1, pady=5, padx=10, sticky="w")
+    
+    #add entry for output directory
+    output_dir_input = tk.Entry(euclidianMinimizationOutputFrame)
+    output_dir_input.grid(row=2, column=2, padx=10, pady=5)
+
+    #add button for output
+    outputDirSelectButton = tk.Button(euclidianMinimizationOutputFrame, text="Select Directory", command=lambda: uiutils.select_directory(output_dir_input))
+    outputDirSelectButton.grid(row=2, column=3, padx=5, pady=5, sticky="w")
+
+    #add run button
+    runButton = tk.Button(window, text="Perform Euclidian Minimization Re-coloring")
     runButton.grid(row=4, column=0, padx=10, pady=5, sticky='ew')
 
 #color boundary tracing window

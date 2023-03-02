@@ -143,3 +143,60 @@ def trace_color_boundaries(image_qcd_input, pixel_color_input, boundary_threshol
     boundary_tracing_input = get_boundary_tracing_input(image_qcd_input, pixel_color_input, boundary_threshold_input, output_file_input, output_dir_input)
     #transform image
     iutils.trace_color_boundaries(boundary_tracing_input)
+
+#function to add color classification
+def add_color_classification_entry(added_colors, new_color_rgb_input, new_color_name_input, color_mappings):
+    #initialize error status 
+    error = 0
+    #collect input
+    color_rgb = new_color_rgb_input.get()
+    color_name = new_color_name_input.get()
+    #check that input was specified
+    if color_rgb == '' or color_name == '':
+        tk.messagebox.showerror("Input Error", f"Error: Missing RGB value or color designation.")
+        error += 1
+    #check that rgb value is valid
+    if error == 0:
+        rgb_value = iutils.check_rgb_input(color_rgb)
+        if rgb_value == 'Error_RGB_value':
+            tk.messagebox.showerror("Input Error", f"Error: ({color_rgb}) is an invalid RGB value.")
+            error += 1
+        elif rgb_value == 'Error_format':
+            tk.messagebox.showerror("Input Error", f"Error: ({color_rgb}) is in an invalid format.")
+            error += 1
+        elif color_name in added_colors:
+            tk.messagebox.showerror("Input Error", f"Error: ({color_name}) has already been added.")
+            error += 1
+        else:
+            color_mappings[color_name] = rgb_value
+            added_colors.append(color_name)
+
+#function to delete color classification
+def delete_color_classification_entry(color_mappings, added_colors, colorClassifiersTable):
+    selected_color = colorClassifiersTable.selection()
+    for selection in selected_color:
+        delete_color = colorClassifiersTable.item(selection)['values'][1]
+        del color_mappings[delete_color]
+        try:
+            colorClassifiersTable.delete(selection)
+        except:
+            pass
+                
+        #remove from recorded colors
+        added_colors.remove(delete_color)
+
+#function for adding color classification to table
+def update_color_classification_view(added_colors, new_color_rgb_input, new_color_name_input, color_mappings, colorClassifiersTable):
+    add_color_classification_entry(added_colors, new_color_rgb_input, new_color_name_input, color_mappings)
+    #clear current entry
+    for color in colorClassifiersTable.get_children():
+        try:
+            colorClassifiersTable.delete(color)
+        except:
+            pass
+
+    #refresh entry
+    for color in color_mappings:
+        color_name = color
+        color_rgb = ",".join([str(value) for value in color_mappings[color]])
+        colorClassifiersTable.insert("", 'end', values=(color_rgb, color_name))

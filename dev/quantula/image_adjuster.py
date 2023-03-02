@@ -187,7 +187,7 @@ def classify_color(pixel_map, pixel):
     return nearest_color
 
 #function to re-color image based on euclidian minimization
-def euclidian_minimization_recoloring(image, color_mapping, outfile):
+def euclidian_minimization_recoloring(image, color_map, outfile):
     #read image
     image = Image.open(image, 'r').convert('RGB')
     #get pixel data
@@ -208,13 +208,13 @@ def euclidian_minimization_recoloring(image, color_mapping, outfile):
         if pixel_str in pixel_classifications:
             pixel_color = pixel_classifications[pixel_str]
             #use pixel color to get pixel rgb value
-            pixel_rgb = color_mappings[pixel_color]
+            pixel_rgb = color_map[pixel_color]
             #add pixel to new image
             new_image.append(pixel_rgb)
             
         #if not, find closest color (smallest euclidean distance)
         elif pixel_str not in pixel_classifications:
-            closest_color = classify_color(color_mapping, pixel)
+            closest_color = classify_color(color_map, pixel)
             color = closest_color[1]
 
             #add newly classified color to cache
@@ -222,7 +222,7 @@ def euclidian_minimization_recoloring(image, color_mapping, outfile):
             pixel_classifications[pixel_str] = color
             
             #get pixel rgb value from mappings
-            pixel_rgb = color_mappings[color]
+            pixel_rgb = color_map[color]
             #add rgb to new image
             new_image.append(pixel_rgb)
             

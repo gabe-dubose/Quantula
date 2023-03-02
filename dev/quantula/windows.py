@@ -490,7 +490,7 @@ def euclidian_minimization_recoloring_window(parent):
     outputDirSelectButton.grid(row=2, column=3, padx=5, pady=5, sticky="w")
 
     #add run button
-    runButton = tk.Button(window, text="Perform Euclidian Minimization Re-coloring")
+    runButton = tk.Button(window, text="Perform Euclidian Minimization Re-coloring", command=lambda: uiutils.euclidian_minimization_recoloring(image_qcd_input, color_mappings, output_file_input, output_dir_input))
     runButton.grid(row=4, column=0, padx=10, pady=5, sticky='ew')
 
 #color boundary tracing window

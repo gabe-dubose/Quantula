@@ -181,3 +181,29 @@ def trace_color_boundaries(input):
 
         #compress file and make qcd
         qcdutils.dir_to_qcd(dir=output_file_dir, main=input['output_dir'], sub=input['output_file'])
+
+#function to perform re-coloring using euclidian distance minimization
+def euclidian_minimization_recoloring(input):
+    #check qcd type
+    qcd_type = qcdutils.get_qcd_type(input['qcd_input'])
+    #if qcd is of proper type
+    if qcd_type == 'image_data':
+        #initialize output directory
+        output_file_dir = f"{input['output_dir']}/{input['output_file']}"
+        qcdutils.initialize_image_data_qcd(output=output_file_dir)
+        #get image data and load images
+        qcd_data = qcdutils.read_image_data_qcd(input['qcd_input'])
+        qcd_images = qcd_data[0]
+        qcd = zipfile.ZipFile(input['qcd_input'])
+        #iterate through images and perform kmeans clustering
+        for image in qcd_images:
+            #read data
+            image_data = qcd.open(image)
+            #initilaize output file name
+            image_file_name = image.split('/')[-1]
+            outfile = f"{output_file_dir}/images/{image_file_name}"
+            #perform adjustments
+            image_adjuster.euclidian_minimization_recoloring(image=image_data, color_map=input['color_mappings'], outfile=outfile)
+
+        #compress file and make qcd
+        qcdutils.dir_to_qcd(dir=output_file_dir, main=input['output_dir'], sub=input['output_file'])

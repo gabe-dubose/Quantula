@@ -199,4 +199,22 @@ def update_color_classification_view(added_colors, new_color_rgb_input, new_colo
     for color in color_mappings:
         color_name = color
         color_rgb = ",".join([str(value) for value in color_mappings[color]])
-        colorClassifiersTable.insert("", 'end', values=(color_rgb, color_name))
+        colorClassifiersTable.insert("", 'end', values=(color_name, color_rgb))
+
+#function to get euclidian minimization recoloring input
+def get_euclidian_minimization_recoloring_input(image_qcd_input, color_mappings, output_file_input, output_dir_input):
+    #load input
+    qcd_input = image_qcd_input.get()
+    output_file = output_file_input.get()
+    output_dir = output_dir_input.get()
+
+    euclidian_minimization_recoloring_input = {'qcd_input' : qcd_input, 'color_mappings' : color_mappings, 'output_file' : output_file, 'output_dir' : output_dir}
+
+    return euclidian_minimization_recoloring_input
+
+#function to perform euclidian minimization recoloring
+def euclidian_minimization_recoloring(image_qcd_input, color_mappings, output_file_input, output_dir_input):
+    #load input
+    euclidian_minimization_recoloring_input = get_euclidian_minimization_recoloring_input(image_qcd_input, color_mappings, output_file_input, output_dir_input)
+    #transform image
+    iutils.euclidian_minimization_recoloring(euclidian_minimization_recoloring_input)

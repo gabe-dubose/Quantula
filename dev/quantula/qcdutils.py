@@ -1,6 +1,7 @@
 import zipfile
 import os
 import shutil
+import pandas as pd
 
 #function to get qcd type
 def get_qcd_type(qcd):

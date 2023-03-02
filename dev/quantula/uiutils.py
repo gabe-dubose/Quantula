@@ -117,8 +117,29 @@ def get_kmeans_input(image_qcd_input, color_number_input, output_file_input, out
 
     return kmeans_input
 
+#function to perform kmeans transformation
 def kmeans_transform(image_qcd_input, color_number_input, output_file_input, output_dir_input, epsilon_input, iterations_input, attempts_input):
     #load input
     kmeans_input = get_kmeans_input(image_qcd_input, color_number_input, output_file_input, output_dir_input, epsilon_input, iterations_input, attempts_input)
     #transform image
     iutils.kmeans_transform(kmeans_input)
+
+#function to get input for color boundary tracing
+def get_boundary_tracing_input(image_qcd_input, pixel_color_input, boundary_threshold_input, output_file_input, output_dir_input):
+    #get input
+    qcd_input = image_qcd_input.get()
+    pixel_color = pixel_color_input.get()
+    boundary_threshold = boundary_threshold_input.get()
+    output_file = output_file_input.get()
+    output_dir = output_dir_input.get()
+
+    boundary_tracing_input = {'qcd_input' : qcd_input, 'pixel_color' : pixel_color, 'boundary_threshold' : boundary_threshold, 'output_file' : output_file, 'output_dir' : output_dir}
+
+    return boundary_tracing_input
+
+#function to perform color boundary tracing
+def trace_color_boundaries(image_qcd_input, pixel_color_input, boundary_threshold_input, output_file_input, output_dir_input):
+    #load input
+    boundary_tracing_input = get_boundary_tracing_input(image_qcd_input, pixel_color_input, boundary_threshold_input, output_file_input, output_dir_input)
+    #transform image
+    iutils.trace_color_boundaries(boundary_tracing_input)

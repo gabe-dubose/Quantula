@@ -168,7 +168,7 @@ def contrast_adjustment_window(parent):
     #add scale to select contrast adjustment
     contrast_input = IntVar()
     contrastAdjustmentScale = tk.Scale(contrastAdjustmentFrame, variable = contrast_input, from_ = -10, to = 10, orient = HORIZONTAL, width=20, sliderlength=20, length=185)
-    contrastAdjustmentScale.grid(row=2, column=2, pady=5, padx=10, sticky="w")
+    contrastAdjustmentScale.grid(row=2, column=2, pady=(0,10), padx=13, sticky="w")
 
     #add prompt to save output file
     outputFilePrompt = tk.Label(contrastAdjustmentFrame, text="Output Name:")
@@ -222,7 +222,7 @@ def sharpness_adjustment_window(parent):
     #add scale to select sharpness adjustment
     sharpness_input = IntVar()
     sharpnessAdjustmentScale = tk.Scale(sharpnessAdjustmentFrame, variable = sharpness_input, from_ = -10, to = 10, orient = HORIZONTAL, width=20, sliderlength=20, length=185)
-    sharpnessAdjustmentScale.grid(row=2, column=2, pady=5, padx=10, sticky="w")
+    sharpnessAdjustmentScale.grid(row=2, column=2, pady=(0,10), padx=13, sticky="w")
 
     #add prompt to save output file
     outputFilePrompt = tk.Label(sharpnessAdjustmentFrame, text="Output Name:")
@@ -276,7 +276,7 @@ def saturation_adjustment_window(parent):
     #add scale to select saturation adjustment
     saturation_input = IntVar()
     saturationAdjustmentScale = tk.Scale(saturationAdjustmentFrame, variable = saturation_input, from_ = -10, to = 10, orient = HORIZONTAL, width=20, sliderlength=20, length=185)
-    saturationAdjustmentScale.grid(row=2, column=2, pady=5, padx=10, sticky="w")
+    saturationAdjustmentScale.grid(row=2, column=2, pady=(0,10), padx=13, sticky="w")
 
     #add prompt to save output file
     outputFilePrompt = tk.Label(saturationAdjustmentFrame, text="Output Name:")
@@ -302,6 +302,7 @@ def saturation_adjustment_window(parent):
     runButton = tk.Button(window, text="Adjust Saturation", command=lambda: uiutils.adjust_image(image_qcd_input, saturation_input, output_file_input, output_dir_input, 'saturation'))
     runButton.grid(row=4, column=0, padx=10, pady=5, sticky='ew')
 
+#kmeans transformation window
 def k_means_transformation_window(parent):
     window = Toplevel(parent)
     window.title("K-means Transformation")
@@ -386,3 +387,74 @@ def k_means_transformation_window(parent):
     runButton = tk.Button(window, text="Perform K-means Clustering", command=lambda: uiutils.kmeans_transform(image_qcd_input, color_number_input, output_file_input, output_dir_input, epsilon_input, iterations_input, attempts_input))
     runButton.grid(row=4, column=0, padx=10, pady=5, sticky='ew')
 
+#color boundary tracing window
+def color_boundary_tracing(parent):
+    window = Toplevel(parent)
+    window.title("Color Boundary Tracing")
+    window.geometry('560x300')
+
+    #GENERAL COLOR BOUNDARY TRACING WINDOW
+    colorBoundaryTracingFrame = tk.LabelFrame(window, text="Color Boundary Tracing Parameters")
+    colorBoundaryTracingFrame.grid(row=1, column=0, sticky = "ew", pady=5, padx=10)
+
+    #add prompt to select image qcd
+    imageQCDSelectPrompt = tk.Label(colorBoundaryTracingFrame, text="Images (qcd):")
+    imageQCDSelectPrompt.grid(row=1, column=1, pady=5, padx=10, sticky="w")
+
+    #add entry for image qcd
+    image_qcd_input = tk.Entry(colorBoundaryTracingFrame)
+    image_qcd_input.grid(row=1, column=2, padx=10, pady=5, sticky="w")
+
+    #add button for selecting images qcd
+    imageQCDSelectButton = tk.Button(colorBoundaryTracingFrame, text="Select File", command=lambda: uiutils.select_qcd_file(image_qcd_input))
+    imageQCDSelectButton.grid(row=1, column=3, padx=5, pady=5, sticky="w")
+
+    #prompt for pixel color specification
+    pixelColorPrompt = tk.Label(colorBoundaryTracingFrame, text="Color (R,G,B):")
+    pixelColorPrompt.grid(row=2, column=1, pady=5, padx=10, sticky="w")
+
+    #Entry box for pixel color specification
+    pixel_color_input = tk.Entry(colorBoundaryTracingFrame)
+    pixel_color_input.grid(row=2, column=2, padx=10, pady=5, sticky="w")
+
+    #add pixel color checker
+    ColorDisplay = Canvas(colorBoundaryTracingFrame, highlightthickness=1, highlightbackground="black", width=40, height=10)
+    ColorDisplay.grid(row=2, column=3, pady=10, padx=(0,10), sticky="e")
+
+    #add button to check color
+    ColorViewButton = tk.Button(colorBoundaryTracingFrame, text="View", command=lambda: uiutils.display_color_box(pixel_color_input, ColorDisplay))
+    ColorViewButton.grid(row=2, column=3, pady=10, padx=(10,0), sticky="w")
+
+    #add prompt 
+    boundaryThresholdPrompt = tk.Label(colorBoundaryTracingFrame, text="Boundary Threshold:")
+    boundaryThresholdPrompt.grid(row=3, column=1, pady=5, padx=10, sticky="w")
+
+    #add scale to select contrast adjustment
+    boundary_threshold_input = IntVar()
+    boundaryThresholdScale = tk.Scale(colorBoundaryTracingFrame, variable = boundary_threshold_input, from_ = 1, to = 8, orient = HORIZONTAL, width=20, sliderlength=20, length=185)
+    boundaryThresholdScale.grid(row=3, column=2, pady=(0,10), padx=13, sticky="w")
+    boundaryThresholdScale.set(8)
+
+    #add prompt to save output file
+    outputFilePrompt = tk.Label(colorBoundaryTracingFrame, text="Output Name:")
+    outputFilePrompt.grid(row=4, column=1, pady=5, padx=10, sticky="w")
+
+    #add entry for output file
+    output_file_input = tk.Entry(colorBoundaryTracingFrame)
+    output_file_input.grid(row=4, column=2, padx=10, pady=5)
+
+    #add prompt for output directory
+    outputDirPrompt = tk.Label(colorBoundaryTracingFrame, text="Save To:")
+    outputDirPrompt.grid(row=5, column=1, pady=5, padx=10, sticky="w")
+    
+    #add entry for output directory
+    output_dir_input = tk.Entry(colorBoundaryTracingFrame)
+    output_dir_input.grid(row=5, column=2, padx=10, pady=5)
+
+    #add button for output
+    outputDirSelectButton = tk.Button(colorBoundaryTracingFrame, text="Select Directory", command=lambda: uiutils.select_directory(output_dir_input))
+    outputDirSelectButton.grid(row=5, column=3, padx=5, pady=5, sticky="w")
+
+    #add run button
+    runButton = tk.Button(window, text="Trace Color Boundaries", command=lambda: uiutils.trace_color_boundaries(image_qcd_input, pixel_color_input, boundary_threshold_input, output_file_input, output_dir_input))
+    runButton.grid(row=6, column=0, padx=10, pady=5, sticky='ew')

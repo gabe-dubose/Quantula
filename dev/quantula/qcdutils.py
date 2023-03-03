@@ -2,6 +2,7 @@ import zipfile
 import os
 import shutil
 import pandas as pd
+import json
 
 #function to get qcd type
 def get_qcd_type(qcd):
@@ -83,6 +84,12 @@ def initialize_image_data_qcd(output):
     #add qualifier file
     with open(f"{output_file_dir}/metadata/image_data", 'w') as file:
         pass
+
+#function to add color map file
+def add_color_map(color_map, output):
+    output_file = f"{output}/metadata/color_map.json"
+    with open(output_file, 'w') as outfile:
+        json.dump(color_map, outfile)
 
 #function to zip a directory and make it a qcd
 def dir_to_qcd(dir, main, sub):

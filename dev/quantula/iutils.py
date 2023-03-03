@@ -205,5 +205,8 @@ def euclidian_minimization_recoloring(input):
             #perform adjustments
             image_adjuster.euclidian_minimization_recoloring(image=image_data, color_map=input['color_mappings'], outfile=outfile)
 
+        #save color map to json
+        qcdutils.add_color_map(color_map=input['color_mappings'], output=output_file_dir)
+
         #compress file and make qcd
         qcdutils.dir_to_qcd(dir=output_file_dir, main=input['output_dir'], sub=input['output_file'])

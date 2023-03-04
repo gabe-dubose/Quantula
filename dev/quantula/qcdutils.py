@@ -82,6 +82,17 @@ def initialize_image_data_qcd(output):
     with open(f"{output_file_dir}/metadata/image_data", 'w') as file:
         pass
 
+#function to set up table data qcd
+def initialize_quantification_data_qcd(output):
+    #set up directory
+    output_file_dir = output
+    os.makedirs(output_file_dir)
+    os.makedirs(f"{output_file_dir}/tables")
+    os.makedirs(f"{output_file_dir}/metadata")
+    #add qualifier file
+    with open(f"{output_file_dir}/metadata/quantification_table", 'w') as file:
+        pass
+
 #function to add color map file
 def add_color_map(color_map, output):
     output_file = f"{output}/metadata/color_map.json"

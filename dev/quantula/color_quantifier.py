@@ -1,7 +1,7 @@
 from PIL import Image
 
 #function to count pixel colors of input image
-def count_pixel_colors(image, color_map):
+def count_pixel_colors(image, color_map, sample, outdict):
     #load image
     image = Image.open(image, 'r').convert('RGB')
     #get pixel data
@@ -30,10 +30,9 @@ def count_pixel_colors(image, color_map):
             else:
                 color_counts[color] += 1
 
-    else:
-        pass
-
-    return color_counts
+    #add results to dictionary
+    if sample not in outdict:
+        outdict[sample] = color_counts
 
 #function to get proportions of pixels
 def get_color_fractions(pixel_counts, exclude):

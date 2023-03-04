@@ -731,5 +731,5 @@ def color_quantification_window(parent):
     outputDirSelectButton.grid(row=5, column=3, padx=5, pady=5, sticky="w")
 
     #add run button
-    runButton = tk.Button(window, text="Quantify colors")
+    runButton = tk.Button(window, text="Quantify colors", command=lambda: uiutils.count_colors(image_qcd_input, colorExcludeTable, returnRawColors, returnColorFraction, output_file_input, output_dir_input))
     runButton.grid(row=4, column=1, padx=10, pady=5, sticky='ew')

@@ -7,6 +7,7 @@ import shutil
 from quantula import qcdutils
 import zipfile
 from quantula import image_adjuster
+from quantula import color_quantifier
 
 #function to check import
 def check_input(input):
@@ -210,3 +211,36 @@ def euclidian_minimization_recoloring(input):
 
         #compress file and make qcd
         qcdutils.dir_to_qcd(dir=output_file_dir, main=input['output_dir'], sub=input['output_file'])
+
+#function to get raw color counts
+def count_pixel_colors(input):
+    #initialize output
+    color_counts = {}
+    #check qcd type
+    qcd_type = qcdutils.get_qcd_type(input['qcd_input'])
+    #if qcd is of proper type
+    if qcd_type == 'image_data':
+        #initialize output directory
+        output_file_dir = f"{input['output_dir']}/{input['output_file']}"
+        qcdutils.initialize_quantification_data_qcd(output=output_file_dir)
+        #get image data and load images
+        qcd_data = qcdutils.read_image_data_qcd(input['qcd_input'])
+        qcd_images = qcd_data[0]
+        qcd = zipfile.ZipFile(input['qcd_input'])
+        #iterate through images and perform kmeans clustering
+        for image in qcd_images:
+            #read data
+            image_data = qcd.open(image)
+            #initilaize output file name
+            image_file_name = image.split('/')[-1]
+            #count pixels
+            color_quantifier.count_pixel_colors(image=image_data, color_map=input['color_map'], sample=image_file_name, outdict=color_counts)
+    
+    #if return raw counts is specified, write raw counts to csv
+    if input['return_raw_color_counts'] == 1:
+        raw_color_counts_df = pd.DataFrame.from_dict(color_counts).T
+        raw_color_counts_outfile = f"{output_file_dir}/tables/raw_color_counts.csv"
+        raw_color_counts_df.to_csv(raw_color_counts_outfile)
+
+    #compress file and make qcd
+    qcdutils.dir_to_qcd(dir=output_file_dir, main=input['output_dir'], sub=input['output_file'])

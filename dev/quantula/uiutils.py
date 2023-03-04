@@ -247,4 +247,28 @@ def include_color(colorQuantificationTableExclude, colorQuantificationTableInclu
         include_color = colorQuantificationTableExclude.item(selection)['values'][0]
         colorQuantificationTableInclude.insert("", 'end', values=(include_color))
         colorQuantificationTableExclude.delete(selection)
+
+#function to get the input for counting colors
+def get_color_counting_input(image_qcd_input, excludeTable, returnRawColors, returnColorFractions, output_file_input, output_dir_input):
+    #get input
+    qcd_input = image_qcd_input.get()
+    color_map = qcdutils.load_color_map(qcd_input)
+    return_raw_colors = returnRawColors.get()
+    return_color_fractions = returnColorFractions.get()
+    output_file = output_file_input.get()
+    output_dir = output_dir_input.get()
+
+    colors_to_exclude = []
+    for color in excludeTable.get_children():
+        colors_to_exclude.append(excludeTable.item(color)["values"][0])
+
+    color_counting_input = {'qcd_input' : qcd_input, 'color_map' : color_map, 'colors_to_exclude' : colors_to_exclude, 'return_raw_color_counts' : return_raw_colors, 'return_color_fractions' : return_color_fractions, 'output_file' : output_file, 'output_dir' : output_dir}
     
+    return color_counting_input
+
+#function to run color counting
+def count_colors(image_qcd_input, excludeTable, returnRawColors, returnColorFractions, output_file_input, output_dir_input):
+    #load input
+    color_counting_input = get_color_counting_input(image_qcd_input, excludeTable, returnRawColors, returnColorFractions, output_file_input, output_dir_input)
+    #count pixels colors
+    iutils.count_pixel_colors(color_counting_input)    

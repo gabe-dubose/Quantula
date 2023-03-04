@@ -220,5 +220,31 @@ def euclidian_minimization_recoloring(image_qcd_input, color_mappings, output_fi
     iutils.euclidian_minimization_recoloring(euclidian_minimization_recoloring_input)
 
 #function to view color map if available
-def view_color_map():
-    pass
+def view_color_map(image_qcd_input, displayTable):
+    #load color map
+    color_map = qcdutils.load_color_map(image_qcd_input)
+    #if color map was located
+    if color_map != 0:
+        for color in color_map:
+            rgb_value = ",".join([str(value) for value in color_map[color]])
+            color_display = f"{color}:{rgb_value}"
+            displayTable.insert("", 'end', values=(color_display))
+    else:
+        tk.messagebox.showerror("Type Error", 'No color map located.')
+
+#function to move color from color map to exclude
+def exclude_color(colorQuantificationTableInclude, colorQuantificationTableExclude):
+    selected_color = colorQuantificationTableInclude.selection()
+    for selection in selected_color:
+        exclude_color = colorQuantificationTableInclude.item(selection)['values'][0]
+        colorQuantificationTableExclude.insert("", 'end', values=(exclude_color))
+        colorQuantificationTableInclude.delete(selection)
+
+#function to move color from exclude to include
+def include_color(colorQuantificationTableExclude, colorQuantificationTableInclude):
+    selected_color = colorQuantificationTableExclude.selection()
+    for selection in selected_color:
+        include_color = colorQuantificationTableExclude.item(selection)['values'][0]
+        colorQuantificationTableInclude.insert("", 'end', values=(include_color))
+        colorQuantificationTableExclude.delete(selection)
+    

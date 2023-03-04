@@ -100,6 +100,7 @@ def dir_to_qcd(dir, main, sub):
 #function to load color map (if present)
 def load_color_map(qcd):
 
+    color_map_file_check = []
     #read qcd contents
     qcd_unzip = zipfile.ZipFile(qcd, 'r')
     qcd_contents = []
@@ -107,10 +108,16 @@ def load_color_map(qcd):
         qcd_contents.append(content)
 
     main_dir = qcd_contents[0]
+    color_map_file = f"{main_dir}metadata/color_map.json"
 
-    if f"{main_dir}metadata/color_map.json" in qcd_contents:
-        data = open(f"{main_dir}metadata/color_map.json", 'r')
+    for entry in qcd_unzip.namelist():
+        if color_map_file in entry:
+            color_map_file_check.append(color_map_file)
+
+    if len(color_map_file_check) != 0:
+        data = qcd_unzip.open(color_map_file_check[0])
         color_map = json.load(data)
         return color_map
+
     else:
         return 0

@@ -646,7 +646,7 @@ def color_quantification_window(parent):
     colorMapFrame.grid(row=1, column=1, sticky = "ew", pady=(10,5), padx=10)
 
     #add button to view color map
-    viewColorMapButton = tk.Button(colorMapFrame, text="View Color Map")
+    viewColorMapButton = tk.Button(colorMapFrame, text="View Color Map", command=lambda: uiutils.view_color_map(image_qcd_input.get(), colorMapTable))
     viewColorMapButton.grid(row=1, column=1, padx=5, pady=5, sticky="w")
 
     #set style
@@ -665,6 +665,30 @@ def color_quantification_window(parent):
     colorExcludeTable.heading(1, text="Exclude")
     colorExcludeTable.column(1, anchor=CENTER, width=208)
     colorExcludeTable.grid(row=2, column=2, pady=10, padx=10, sticky='e')
+
+    #function to exclude color
+    def exclude_color_option(event):
+        excludeColorOptionMenu.tk_popup(event.x_root, event.y_root)
+
+    #add exclude option to table window
+    colorMapTable.bind("<Button-2>", exclude_color_option)
+    colorMapTable.bind("<Button-3>", exclude_color_option)
+
+    #option menu for excluding colors
+    excludeColorOptionMenu = tk.Menu(colorMapFrame)
+    excludeColorOptionMenu.add_command(label="Exclude", command=lambda: uiutils.exclude_color(colorMapTable, colorExcludeTable))
+
+    #function to include color
+    def include_color_option(event):
+        includeColorOptionMenu.tk_popup(event.x_root, event.y_root)
+
+    #add include option to table window
+    colorExcludeTable.bind("<Button-2>", include_color_option)
+    colorExcludeTable.bind("<Button-3>", include_color_option)
+
+    #option menu for including colors
+    includeColorOptionMenu = tk.Menu(colorMapFrame)
+    includeColorOptionMenu.add_command(label="Include", command=lambda: uiutils.include_color(colorExcludeTable, colorMapTable))
 
     #RETURN OPTIONS FRAME
     returnFrame = tk.LabelFrame(colorQuantificationParametersFrame, text="Return options")

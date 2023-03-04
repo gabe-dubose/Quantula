@@ -34,3 +34,8 @@ def count_pixel_colors(image, color_map):
         pass
 
     return color_counts
+
+#function to get proportions of pixels
+def get_color_fractions(pixel_counts, exclude):
+    #initialize output
+    color_fractions = {}

@@ -67,295 +67,314 @@ def import_data_window(parent):
 def convert_pixels_window(parent):
     window = Toplevel(parent)
     window.title("Pixel Conversion")
-    window.geometry('530x300')
+    window.geometry('500x400')
 
-    #PIXEL CONVERSION LABELED FRAME
-    bgConversionFrame = tk.LabelFrame(window, text="Pixel conversion parameters")
-    bgConversionFrame.grid(row=1, column=0, sticky = "ew", pady=5, padx=10)
+    #INPUT OPTIONS FRAME
+    inputFrame = tk.LabelFrame(window, text="Input options")
+    inputFrame.grid(row=1, column=1, sticky = "ew", pady=5, padx=10)
 
     #add prompt to select image qcd
-    imageQCDSelectPrompt = tk.Label(bgConversionFrame, text="Images (qcd):")
+    imageQCDSelectPrompt = tk.Label(inputFrame, text="Images (qcd):")
     imageQCDSelectPrompt.grid(row=1, column=1, pady=5, padx=10, sticky="w")
 
     #add entry for image qcd
-    image_qcd_input = tk.Entry(bgConversionFrame)
+    image_qcd_input = tk.Entry(inputFrame)
     image_qcd_input.grid(row=1, column=2, padx=10, pady=5, sticky="w")
 
     #add button for selecting images qcd
-    imageQCDSelectButton = tk.Button(bgConversionFrame, text="Select File", command=lambda: uiutils.select_qcd_file(image_qcd_input))
+    imageQCDSelectButton = tk.Button(inputFrame, text="Select File", command=lambda: uiutils.select_qcd_file(image_qcd_input))
     imageQCDSelectButton.grid(row=1, column=3, padx=5, pady=5, sticky="w")
 
+    #PARAMETERS FRAME
+    pixelConversionParametersFrame = tk.LabelFrame(window, text="Pixel conversion parameters")
+    pixelConversionParametersFrame.grid(row=2, column=1, sticky = "ew", pady=5, padx=10)
+
     #prompt for pixel color specification
-    pixelColorPrompt = tk.Label(bgConversionFrame, text="Color (R,G,B):")
+    pixelColorPrompt = tk.Label(pixelConversionParametersFrame, text="Color (R,G,B):")
     pixelColorPrompt.grid(row=2, column=1, pady=5, padx=10, sticky="w")
 
     #Entry box for pixel color specification
-    pixel_color_input = tk.Entry(bgConversionFrame)
+    pixel_color_input = tk.Entry(pixelConversionParametersFrame)
     pixel_color_input.grid(row=2, column=2, padx=10, pady=5, sticky="w")
 
     #add pixel color checker
-    bgColorFromDisplay = Canvas(bgConversionFrame, highlightthickness=1, highlightbackground="black", width=40, height=10)
+    bgColorFromDisplay = Canvas(pixelConversionParametersFrame, highlightthickness=1, highlightbackground="black", width=40, height=10)
     bgColorFromDisplay.grid(row=2, column=3, padx=10, sticky="e")
 
     #add button to check color
-    bgColorFromViewButton = tk.Button(bgConversionFrame, text="View", command=lambda: uiutils.display_color_box(pixel_color_input, bgColorFromDisplay))
+    bgColorFromViewButton = tk.Button(pixelConversionParametersFrame, text="View", command=lambda: uiutils.display_color_box(pixel_color_input, bgColorFromDisplay))
     bgColorFromViewButton.grid(row=2, column=3, pady=10, padx=5, sticky="w")
 
     #prompt for pixel color conversion specification
-    pixelColorToPrompt = tk.Label(bgConversionFrame, text="Convert to (R,G,B):")
+    pixelColorToPrompt = tk.Label(pixelConversionParametersFrame, text="Convert to (R,G,B):")
     pixelColorToPrompt.grid(row=3, column=1, pady=5, padx=10, sticky="w")
 
     #Entry box for pixel color specification
-    pixel_convert_input = tk.Entry(bgConversionFrame)
+    pixel_convert_input = tk.Entry(pixelConversionParametersFrame)
     pixel_convert_input.grid(row=3, column=2, padx=10, pady=5, sticky="w")
 
     #add pixel color checker
-    bgColorToDisplay = Canvas(bgConversionFrame, highlightthickness=1, highlightbackground="black", width=40, height=10)
+    bgColorToDisplay = Canvas(pixelConversionParametersFrame, highlightthickness=1, highlightbackground="black", width=40, height=10)
     bgColorToDisplay.grid(row=3, column=3, padx=10, sticky="e")
 
     #add button to check color
-    bgColorFromViewButton = tk.Button(bgConversionFrame, text="View", command=lambda: uiutils.display_color_box(pixel_convert_input, bgColorToDisplay))
+    bgColorFromViewButton = tk.Button(pixelConversionParametersFrame, text="View", command=lambda: uiutils.display_color_box(pixel_convert_input, bgColorToDisplay))
     bgColorFromViewButton.grid(row=3, column=3, pady=10, padx=5, sticky="w")
 
+    #OUTPUT OPTIONS FRAME
+    outputFrame = tk.LabelFrame(window, text="Output Options")
+    outputFrame.grid(row=3, column=1, sticky = "ew", pady=5, padx=10)
+
     #add prompt to save output file
-    outputFilePrompt = tk.Label(bgConversionFrame, text="Output Name:")
+    outputFilePrompt = tk.Label(outputFrame, text="Output Name:")
     outputFilePrompt.grid(row=4, column=1, pady=5, padx=10, sticky="w")
 
     #add entry for output file
-    output_file_input = tk.Entry(bgConversionFrame)
+    output_file_input = tk.Entry(outputFrame)
     output_file_input.grid(row=4, column=2, padx=10, pady=5)
 
     #add prompt for output directory
-    outputDirPrompt = tk.Label(bgConversionFrame, text="Save To:")
+    outputDirPrompt = tk.Label(outputFrame, text="Save To:")
     outputDirPrompt.grid(row=5, column=1, pady=5, padx=10, sticky="w")
+
     #add entry for output directory
-    output_dir_input = tk.Entry(bgConversionFrame)
+    output_dir_input = tk.Entry(outputFrame)
     output_dir_input.grid(row=5, column=2, padx=10, pady=5)
 
     #add button for output
-    outputDirSelectButton = tk.Button(bgConversionFrame, text="Select Directory", command=lambda: uiutils.select_directory(output_dir_input))
+    outputDirSelectButton = tk.Button(outputFrame, text="Select Directory", command=lambda: uiutils.select_directory(output_dir_input))
     outputDirSelectButton.grid(row=5, column=3, padx=5, pady=5, sticky="w")
 
     #add run button
     runButton = tk.Button(window, text="Convert Pixels", command=lambda: uiutils.convert_pixel(image_qcd_input, pixel_color_input, pixel_convert_input, output_file_input, output_dir_input))
-    runButton.grid(row=2, column=0, padx=10, pady=5, sticky='ew')
+    runButton.grid(row=4, column=1, padx=10, pady=5, sticky='ew')
 
 #contrast adjustmnet window
 def contrast_adjustment_window(parent):
     window = Toplevel(parent)
     window.title("Contrast Adjustment")
-    window.geometry('530x300')
+    window.geometry('500x350')
 
-    #CONTRAST ADJUSTMENT LABELED FRAME
-    contrastAdjustmentFrame = tk.LabelFrame(window, text="Contrast Adjustment Parameters")
-    contrastAdjustmentFrame.grid(row=1, column=0, sticky = "ew", pady=5, padx=10)
+    #INPUT OPTIONS FRAME
+    inputFrame = tk.LabelFrame(window, text="Input options")
+    inputFrame.grid(row=1, column=1, sticky = "ew", pady=5, padx=10)
 
     #add prompt to select image qcd
-    imageQCDSelectPrompt = tk.Label(contrastAdjustmentFrame, text="Images (qcd):")
+    imageQCDSelectPrompt = tk.Label(inputFrame, text="Images (qcd):")
     imageQCDSelectPrompt.grid(row=1, column=1, pady=5, padx=10, sticky="w")
 
     #add entry for image qcd
-    image_qcd_input = tk.Entry(contrastAdjustmentFrame)
+    image_qcd_input = tk.Entry(inputFrame)
     image_qcd_input.grid(row=1, column=2, padx=10, pady=5, sticky="w")
 
     #add button for selecting images qcd
-    imageQCDSelectButton = tk.Button(contrastAdjustmentFrame, text="Select File", command=lambda: uiutils.select_qcd_file(image_qcd_input))
+    imageQCDSelectButton = tk.Button(inputFrame, text="Select File", command=lambda: uiutils.select_qcd_file(image_qcd_input))
     imageQCDSelectButton.grid(row=1, column=3, padx=5, pady=5, sticky="w")
 
+    #CONTRAST ADJUSTMENT PARAMETERS FRAME
+    contrastAdjustmentParametersFrame = tk.LabelFrame(window, text="Contrast Adjustment Parameters")
+    contrastAdjustmentParametersFrame.grid(row=2, column=1, sticky = "ew", pady=5, padx=10)
+
     #add prompt 
-    contrastPrompt = tk.Label(contrastAdjustmentFrame, text="Contrast Factor:")
+    contrastPrompt = tk.Label(contrastAdjustmentParametersFrame, text="Contrast Factor:")
     contrastPrompt.grid(row=2, column=1, pady=5, padx=10, sticky="w")
 
     #add scale to select contrast adjustment
     contrast_input = IntVar()
-    contrastAdjustmentScale = tk.Scale(contrastAdjustmentFrame, variable = contrast_input, from_ = -10, to = 10, orient = HORIZONTAL, width=20, sliderlength=20, length=185)
+    contrastAdjustmentScale = tk.Scale(contrastAdjustmentParametersFrame, variable = contrast_input, from_ = -10, to = 10, orient = HORIZONTAL, width=20, sliderlength=20, length=185)
     contrastAdjustmentScale.grid(row=2, column=2, pady=(0,10), padx=13, sticky="w")
 
+    #OUTPUT OPTIONS FRAME
+    outputFrame = tk.LabelFrame(window, text="Output Options")
+    outputFrame.grid(row=3, column=1, sticky = "ew", pady=5, padx=10)
+
     #add prompt to save output file
-    outputFilePrompt = tk.Label(contrastAdjustmentFrame, text="Output Name:")
-    outputFilePrompt.grid(row=3, column=1, pady=5, padx=10, sticky="w")
+    outputFilePrompt = tk.Label(outputFrame, text="Output Name:")
+    outputFilePrompt.grid(row=4, column=1, pady=5, padx=10, sticky="w")
 
     #add entry for output file
-    output_file_input = tk.Entry(contrastAdjustmentFrame)
-    output_file_input.grid(row=3, column=2, padx=10, pady=5)
+    output_file_input = tk.Entry(outputFrame)
+    output_file_input.grid(row=4, column=2, padx=10, pady=5)
 
     #add prompt for output directory
-    outputDirPrompt = tk.Label(contrastAdjustmentFrame, text="Save To:")
-    outputDirPrompt.grid(row=4, column=1, pady=5, padx=10, sticky="w")
+    outputDirPrompt = tk.Label(outputFrame, text="Save To:")
+    outputDirPrompt.grid(row=5, column=1, pady=5, padx=10, sticky="w")
+
     #add entry for output directory
-    output_dir_input = tk.Entry(contrastAdjustmentFrame)
-    output_dir_input.grid(row=4, column=2, padx=10, pady=5)
+    output_dir_input = tk.Entry(outputFrame)
+    output_dir_input.grid(row=5, column=2, padx=10, pady=5)
 
     #add button for output
-    outputDirSelectButton = tk.Button(contrastAdjustmentFrame, text="Select Directory", command=lambda: uiutils.select_directory(output_dir_input))
-    outputDirSelectButton.grid(row=4, column=3, padx=5, pady=5, sticky="w")
+    outputDirSelectButton = tk.Button(outputFrame, text="Select Directory", command=lambda: uiutils.select_directory(output_dir_input))
+    outputDirSelectButton.grid(row=5, column=3, padx=5, pady=5, sticky="w")
 
     #add run button
     runButton = tk.Button(window, text="Adjust Contrast", command=lambda: uiutils.adjust_image(image_qcd_input, contrast_input, output_file_input, output_dir_input, 'contrast'))
-    runButton.grid(row=4, column=0, padx=10, pady=5, sticky='ew')
+    runButton.grid(row=4, column=1, padx=10, pady=5, sticky='ew')
 
 #sharpness adjustmnet window
 def sharpness_adjustment_window(parent):
     window = Toplevel(parent)
     window.title("Sharpness Adjustment")
-    window.geometry('530x300')
+    window.geometry('500x350')
 
-    #SHARPNESS ADJUSTMENT LABELED FRAME
-    sharpnessAdjustmentFrame = tk.LabelFrame(window, text="Sharpness Adjustment Parameters")
-    sharpnessAdjustmentFrame.grid(row=1, column=0, sticky = "ew", pady=5, padx=10)
+    #INPUT OPTIONS FRAME
+    inputFrame = tk.LabelFrame(window, text="Input options")
+    inputFrame.grid(row=1, column=1, sticky = "ew", pady=5, padx=10)
 
     #add prompt to select image qcd
-    imageQCDSelectPrompt = tk.Label(sharpnessAdjustmentFrame, text="Images (qcd):")
+    imageQCDSelectPrompt = tk.Label(inputFrame, text="Images (qcd):")
     imageQCDSelectPrompt.grid(row=1, column=1, pady=5, padx=10, sticky="w")
 
     #add entry for image qcd
-    image_qcd_input = tk.Entry(sharpnessAdjustmentFrame)
+    image_qcd_input = tk.Entry(inputFrame)
     image_qcd_input.grid(row=1, column=2, padx=10, pady=5, sticky="w")
 
     #add button for selecting images qcd
-    imageQCDSelectButton = tk.Button(sharpnessAdjustmentFrame, text="Select File", command=lambda: uiutils.select_qcd_file(image_qcd_input))
+    imageQCDSelectButton = tk.Button(inputFrame, text="Select File", command=lambda: uiutils.select_qcd_file(image_qcd_input))
     imageQCDSelectButton.grid(row=1, column=3, padx=5, pady=5, sticky="w")
 
+    #SHARPNESS ADJUSTMENT PARAMETERS FRAME
+    sharpnessAdjustmentParametersFrame = tk.LabelFrame(window, text="Sharpness Adjustment Parameters")
+    sharpnessAdjustmentParametersFrame.grid(row=2, column=1, sticky = "ew", pady=5, padx=10)
+
     #add prompt 
-    sharpnessPrompt = tk.Label(sharpnessAdjustmentFrame, text="Sharpness Factor:")
+    sharpnessPrompt = tk.Label(sharpnessAdjustmentParametersFrame, text="Sharpness Factor:")
     sharpnessPrompt.grid(row=2, column=1, pady=5, padx=10, sticky="w")
 
     #add scale to select sharpness adjustment
     sharpness_input = IntVar()
-    sharpnessAdjustmentScale = tk.Scale(sharpnessAdjustmentFrame, variable = sharpness_input, from_ = -10, to = 10, orient = HORIZONTAL, width=20, sliderlength=20, length=185)
+    sharpnessAdjustmentScale = tk.Scale(sharpnessAdjustmentParametersFrame, variable = sharpness_input, from_ = -10, to = 10, orient = HORIZONTAL, width=20, sliderlength=20, length=185)
     sharpnessAdjustmentScale.grid(row=2, column=2, pady=(0,10), padx=13, sticky="w")
 
+    #OUTPUT OPTIONS FRAME
+    outputFrame = tk.LabelFrame(window, text="Output Options")
+    outputFrame.grid(row=3, column=1, sticky = "ew", pady=5, padx=10)
+
     #add prompt to save output file
-    outputFilePrompt = tk.Label(sharpnessAdjustmentFrame, text="Output Name:")
-    outputFilePrompt.grid(row=3, column=1, pady=5, padx=10, sticky="w")
+    outputFilePrompt = tk.Label(outputFrame, text="Output Name:")
+    outputFilePrompt.grid(row=4, column=1, pady=5, padx=10, sticky="w")
 
     #add entry for output file
-    output_file_input = tk.Entry(sharpnessAdjustmentFrame)
-    output_file_input.grid(row=3, column=2, padx=10, pady=5)
+    output_file_input = tk.Entry(outputFrame)
+    output_file_input.grid(row=4, column=2, padx=10, pady=5)
 
     #add prompt for output directory
-    outputDirPrompt = tk.Label(sharpnessAdjustmentFrame, text="Save To:")
-    outputDirPrompt.grid(row=4, column=1, pady=5, padx=10, sticky="w")
+    outputDirPrompt = tk.Label(outputFrame, text="Save To:")
+    outputDirPrompt.grid(row=5, column=1, pady=5, padx=10, sticky="w")
+
     #add entry for output directory
-    output_dir_input = tk.Entry(sharpnessAdjustmentFrame)
-    output_dir_input.grid(row=4, column=2, padx=10, pady=5)
+    output_dir_input = tk.Entry(outputFrame)
+    output_dir_input.grid(row=5, column=2, padx=10, pady=5)
 
     #add button for output
-    outputDirSelectButton = tk.Button(sharpnessAdjustmentFrame, text="Select Directory", command=lambda: uiutils.select_directory(output_dir_input))
-    outputDirSelectButton.grid(row=4, column=3, padx=5, pady=5, sticky="w")
+    outputDirSelectButton = tk.Button(outputFrame, text="Select Directory", command=lambda: uiutils.select_directory(output_dir_input))
+    outputDirSelectButton.grid(row=5, column=3, padx=5, pady=5, sticky="w")
 
     #add run button
     runButton = tk.Button(window, text="Adjust Sharpness", command=lambda: uiutils.adjust_image(image_qcd_input, sharpness_input, output_file_input, output_dir_input, 'sharpness'))
-    runButton.grid(row=4, column=0, padx=10, pady=5, sticky='ew')
+    runButton.grid(row=4, column=1, padx=10, pady=5, sticky='ew')
 
 #saturation adjustmnet window
 def saturation_adjustment_window(parent):
     window = Toplevel(parent)
     window.title("Saturation Adjustment")
-    window.geometry('530x300')
+    window.geometry('500x350')
 
-    #SATURATION ADJUSTMENT LABELED FRAME
-    saturationAdjustmentFrame = tk.LabelFrame(window, text="Saturation Adjustment Parameters")
-    saturationAdjustmentFrame.grid(row=1, column=0, sticky = "ew", pady=5, padx=10)
+    #INPUT OPTIONS FRAME
+    inputFrame = tk.LabelFrame(window, text="Input options")
+    inputFrame.grid(row=1, column=1, sticky = "ew", pady=5, padx=10)
 
     #add prompt to select image qcd
-    imageQCDSelectPrompt = tk.Label(saturationAdjustmentFrame, text="Images (qcd):")
+    imageQCDSelectPrompt = tk.Label(inputFrame, text="Images (qcd):")
     imageQCDSelectPrompt.grid(row=1, column=1, pady=5, padx=10, sticky="w")
 
     #add entry for image qcd
-    image_qcd_input = tk.Entry(saturationAdjustmentFrame)
+    image_qcd_input = tk.Entry(inputFrame)
     image_qcd_input.grid(row=1, column=2, padx=10, pady=5, sticky="w")
 
     #add button for selecting images qcd
-    imageQCDSelectButton = tk.Button(saturationAdjustmentFrame, text="Select File", command=lambda: uiutils.select_qcd_file(image_qcd_input))
+    imageQCDSelectButton = tk.Button(inputFrame, text="Select File", command=lambda: uiutils.select_qcd_file(image_qcd_input))
     imageQCDSelectButton.grid(row=1, column=3, padx=5, pady=5, sticky="w")
 
+    #SATURATION ADJUSTMENT PARAMETERS FRAME
+    saturationAdjustmentParametersFrame = tk.LabelFrame(window, text="Saturation Adjustment Parameters")
+    saturationAdjustmentParametersFrame.grid(row=2, column=1, sticky = "ew", pady=5, padx=10)
+
     #add prompt 
-    saturationPrompt = tk.Label(saturationAdjustmentFrame, text="Saturation Factor:")
+    saturationPrompt = tk.Label(saturationAdjustmentParametersFrame, text="Saturation Factor:")
     saturationPrompt.grid(row=2, column=1, pady=5, padx=10, sticky="w")
 
     #add scale to select saturation adjustment
     saturation_input = IntVar()
-    saturationAdjustmentScale = tk.Scale(saturationAdjustmentFrame, variable = saturation_input, from_ = -10, to = 10, orient = HORIZONTAL, width=20, sliderlength=20, length=185)
+    saturationAdjustmentScale = tk.Scale(saturationAdjustmentParametersFrame, variable = saturation_input, from_ = -10, to = 10, orient = HORIZONTAL, width=20, sliderlength=20, length=185)
     saturationAdjustmentScale.grid(row=2, column=2, pady=(0,10), padx=13, sticky="w")
 
+    #OUTPUT OPTIONS FRAME
+    outputFrame = tk.LabelFrame(window, text="Output Options")
+    outputFrame.grid(row=3, column=1, sticky = "ew", pady=5, padx=10)
+
     #add prompt to save output file
-    outputFilePrompt = tk.Label(saturationAdjustmentFrame, text="Output Name:")
-    outputFilePrompt.grid(row=3, column=1, pady=5, padx=10, sticky="w")
+    outputFilePrompt = tk.Label(outputFrame, text="Output Name:")
+    outputFilePrompt.grid(row=4, column=1, pady=5, padx=10, sticky="w")
 
     #add entry for output file
-    output_file_input = tk.Entry(saturationAdjustmentFrame)
-    output_file_input.grid(row=3, column=2, padx=10, pady=5)
+    output_file_input = tk.Entry(outputFrame)
+    output_file_input.grid(row=4, column=2, padx=10, pady=5)
 
     #add prompt for output directory
-    outputDirPrompt = tk.Label(saturationAdjustmentFrame, text="Save To:")
-    outputDirPrompt.grid(row=4, column=1, pady=5, padx=10, sticky="w")
+    outputDirPrompt = tk.Label(outputFrame, text="Save To:")
+    outputDirPrompt.grid(row=5, column=1, pady=5, padx=10, sticky="w")
 
     #add entry for output directory
-    output_dir_input = tk.Entry(saturationAdjustmentFrame)
-    output_dir_input.grid(row=4, column=2, padx=10, pady=5)
+    output_dir_input = tk.Entry(outputFrame)
+    output_dir_input.grid(row=5, column=2, padx=10, pady=5)
 
     #add button for output
-    outputDirSelectButton = tk.Button(saturationAdjustmentFrame, text="Select Directory", command=lambda: uiutils.select_directory(output_dir_input))
-    outputDirSelectButton.grid(row=4, column=3, padx=5, pady=5, sticky="w")
+    outputDirSelectButton = tk.Button(outputFrame, text="Select Directory", command=lambda: uiutils.select_directory(output_dir_input))
+    outputDirSelectButton.grid(row=5, column=3, padx=5, pady=5, sticky="w")
 
     #add run button
     runButton = tk.Button(window, text="Adjust Saturation", command=lambda: uiutils.adjust_image(image_qcd_input, saturation_input, output_file_input, output_dir_input, 'saturation'))
-    runButton.grid(row=4, column=0, padx=10, pady=5, sticky='ew')
+    runButton.grid(row=4, column=1, padx=10, pady=5, sticky='ew')
 
 #kmeans transformation window
 def k_means_transformation_window(parent):
     window = Toplevel(parent)
     window.title("K-means Transformation")
-    window.geometry('495x400')
+    window.geometry('500x475')
 
-    #GENERAL K-MEANS FRAME
-    kmeansAdjustmentFrame = tk.LabelFrame(window, text="K-means Clustering Parameters")
-    kmeansAdjustmentFrame.grid(row=1, column=0, sticky = "ew", pady=5, padx=10)
+    #INPUT OPTIONS FRAME
+    inputFrame = tk.LabelFrame(window, text="Input options")
+    inputFrame.grid(row=1, column=1, sticky = "ew", pady=5, padx=10)
 
     #add prompt to select image qcd
-    imageQCDSelectPrompt = tk.Label(kmeansAdjustmentFrame, text="Images (qcd):")
+    imageQCDSelectPrompt = tk.Label(inputFrame, text="Images (qcd):")
     imageQCDSelectPrompt.grid(row=1, column=1, pady=5, padx=10, sticky="w")
 
     #add entry for image qcd
-    image_qcd_input = tk.Entry(kmeansAdjustmentFrame)
+    image_qcd_input = tk.Entry(inputFrame)
     image_qcd_input.grid(row=1, column=2, padx=10, pady=5, sticky="w")
 
     #add button for selecting images qcd
-    imageQCDSelectButton = tk.Button(kmeansAdjustmentFrame, text="Select File", command=lambda: uiutils.select_qcd_file(image_qcd_input))
+    imageQCDSelectButton = tk.Button(inputFrame, text="Select File", command=lambda: uiutils.select_qcd_file(image_qcd_input))
     imageQCDSelectButton.grid(row=1, column=3, padx=5, pady=5, sticky="w")
 
+    #KMEANS PARAMETERS FRAME
+    kmeansParametersFrame = tk.LabelFrame(window, text="K-means clustering parameters")
+    kmeansParametersFrame.grid(row=2, column=1, sticky = "ew", pady=5, padx=10)
+
     #add prompt 
-    colorCountPrompt = tk.Label(kmeansAdjustmentFrame, text="K (n colors):")
-    colorCountPrompt.grid(row=2, column=1, pady=5, padx=10, sticky="w")
+    colorCountPrompt = tk.Label(kmeansParametersFrame, text="K (n colors):")
+    colorCountPrompt.grid(row=1, column=1, pady=5, padx=(10,0), sticky="w")
 
     #add entry for k
-    color_number_input = tk.Entry(kmeansAdjustmentFrame)
-    color_number_input.grid(row=2, column=2, padx=10, pady=5, sticky="w")
-
-    #add prompt to save output file
-    outputFilePrompt = tk.Label(kmeansAdjustmentFrame, text="Output Name:")
-    outputFilePrompt.grid(row=3, column=1, pady=5, padx=10, sticky="w")
-
-    #add entry for output file
-    output_file_input = tk.Entry(kmeansAdjustmentFrame)
-    output_file_input.grid(row=3, column=2, padx=10, pady=5)
-
-    #add prompt for output directory
-    outputDirPrompt = tk.Label(kmeansAdjustmentFrame, text="Save To:")
-    outputDirPrompt.grid(row=4, column=1, pady=5, padx=10, sticky="w")
-    
-    #add entry for output directory
-    output_dir_input = tk.Entry(kmeansAdjustmentFrame)
-    output_dir_input.grid(row=4, column=2, padx=10, pady=5)
-
-    #add button for output
-    outputDirSelectButton = tk.Button(kmeansAdjustmentFrame, text="Select Directory", command=lambda: uiutils.select_directory(output_dir_input))
-    outputDirSelectButton.grid(row=4, column=3, padx=5, pady=5, sticky="w")
+    color_number_input = tk.Entry(kmeansParametersFrame)
+    color_number_input.grid(row=1, column=1, padx=120, pady=5, sticky="w")
 
     #ADVANCED K-MEANS FRAME
-    kmeansAdvancedFrame = tk.LabelFrame(window, text="Advanced K-means Clustering Parameters")
-    kmeansAdvancedFrame.grid(row=2, column=0, sticky = "ew", pady=5, padx=10)
+    kmeansAdvancedFrame = tk.LabelFrame(kmeansParametersFrame, text="Advanced Parameters")
+    kmeansAdvancedFrame.grid(row=2, column=1, sticky = "ew", pady=(5, 10), padx=10)
 
     #add prompt for epsilon 
     colorCountPrompt = tk.Label(kmeansAdvancedFrame, text="ε (neighbor distance):")
@@ -384,18 +403,42 @@ def k_means_transformation_window(parent):
     attempts_input.grid(row=3, column=2, padx=10, pady=5, sticky="w")
     attempts_input.insert(INSERT, "10")
 
+    #OUTPUT OPTIONS FRAME
+    outputFrame = tk.LabelFrame(window, text="Output Options")
+    outputFrame.grid(row=3, column=1, sticky = "ew", pady=5, padx=10)
+
+    #add prompt to save output file
+    outputFilePrompt = tk.Label(outputFrame, text="Output Name:")
+    outputFilePrompt.grid(row=4, column=1, pady=5, padx=10, sticky="w")
+
+    #add entry for output file
+    output_file_input = tk.Entry(outputFrame)
+    output_file_input.grid(row=4, column=2, padx=10, pady=5)
+
+    #add prompt for output directory
+    outputDirPrompt = tk.Label(outputFrame, text="Save To:")
+    outputDirPrompt.grid(row=5, column=1, pady=5, padx=10, sticky="w")
+
+    #add entry for output directory
+    output_dir_input = tk.Entry(outputFrame)
+    output_dir_input.grid(row=5, column=2, padx=10, pady=5)
+
+    #add button for output
+    outputDirSelectButton = tk.Button(outputFrame, text="Select Directory", command=lambda: uiutils.select_directory(output_dir_input))
+    outputDirSelectButton.grid(row=5, column=3, padx=5, pady=5, sticky="w")
+
     #add run button
     runButton = tk.Button(window, text="Perform K-means Clustering", command=lambda: uiutils.kmeans_transform(image_qcd_input, color_number_input, output_file_input, output_dir_input, epsilon_input, iterations_input, attempts_input))
-    runButton.grid(row=4, column=0, padx=10, pady=5, sticky='ew')
+    runButton.grid(row=4, column=1, padx=10, pady=5, sticky='ew')
 
 #re-coloring with euclidian minimization window
 def euclidian_minimization_recoloring_window(parent):
     window = Toplevel(parent)
     window.title("Euclidian Minimization Re-coloring")
-    window.geometry('495x575')
+    window.geometry('500x600')
 
     #EUCLIDIAN MINIMIZATION RECOLORING FRAME
-    euclidianMinimizationFrame = tk.LabelFrame(window, text="Image Upload")
+    euclidianMinimizationFrame = tk.LabelFrame(window, text="Input options")
     euclidianMinimizationFrame.grid(row=1, column=0, sticky = "ew", pady=5, padx=10)
 
     #add prompt to select image qcd
@@ -494,73 +537,175 @@ def euclidian_minimization_recoloring_window(parent):
     runButton.grid(row=4, column=0, padx=10, pady=5, sticky='ew')
 
 #color boundary tracing window
-def color_boundary_tracing(parent):
+def color_boundary_tracing_window(parent):
     window = Toplevel(parent)
     window.title("Color Boundary Tracing")
-    window.geometry('560x300')
+    window.geometry('525x400')
 
-    #GENERAL COLOR BOUNDARY TRACING WINDOW
-    colorBoundaryTracingFrame = tk.LabelFrame(window, text="Color Boundary Tracing Parameters")
-    colorBoundaryTracingFrame.grid(row=1, column=0, sticky = "ew", pady=5, padx=10)
+    #INPUT OPTIONS FRAME
+    inputFrame = tk.LabelFrame(window, text="Input options")
+    inputFrame.grid(row=1, column=1, sticky = "ew", pady=5, padx=10)
 
     #add prompt to select image qcd
-    imageQCDSelectPrompt = tk.Label(colorBoundaryTracingFrame, text="Images (qcd):")
+    imageQCDSelectPrompt = tk.Label(inputFrame, text="Images (qcd):")
     imageQCDSelectPrompt.grid(row=1, column=1, pady=5, padx=10, sticky="w")
 
     #add entry for image qcd
-    image_qcd_input = tk.Entry(colorBoundaryTracingFrame)
+    image_qcd_input = tk.Entry(inputFrame)
     image_qcd_input.grid(row=1, column=2, padx=10, pady=5, sticky="w")
 
     #add button for selecting images qcd
-    imageQCDSelectButton = tk.Button(colorBoundaryTracingFrame, text="Select File", command=lambda: uiutils.select_qcd_file(image_qcd_input))
+    imageQCDSelectButton = tk.Button(inputFrame, text="Select File", command=lambda: uiutils.select_qcd_file(image_qcd_input))
     imageQCDSelectButton.grid(row=1, column=3, padx=5, pady=5, sticky="w")
 
+    #BOUNDARY TRACING PARAMETERS FRAME
+    boundaryTracingParametersFrame = tk.LabelFrame(window, text="Boundary tracing parameters")
+    boundaryTracingParametersFrame.grid(row=2, column=1, sticky = "ew", pady=5, padx=10)
+
     #prompt for pixel color specification
-    pixelColorPrompt = tk.Label(colorBoundaryTracingFrame, text="Color (R,G,B):")
+    pixelColorPrompt = tk.Label(boundaryTracingParametersFrame, text="Color (R,G,B):")
     pixelColorPrompt.grid(row=2, column=1, pady=5, padx=10, sticky="w")
 
     #Entry box for pixel color specification
-    pixel_color_input = tk.Entry(colorBoundaryTracingFrame)
-    pixel_color_input.grid(row=2, column=2, padx=10, pady=5, sticky="w")
+    pixel_color_input = tk.Entry(boundaryTracingParametersFrame)
+    pixel_color_input.grid(row=2, column=2, padx=(10,0), pady=5, sticky="w")
 
     #add pixel color checker
-    ColorDisplay = Canvas(colorBoundaryTracingFrame, highlightthickness=1, highlightbackground="black", width=40, height=10)
-    ColorDisplay.grid(row=2, column=3, pady=10, padx=(0,10), sticky="e")
+    ColorDisplay = Canvas(boundaryTracingParametersFrame, highlightthickness=1, highlightbackground="black", width=40, height=10)
+    ColorDisplay.grid(row=2, column=4, pady=10, padx=(5,20), sticky="e")
 
     #add button to check color
-    ColorViewButton = tk.Button(colorBoundaryTracingFrame, text="View", command=lambda: uiutils.display_color_box(pixel_color_input, ColorDisplay))
-    ColorViewButton.grid(row=2, column=3, pady=10, padx=(10,0), sticky="w")
+    ColorViewButton = tk.Button(boundaryTracingParametersFrame, text="View", command=lambda: uiutils.display_color_box(pixel_color_input, ColorDisplay))
+    ColorViewButton.grid(row=2, column=3, pady=10, padx=0, sticky="w")
 
     #add prompt 
-    boundaryThresholdPrompt = tk.Label(colorBoundaryTracingFrame, text="Boundary Threshold:")
+    boundaryThresholdPrompt = tk.Label(boundaryTracingParametersFrame, text="Boundary Threshold:")
     boundaryThresholdPrompt.grid(row=3, column=1, pady=5, padx=10, sticky="w")
 
     #add scale to select contrast adjustment
     boundary_threshold_input = IntVar()
-    boundaryThresholdScale = tk.Scale(colorBoundaryTracingFrame, variable = boundary_threshold_input, from_ = 1, to = 8, orient = HORIZONTAL, width=20, sliderlength=20, length=185)
+    boundaryThresholdScale = tk.Scale(boundaryTracingParametersFrame, variable = boundary_threshold_input, from_ = 1, to = 8, orient = HORIZONTAL, width=20, sliderlength=20, length=185)
     boundaryThresholdScale.grid(row=3, column=2, pady=(0,10), padx=13, sticky="w")
     boundaryThresholdScale.set(8)
 
+    #OUTPUT OPTIONS FRAME
+    outputFrame = tk.LabelFrame(window, text="Output Options")
+    outputFrame.grid(row=3, column=1, sticky = "ew", pady=5, padx=10)
+
     #add prompt to save output file
-    outputFilePrompt = tk.Label(colorBoundaryTracingFrame, text="Output Name:")
+    outputFilePrompt = tk.Label(outputFrame, text="Output Name:")
     outputFilePrompt.grid(row=4, column=1, pady=5, padx=10, sticky="w")
 
     #add entry for output file
-    output_file_input = tk.Entry(colorBoundaryTracingFrame)
+    output_file_input = tk.Entry(outputFrame)
     output_file_input.grid(row=4, column=2, padx=10, pady=5)
 
     #add prompt for output directory
-    outputDirPrompt = tk.Label(colorBoundaryTracingFrame, text="Save To:")
+    outputDirPrompt = tk.Label(outputFrame, text="Save To:")
     outputDirPrompt.grid(row=5, column=1, pady=5, padx=10, sticky="w")
-    
+
     #add entry for output directory
-    output_dir_input = tk.Entry(colorBoundaryTracingFrame)
+    output_dir_input = tk.Entry(outputFrame)
     output_dir_input.grid(row=5, column=2, padx=10, pady=5)
 
     #add button for output
-    outputDirSelectButton = tk.Button(colorBoundaryTracingFrame, text="Select Directory", command=lambda: uiutils.select_directory(output_dir_input))
+    outputDirSelectButton = tk.Button(outputFrame, text="Select Directory", command=lambda: uiutils.select_directory(output_dir_input))
     outputDirSelectButton.grid(row=5, column=3, padx=5, pady=5, sticky="w")
 
     #add run button
     runButton = tk.Button(window, text="Trace Color Boundaries", command=lambda: uiutils.trace_color_boundaries(image_qcd_input, pixel_color_input, boundary_threshold_input, output_file_input, output_dir_input))
-    runButton.grid(row=6, column=0, padx=10, pady=5, sticky='ew')
+    runButton.grid(row=4, column=1, padx=10, pady=5, sticky='ew')
+
+def color_quantification_window(parent):
+    window = Toplevel(parent)
+    window.title("Color Quantification")
+    window.geometry('525x700')
+
+    #INPUT OPTIONS FRAME
+    inputFrame = tk.LabelFrame(window, text="Input options")
+    inputFrame.grid(row=1, column=1, sticky = "ew", pady=5, padx=10)
+
+    #add prompt to select image qcd
+    imageQCDSelectPrompt = tk.Label(inputFrame, text="Images (qcd):")
+    imageQCDSelectPrompt.grid(row=1, column=1, pady=5, padx=10, sticky="w")
+
+    #add entry for image qcd
+    image_qcd_input = tk.Entry(inputFrame)
+    image_qcd_input.grid(row=1, column=2, padx=10, pady=5, sticky="w")
+
+    #add button for selecting images qcd
+    imageQCDSelectButton = tk.Button(inputFrame, text="Select File", command=lambda: uiutils.select_qcd_file(image_qcd_input))
+    imageQCDSelectButton.grid(row=1, column=3, padx=5, pady=5, sticky="w")
+
+    #COLOR QUANTIFICATION PARAMETERS FRAME
+    colorQuantificationParametersFrame = tk.LabelFrame(window, text="Color quantification parameters")
+    colorQuantificationParametersFrame.grid(row=2, column=1, sticky = "ew", pady=5, padx=10)
+
+    #COLOR MAP VIEWING FRAME
+    colorMapFrame = tk.LabelFrame(colorQuantificationParametersFrame, text="Color parameters")
+    colorMapFrame.grid(row=1, column=1, sticky = "ew", pady=(10,5), padx=10)
+
+    #add button to view color map
+    viewColorMapButton = tk.Button(colorMapFrame, text="View Color Map")
+    viewColorMapButton.grid(row=1, column=1, padx=5, pady=5, sticky="w")
+
+    #set style
+    style = ttk.Style(colorMapFrame)
+    style.configure("Treeview.Heading", background="#ececec", foreground="black")
+    style.map('Treeview', background=[('selected', '#BFBFBF')])
+    
+    #add table for viewing color map
+    colorMapTable = ttk.Treeview(colorMapFrame, columns=(1), show="headings")
+    colorMapTable.heading(1, text="Color:RGB")
+    colorMapTable.column(1, anchor=CENTER, width=208)
+    colorMapTable.grid(row=2, column=1, pady=10, padx=10, sticky='w')
+
+    #add table for specifying colors to exclude
+    colorExcludeTable = ttk.Treeview(colorMapFrame, columns=(1), show="headings")
+    colorExcludeTable.heading(1, text="Exclude")
+    colorExcludeTable.column(1, anchor=CENTER, width=208)
+    colorExcludeTable.grid(row=2, column=2, pady=10, padx=10, sticky='e')
+
+    #RETURN OPTIONS FRAME
+    returnFrame = tk.LabelFrame(colorQuantificationParametersFrame, text="Return options")
+    returnFrame.grid(row=2, column=1, sticky = "ew", pady=5, padx=10)
+
+    #add checkbutton for returning raw colors
+    returnRawColors = IntVar()
+    returnColorFraction = IntVar()
+
+    #return raw colors button
+    returnRawColorsButton = Checkbutton(returnFrame, text = 'Raw color counts', variable=returnRawColors, onvalue = 1, offvalue = 0)
+    returnRawColorsButton.grid(row=1, column=1, padx=10, pady=10, sticky="w")
+
+    #return color fractions button
+    returnColorFractionButton = Checkbutton(returnFrame, text = 'Color fractions', variable=returnColorFraction, onvalue = 1, offvalue = 0)
+    returnColorFractionButton.grid(row=1, column=2, padx=10, pady=10, sticky="w")
+
+    #OUTPUT OPTIONS FRAME
+    outputFrame = tk.LabelFrame(window, text="Output Options")
+    outputFrame.grid(row=3, column=1, sticky = "ew", pady=5, padx=10)
+
+    #add prompt to save output file
+    outputFilePrompt = tk.Label(outputFrame, text="Output Name:")
+    outputFilePrompt.grid(row=4, column=1, pady=5, padx=10, sticky="w")
+
+    #add entry for output file
+    output_file_input = tk.Entry(outputFrame)
+    output_file_input.grid(row=4, column=2, padx=10, pady=5)
+
+    #add prompt for output directory
+    outputDirPrompt = tk.Label(outputFrame, text="Save To:")
+    outputDirPrompt.grid(row=5, column=1, pady=5, padx=10, sticky="w")
+
+    #add entry for output directory
+    output_dir_input = tk.Entry(outputFrame)
+    output_dir_input.grid(row=5, column=2, padx=10, pady=5)
+
+    #add button for output
+    outputDirSelectButton = tk.Button(outputFrame, text="Select Directory", command=lambda: uiutils.select_directory(output_dir_input))
+    outputDirSelectButton.grid(row=5, column=3, padx=5, pady=5, sticky="w")
+
+    #add run button
+    runButton = tk.Button(window, text="Quantify colors")
+    runButton.grid(row=4, column=1, padx=10, pady=5, sticky='ew')

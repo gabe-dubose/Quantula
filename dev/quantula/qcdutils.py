@@ -8,10 +8,9 @@ import json
 def get_qcd_type(qcd):
 
     qcd_type = 'not_defined'
-
+    #load qcd contents
     qcd_unzip = zipfile.ZipFile(qcd, 'r')
     qcd_contents = []
-
     for content in qcd_unzip.namelist():
         qcd_contents.append(content)
     
@@ -19,8 +18,6 @@ def get_qcd_type(qcd):
 
     if f"{main_dir}metadata/image_data" in qcd_contents:
         qcd_type = 'image_data'
-    else:
-        print(qcd_contents)
     
     return qcd_type
 
@@ -99,3 +96,21 @@ def dir_to_qcd(dir, main, sub):
     os.rename(f"{main}/{sub}.zip", f"{main}/{sub}.qcd")
     #remove dir
     shutil.rmtree(dir)
+
+#function to load color map (if present)
+def load_color_map(qcd):
+
+    #read qcd contents
+    qcd_unzip = zipfile.ZipFile(qcd, 'r')
+    qcd_contents = []
+    for content in qcd_unzip.namelist():
+        qcd_contents.append(content)
+
+    main_dir = qcd_contents[0]
+
+    if f"{main_dir}metadata/color_map.json" in qcd_contents:
+        data = open(f"{main_dir}metadata/color_map.json", 'r')
+        color_map = json.load(data)
+        return color_map
+    else:
+        return 0

@@ -139,7 +139,7 @@ colorBoundaryMessage = tk.Label(colorBoundaryFrame, text = colorBoundaryMessage,
 colorBoundaryMessage.grid(row=1, column=0, padx=10, pady=10)
 
 #Button for boundary tracing
-boundaryTracingButton = tk.Button(colorBoundaryFrame, text="Boundary Tracing", width=10, height=2, justify=CENTER, wraplength=100, command=lambda: windows.color_boundary_tracing(root))
+boundaryTracingButton = tk.Button(colorBoundaryFrame, text="Boundary Tracing", width=10, height=2, justify=CENTER, wraplength=100, command=lambda: windows.color_boundary_tracing_window(root))
 boundaryTracingButton.grid(row=2, column=0, padx=10, pady=(5,10), sticky="w")
 
 #####   COLOR QUANTIFICATION FRAME #####
@@ -153,7 +153,7 @@ colorQuantMessage = tk.Label(colorQuantificationFrame, text = colorQuantMessage,
 colorQuantMessage.grid(row=1, column=0, padx=10, pady=10)
 
 #Button for color quantification
-colorQuantificationButton = tk.Button(colorQuantificationFrame, text="Color Quantification", width=10, height=2, justify=CENTER, wraplength=100)
+colorQuantificationButton = tk.Button(colorQuantificationFrame, text="Color Quantification", width=10, height=2, justify=CENTER, wraplength=100, command=lambda: windows.color_quantification_window(root))
 colorQuantificationButton.grid(row=2, column=0, padx=10, pady=(5,10), sticky="w")
 
 #run app

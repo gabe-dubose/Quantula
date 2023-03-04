@@ -218,3 +218,7 @@ def euclidian_minimization_recoloring(image_qcd_input, color_mappings, output_fi
     euclidian_minimization_recoloring_input = get_euclidian_minimization_recoloring_input(image_qcd_input, color_mappings, output_file_input, output_dir_input)
     #transform image
     iutils.euclidian_minimization_recoloring(euclidian_minimization_recoloring_input)
+
+#function to view color map if available
+def view_color_map():
+    pass

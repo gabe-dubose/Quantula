@@ -5,6 +5,7 @@ from tkinter import *
 from tkinter import ttk
 from tkinter.ttk import *
 from quantula import windows
+from quantula import icons
 from PIL import Image, ImageTk
 import os
 
@@ -34,33 +35,29 @@ dirname = os.path.dirname(__file__)
 
 #set up data management tab
 dataManagementTab = ttk.Frame(tabControl)
-file_image_path = os.path.join(dirname, "../art", "file.png")
-dataImage=Image.open(file_image_path)
-dataImage=dataImage.resize((35, 35))
+file_icon = icons.decode_icon(icons.file_icon_b64)
+dataImage=file_icon.resize((35, 35))
 dataManagementIcon = ImageTk.PhotoImage(dataImage)
 tabControl.add(dataManagementTab, text ='Data Loading', image=dataManagementIcon, compound=TOP)
 
 #set up image adjustment tab
 imageAdjustmentTab = ttk.Frame(tabControl)
-edit_image_path = os.path.join(dirname, "../art", "edit.png")
-editImage=Image.open(edit_image_path)
-editImage=editImage.resize((35, 35))
+edit_icon = icons.decode_icon(icons.edit_icon_b64)
+editImage=edit_icon.resize((35, 35))
 editIcon = ImageTk.PhotoImage(editImage)
 tabControl.add(imageAdjustmentTab, text ='Image Adjustment', image=editIcon, compound=TOP)
 
 #set up color segmentation tab
 colorSegmentationTab = ttk.Frame(tabControl)
-rgb_image_path = os.path.join(dirname, "../art", "rgb.png")
-rgbImage=Image.open(rgb_image_path)
-rgbImage=rgbImage.resize((35, 35))
+rgb_icon = icons.decode_icon(icons.rgb_icon_b64)
+rgbImage=rgb_icon.resize((35, 35))
 rgbIcon = ImageTk.PhotoImage(rgbImage)
 tabControl.add(colorSegmentationTab, text ='Color Segmentation', image=rgbIcon, compound=TOP)
 
 #set up color quantification tab
 colorQuantificationTab = ttk.Frame(tabControl)
-quant_image_path = os.path.join(dirname, "../art", "quant.png")
-quantImage=Image.open(quant_image_path)
-quantImage=quantImage.resize((35, 35))
+quant_icon = icons.decode_icon(icons.quant_icon_b64)
+quantImage=quant_icon.resize((35, 35))
 quantIcon = ImageTk.PhotoImage(quantImage)
 tabControl.add(colorQuantificationTab, text ='Color Quantification', image=quantIcon, compound=TOP)
 

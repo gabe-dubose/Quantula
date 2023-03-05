@@ -1,0 +1,15 @@
+README.md
+setup.py
+quantula/__init__.py
+quantula/color_quantifier.py
+quantula/gui.py
+quantula/image_adjuster.py
+quantula/iutils.py
+quantula/qcdutils.py
+quantula/uiutils.py
+quantula/windows.py
+quantula.egg-info/PKG-INFO
+quantula.egg-info/SOURCES.txt
+quantula.egg-info/dependency_links.txt
+quantula.egg-info/requires.txt
+quantula.egg-info/top_level.txt

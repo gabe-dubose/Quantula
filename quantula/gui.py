@@ -156,5 +156,10 @@ colorQuantMessage.grid(row=1, column=0, padx=10, pady=10)
 colorQuantificationButton = tk.Button(colorQuantificationFrame, text="Color Quantification", width=10, height=2, justify=CENTER, wraplength=100, command=lambda: windows.color_quantification_window(root))
 colorQuantificationButton.grid(row=2, column=0, padx=10, pady=(5,10), sticky="w")
 
+#function to run app
+def run_gui():
+  root.mainloop()
+
 #run app
-root.mainloop()
+run_gui()
+#root.mainloop()

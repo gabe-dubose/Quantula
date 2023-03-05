@@ -3,6 +3,8 @@ import os
 import shutil
 import pandas as pd
 import json
+from quantula import info
+import uuid
 
 #function to get qcd type
 def get_qcd_type(qcd):
@@ -52,6 +54,13 @@ def make_import_qcd(input):
     #add qualifier file
     with open(f"{output_file_dir}/metadata/image_data", 'w') as file:
         pass
+
+    #assemble source info
+    source_info = {str(uuid.uuid4()) : {'operation' : 'import', 'operation_order' : 1, 'input' : input, 'quantula_version' : info.version}}
+
+    #add source tracking file
+    with open(f"{output_file_dir}/metadata/source_tracker.json", 'w') as file:
+        json.dump(source_info, file)
 
     #copy image files
     sample_metadata = pd.read_csv(input['sample_metadata'])
@@ -132,3 +141,43 @@ def load_color_map(qcd):
 
     else:
         return 0
+    
+def load_source_tracker(qcd):
+
+    qcd_unzip = zipfile.ZipFile(qcd, 'r')
+    qcd_contents = []
+
+    for content in qcd_unzip.namelist():
+        qcd_contents.append(content)
+
+    main_dir = qcd_contents[0]
+    metadata_dir = f"{main_dir}metadata"
+
+    for entry in qcd_unzip.namelist():
+        if 'source_tracker.json' in entry:
+            source_data = entry
+    
+    source_data = qcd_unzip.open(source_data)
+    source_data = json.load(source_data)
+    
+    return source_data
+
+def add_to_source_tracker(source_tracker_dict, input, operation):
+    #get operation order
+    operation_orders = []
+    for operation_id in source_tracker_dict:
+        operation_order = source_tracker_dict[operation_id]['operation_order']
+        operation_orders.append(operation_order)
+    
+    operation_order = max(operation_orders) + 1
+
+    #operation_order = source_tracker_dict['operation_order'] + 1
+    #assemble output
+    source_info = {'operation' : operation, 'operation_order' : operation_order, 'input' : input, 'quantula_version' : info.version}
+    #add info to source info
+    source_tracker_dict[str(uuid.uuid4())] = source_info
+
+    #write output
+    output_file_dir = f"{input['output_dir']}/{input['output_file']}"
+    with open(f"{output_file_dir}/metadata/source_tracker.json", 'w') as file:
+        json.dump(source_tracker_dict, file)

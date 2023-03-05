@@ -95,6 +95,10 @@ def convert_pixel(input):
                 #perform image adjustment
                 image_adjuster.recolor_pixels(image=image_data, from_color=from_color, to_color=to_color, outfile=outfile)
             
+            #add source tracker
+            source_info = qcdutils.load_source_tracker(input['qcd_input'])
+            qcdutils.add_to_source_tracker(source_tracker_dict=source_info, input=input, operation='convert_pixel')
+    
             #compress file and make qcd
             qcdutils.dir_to_qcd(dir=output_file_dir, main=input['output_dir'], sub=input['output_file'])
 

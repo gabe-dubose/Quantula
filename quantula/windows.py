@@ -1,7 +1,9 @@
 import tkinter as tk
 from tkinter import ttk	
+from tkinter.ttk import *
 from tkinter import *
 from tkinter import INSERT
+from pandastable import Table
 from quantula import uiutils
 from quantula import iutils
 
@@ -63,7 +65,49 @@ def import_data_window(parent):
     runImportButton = tk.Button(window, text="Import Data", command=lambda: uiutils.load_import_input(image_dir_input, sample_metadata_input, output_file_input, output_dir_input))
     runImportButton.grid(row=2, column=0, padx=10, pady=5, sticky='ew')
 
+#window for viewing tables
+def view_tables_window(parent):
+    window = Toplevel(parent)
+    window.title("Pixel Conversion")
+    window.geometry('610x700')
 
+    #INPUT OPTIONS FRAME
+    inputFrame = tk.LabelFrame(window, text="Input options")
+    inputFrame.grid(row=1, column=1, sticky = "ew", pady=5, padx=10)
+
+    #add prompt to select table qcd
+    tableQCDSelectPrompt = tk.Label(inputFrame, text="Quantification table(s) (qcd):")
+    tableQCDSelectPrompt.grid(row=1, column=1, pady=5, padx=10, sticky="w")
+
+    #add entry for image qcd
+    table_qcd_input = tk.Entry(inputFrame)
+    table_qcd_input.grid(row=1, column=2, padx=10, pady=5, sticky="w")
+
+    #add button for selecting images qcd
+    tableQCDSelectButton = tk.Button(inputFrame, text="Select File", command=lambda: uiutils.select_qcd_file(table_qcd_input))
+    tableQCDSelectButton.grid(row=1, column=3, padx=5, pady=5, sticky="w")
+
+    #add button for showing table
+    viewTableButton = tk.Button(inputFrame, text="Show Tables", command=lambda: uiutils.update_pandas_table(table_qcd_input, raw_table_view, fract_table_view))
+    viewTableButton.grid(row=2, column=3, padx=5, pady=5, sticky="w")
+
+    #RAW TABLE VIEW FRAME
+    rawTableFrame = tk.LabelFrame(window, text="Raw Counts")
+    rawTableFrame.grid(row=2, column=1, sticky = "ew", pady=5, padx=10)
+
+    raw_table_view = Table(rawTableFrame)
+    raw_table_view.show()
+
+    #FRACTIONS TABLE VIEW FRAME
+    fractionsTableFrame = tk.LabelFrame(window, text="Color Fractions")
+    fractionsTableFrame.grid(row=3, column=1, sticky = "ew", pady=5, padx=10)
+
+    fract_table_view = Table(fractionsTableFrame)
+    fract_table_view.show()
+
+
+
+#window for converting pixels
 def convert_pixels_window(parent):
     window = Toplevel(parent)
     window.title("Pixel Conversion")

@@ -3,8 +3,8 @@ import os
 import shutil
 import pandas as pd
 import json
-from quantula import info
 import uuid
+from quantula import info
 
 #function to get qcd type
 def get_qcd_type(qcd):
@@ -162,6 +162,7 @@ def load_source_tracker(qcd):
     
     return source_data
 
+#function to add to source tracker
 def add_to_source_tracker(source_tracker_dict, input, operation):
     #get operation order
     operation_orders = []
@@ -181,3 +182,26 @@ def add_to_source_tracker(source_tracker_dict, input, operation):
     output_file_dir = f"{input['output_dir']}/{input['output_file']}"
     with open(f"{output_file_dir}/metadata/source_tracker.json", 'w') as file:
         json.dump(source_tracker_dict, file, indent=6)
+
+#function to get quantification tables
+def get_quantification_tables(qcd):
+
+    #initialize output
+    tables = {'raw_colors_table' : '', 'fraction_color_table' : ''}
+
+    qcd_unzip = zipfile.ZipFile(qcd, 'r')
+    qcd_contents = []
+
+    for content in qcd_unzip.namelist():
+        qcd_contents.append(content)
+
+    for entry in qcd_unzip.namelist():
+        if 'raw_color_counts.csv' in entry:
+            raw_color_table = qcd_unzip.extract(entry)
+            tables['raw_colors_table'] = raw_color_table
+
+        if 'color_fractions.csv' in entry:
+            fract_color_table = qcd_unzip.extract(entry)
+            tables['fraction_color_table'] = fract_color_table
+
+    return tables

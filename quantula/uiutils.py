@@ -271,4 +271,23 @@ def count_colors(image_qcd_input, excludeTable, returnRawColors, returnColorFrac
     #load input
     color_counting_input = get_color_counting_input(image_qcd_input, excludeTable, returnRawColors, returnColorFractions, output_file_input, output_dir_input)
     #count pixels colors
-    iutils.count_pixel_colors(color_counting_input)    
+    iutils.count_pixel_colors(color_counting_input)   
+
+#function to update pandas table
+def update_pandas_table(table_qcd_input, raw_table_view, fraction_tabele_view):
+    #load input
+    qcd_input = table_qcd_input.get()
+    #get tables
+    quantification_tables = qcdutils.get_quantification_tables(qcd_input)
+    
+    #load raw counts table
+    raw_table = quantification_tables['raw_colors_table']
+    if raw_table != '':
+            raw_table_view.importCSV(raw_table)
+            raw_table_view.redraw()
+    
+    #load fraction table
+    fraction_table = quantification_tables['fraction_color_table']
+    if fraction_table != '':
+        fraction_tabele_view.importCSV(fraction_table)
+        fraction_tabele_view.redraw()

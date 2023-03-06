@@ -60,7 +60,7 @@ def make_import_qcd(input):
 
     #add source tracking file
     with open(f"{output_file_dir}/metadata/source_tracker.json", 'w') as file:
-        json.dump(source_info, file)
+        json.dump(source_info, file, indent=6)
 
     #copy image files
     sample_metadata = pd.read_csv(input['sample_metadata'])
@@ -106,7 +106,7 @@ def initialize_quantification_data_qcd(output):
 def add_color_map(color_map, output):
     output_file = f"{output}/metadata/color_map.json"
     with open(output_file, 'w') as outfile:
-        json.dump(color_map, outfile)
+        json.dump(color_map, outfile, indent=6)
 
 #function to zip a directory and make it a qcd
 def dir_to_qcd(dir, main, sub):
@@ -180,4 +180,4 @@ def add_to_source_tracker(source_tracker_dict, input, operation):
     #write output
     output_file_dir = f"{input['output_dir']}/{input['output_file']}"
     with open(f"{output_file_dir}/metadata/source_tracker.json", 'w') as file:
-        json.dump(source_tracker_dict, file)
+        json.dump(source_tracker_dict, file, indent=6)

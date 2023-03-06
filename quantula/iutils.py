@@ -125,10 +125,21 @@ def adjust_image(input, adjust):
             #perform adjustments
             if adjust == 'contrast':
                 image_adjuster.adjust_contrast(image=image_data, factor=input['factor'], outfile=outfile)
+                #add source tracker
+                source_info = qcdutils.load_source_tracker(input['qcd_input'])
+                qcdutils.add_to_source_tracker(source_tracker_dict=source_info, input=input, operation='adjust_contrast')
+
             elif adjust == 'sharpness':
                 image_adjuster.adjust_sharpness(image=image_data, factor=input['factor'], outfile=outfile)
+                #add source tracker
+                source_info = qcdutils.load_source_tracker(input['qcd_input'])
+                qcdutils.add_to_source_tracker(source_tracker_dict=source_info, input=input, operation='adjust_sharpness')
+
             elif adjust == 'saturation':
                 image_adjuster.adjust_saturation(image=image_data, factor=input['factor'], outfile=outfile)
+                #add source tracker
+                source_info = qcdutils.load_source_tracker(input['qcd_input'])
+                qcdutils.add_to_source_tracker(source_tracker_dict=source_info, input=input, operation='adjust_saturation')
 
         #compress file and make qcd
         qcdutils.dir_to_qcd(dir=output_file_dir, main=input['output_dir'], sub=input['output_file'])
@@ -155,6 +166,10 @@ def kmeans_transform(input):
             outfile = f"{output_file_dir}/images/{image_file_name}"
             #perform adjustments
             image_adjuster.kmeans_transform(image=image_data, k=input['k'], outfile=outfile, iterations=input['iterations'], epsilon=input['epsilon'], attempts=input['attempts'])
+
+        #add source tracker
+        source_info = qcdutils.load_source_tracker(input['qcd_input'])
+        qcdutils.add_to_source_tracker(source_tracker_dict=source_info, input=input, operation='kmeans_transformation')
 
         #compress file and make qcd
         qcdutils.dir_to_qcd(dir=output_file_dir, main=input['output_dir'], sub=input['output_file'])
@@ -184,6 +199,10 @@ def trace_color_boundaries(input):
             #perform adjustments
             image_adjuster.trace_color_boundaries(image=image_data, threshold=input['boundary_threshold'], color=boundary_color, outfile=outfile)
 
+        #add source tracker
+        source_info = qcdutils.load_source_tracker(input['qcd_input'])
+        qcdutils.add_to_source_tracker(source_tracker_dict=source_info, input=input, operation='color_boundary_tracing')
+
         #compress file and make qcd
         qcdutils.dir_to_qcd(dir=output_file_dir, main=input['output_dir'], sub=input['output_file'])
 
@@ -212,6 +231,10 @@ def euclidian_minimization_recoloring(input):
 
         #save color map to json
         qcdutils.add_color_map(color_map=input['color_mappings'], output=output_file_dir)
+
+        #add source tracker
+        source_info = qcdutils.load_source_tracker(input['qcd_input'])
+        qcdutils.add_to_source_tracker(source_tracker_dict=source_info, input=input, operation='euclidian_minimization_recoloring')
 
         #compress file and make qcd
         qcdutils.dir_to_qcd(dir=output_file_dir, main=input['output_dir'], sub=input['output_file'])
@@ -256,6 +279,10 @@ def count_pixel_colors(input):
         color_fractions_df = pd.DataFrame.from_dict(pixel_fractions).T
         color_fractions_outfile = f"{output_file_dir}/tables/color_fractions.csv"
         color_fractions_df.to_csv(color_fractions_outfile)
+
+    #add source tracker
+    source_info = qcdutils.load_source_tracker(input['qcd_input'])
+    qcdutils.add_to_source_tracker(source_tracker_dict=source_info, input=input, operation='pixel_color_counting')
 
     #compress file and make qcd
     qcdutils.dir_to_qcd(dir=output_file_dir, main=input['output_dir'], sub=input['output_file'])

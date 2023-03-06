@@ -7,6 +7,8 @@ from quantula import iutils
 from quantula import qcdutils
 import pandas as pd
 from pandastable import TableModel
+import zipfile
+from PIL import ImageTk, Image
 
 #function to select directory
 def select_directory(input_box):
@@ -329,6 +331,7 @@ def update_pandas_table(table_qcd_input, metadata_input, raw_table_view, fractio
         fraction_tabele_view.updateModel(TableModel(total_fraction_table_df))
         fraction_tabele_view.redraw()
 
+#function for exporting table
 def export_table(table, output_dir_input, out_file_input):
     #load input
     output_dir = output_dir_input.get()
@@ -337,6 +340,43 @@ def export_table(table, output_dir_input, out_file_input):
     #write output
     file_name = f"{output_dir}/{out_file_input}"
     table_data.to_csv(file_name, index=False)
-    #print(table_data)
     
+#function for viewing images
+def load_image_view(images_qcd, table):
+    images_qcd_data = images_qcd.get()
+    #check qcd type
+    qcd_type = qcdutils.get_qcd_type(images_qcd_data)
+    #if qcd is of proper type
+    if qcd_type == 'image_data':
+        #load image data
+        image_data = qcdutils.read_image_data_qcd(images_qcd_data)
+        qcd_images = image_data[0]
+        qcd = zipfile.ZipFile(images_qcd_data, 'r')
+        for i in range(len(qcd_images)):
+            image_name = qcd_images[i].split('/')[-1]
+            table.insert("", 'end', values=(image_name))
 
+            '''
+            if i == 1:
+                image = qcd_images[i]
+                image_data = qcd.open(image)
+                image_load = Image.open(image_data)
+                image_load.show()
+            '''
+
+#function to open image
+def open_image(images_qcd, image_name):
+    images_qcd_data = images_qcd.get()
+    #load image data
+    image_data = qcdutils.read_image_data_qcd(images_qcd_data)
+    qcd_images = image_data[0]
+    qcd = zipfile.ZipFile(images_qcd_data, 'r')
+
+    #open image
+    for i in range(len(qcd_images)):
+        image_load_name = qcd_images[i].split('/')[-1]
+        if image_load_name == image_name:
+            image = qcd_images[i]
+            image_data = qcd.open(image)
+            image_load = Image.open(image_data)
+            image_load.show()

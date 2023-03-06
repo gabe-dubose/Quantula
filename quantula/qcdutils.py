@@ -205,3 +205,25 @@ def get_quantification_tables(qcd):
             tables['fraction_color_table'] = fract_color_table
 
     return tables
+
+#function to export images from qcd
+def export_images(images_qcd, output_dir_input):
+    #check qcd type
+    qcd_type = get_qcd_type(images_qcd)
+    #if qcd is of proper type
+    if qcd_type == 'image_data':
+        qcd_unzip = zipfile.ZipFile(images_qcd, 'r')
+        qcd_contents = []
+
+        for content in qcd_unzip.namelist():
+            qcd_contents.append(content)
+        
+        main_dir = qcd_contents[0]
+        images_dir = f"{main_dir}images/"
+        images_dir_contents = []
+        
+        for content in qcd_contents:
+            if images_dir in content:
+                images_dir_contents.append(content)
+
+        qcd_unzip.extractall(members=images_dir_contents, path=output_dir_input)

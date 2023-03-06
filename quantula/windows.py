@@ -6,6 +6,7 @@ from tkinter import INSERT
 from pandastable import Table
 from quantula import uiutils
 from quantula import iutils
+from quantula import qcdutils
 
 #window for importing data
 def import_data_window(parent):
@@ -64,6 +65,77 @@ def import_data_window(parent):
     #add button to import images
     runImportButton = tk.Button(window, text="Import Data", command=lambda: uiutils.load_import_input(image_dir_input, sample_metadata_input, output_file_input, output_dir_input))
     runImportButton.grid(row=2, column=0, padx=10, pady=5, sticky='ew')
+
+#window for viewing images
+def view_images_window(parent):
+    window = Toplevel(parent)
+    window.title("Image Viewer")
+    window.geometry('560x600')
+
+    #INPUT OPTIONS FRAME
+    inputFrame = tk.LabelFrame(window, text="Input options")
+    inputFrame.grid(row=1, column=1, sticky = "ew", pady=5, padx=10)
+
+    #add prompt to select image qcd
+    imageQCDSelectPrompt = tk.Label(inputFrame, text="Images (qcd):")
+    imageQCDSelectPrompt.grid(row=1, column=1, pady=5, padx=10, sticky="w")
+
+    #add entry for image qcd
+    image_qcd_input = tk.Entry(inputFrame)
+    image_qcd_input.grid(row=1, column=2, padx=10, pady=5, sticky="w")
+
+    #add button for selecting images qcd
+    imageQCDSelectButton = tk.Button(inputFrame, text="Select File", command=lambda: uiutils.select_qcd_file(image_qcd_input))
+    imageQCDSelectButton.grid(row=1, column=3, padx=5, pady=5, sticky="w")
+
+    #add button for viewing images
+    viewImagesButton = tk.Button(window, text="Show Image List", command=lambda: uiutils.load_image_view(image_qcd_input, imageListTable))
+    viewImagesButton.grid(row=2, column=1, padx=5, pady=5, sticky="w")
+
+    #IMAGE LIST FRAME
+    imageListFrame = tk.LabelFrame(window, text="Loaded Images")
+    imageListFrame.grid(row=3, column=1, sticky = "ew", pady=5, padx=10)
+
+    #set style
+    style = ttk.Style(imageListFrame)
+    style.configure("Treeview.Heading", background="#ececec", foreground="black")
+    style.map('Treeview', background=[('selected', '#BFBFBF')])
+    
+    #add table for specifying colors
+    imageListTable = ttk.Treeview(imageListFrame, columns=(1), show="headings")
+    imageListTable.heading(1, text="Image Files")
+    imageListTable.column(1, anchor=CENTER, width=270)
+    imageListTable.grid(row=1, column=1, pady=10, padx=10, sticky='new')
+
+    #function to open image
+    def open_image(event):
+        selection = imageListTable.focus()
+        items = imageListTable.item(selection)
+        image_to_open = items["values"][0]
+        uiutils.open_image(image_qcd_input, image_to_open)
+        
+    #add delete option to table window
+    imageListTable.bind("<Double-Button-1>", open_image)
+
+    #EXPORT IMAGES FRAME
+    exportImagesFrame = tk.LabelFrame(window, text="Export Images")
+    exportImagesFrame.grid(row=4, column=1, sticky = "ew", pady=5, padx=10)
+
+    #add prompt to save output file
+    exportImagesPrompt = tk.Label(exportImagesFrame, text="Export:")
+    exportImagesPrompt.grid(row=1, column=1, pady=5, padx=10, sticky="w")
+
+    #add entry for output directory
+    output_dir_input = tk.Entry(exportImagesFrame)
+    output_dir_input.grid(row=1, column=1, padx=100, pady=5, sticky='w')
+
+    #add button for output
+    outputDirSelectButton = tk.Button(exportImagesFrame, text="Select Directory", command=lambda: uiutils.select_directory(output_dir_input))
+    outputDirSelectButton.grid(row=1, column=1, padx=(300,10), pady=5, sticky="w")
+
+    #add button for exporting raw table
+    exportRawTableButton = tk.Button(exportImagesFrame, text="Export", command=lambda: qcdutils.export_images(image_qcd_input.get(), output_dir_input.get()))
+    exportRawTableButton.grid(row=1, column=1, padx=(435,10), pady=5, sticky="w")
 
 #window for viewing tables
 def view_tables_window(parent):

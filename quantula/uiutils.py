@@ -5,6 +5,8 @@ import tkinter as tk
 import os
 from quantula import iutils
 from quantula import qcdutils
+import pandas as pd
+from pandastable import TableModel
 
 #function to select directory
 def select_directory(input_box):
@@ -274,20 +276,67 @@ def count_colors(image_qcd_input, excludeTable, returnRawColors, returnColorFrac
     iutils.count_pixel_colors(color_counting_input)   
 
 #function to update pandas table
-def update_pandas_table(table_qcd_input, raw_table_view, fraction_tabele_view):
+def update_pandas_table(table_qcd_input, metadata_input, raw_table_view, fraction_tabele_view):
     #load input
     qcd_input = table_qcd_input.get()
+    metadata_input = metadata_input.get()
     #get tables
     quantification_tables = qcdutils.get_quantification_tables(qcd_input)
     
     #load raw counts table
     raw_table = quantification_tables['raw_colors_table']
     if raw_table != '':
-            raw_table_view.importCSV(raw_table)
-            raw_table_view.redraw()
+            #read table as csv
+            raw_table_df = pd.read_csv(raw_table)
+            raw_table_df.rename(columns={'Unnamed: 0':'sample-data'}, inplace=True)
+            raw_table_df.set_index('sample-data')
+            #display if metadata not specified
+            if metadata_input == "":
+                raw_table_view.updateModel(TableModel(raw_table_df))
+                raw_table_view.redraw()
     
     #load fraction table
     fraction_table = quantification_tables['fraction_color_table']
     if fraction_table != '':
-        fraction_tabele_view.importCSV(fraction_table)
+        #read table as csv
+        fraction_table_df = pd.read_csv(fraction_table)
+        fraction_table_df.rename(columns={'Unnamed: 0':'sample-data'}, inplace=True)
+        fraction_table_df.set_index('sample-data')
+        #display if metadata not specified
+        if metadata_input == "":
+            fraction_tabele_view.updateModel(TableModel(fraction_table_df))
+            fraction_tabele_view.redraw()
+    
+    #if metadata input was provided, read and join with raw table
+    if metadata_input != "" and raw_table != "":
+        metadata_df = pd.read_csv(metadata_input)
+        #perform inner join with metadata and raw table
+        total_raw_table_df = pd.merge(raw_table_df, metadata_df, how='inner', on='sample-data')
+        sample_ids = total_raw_table_df.pop('sample-id')
+        total_raw_table_df.insert(0, 'sample-id', sample_ids)
+        total_raw_table_df.drop('sample-data', axis=1, inplace=True)
+        raw_table_view.updateModel(TableModel(total_raw_table_df))
+        raw_table_view.redraw()
+    
+    #if metadata input was provided, read and join with fractions table
+    if metadata_input != "" and fraction_table != "":
+        metadata_df = pd.read_csv(metadata_input)
+        #perform inner join with metadata and raw table
+        total_fraction_table_df = pd.merge(fraction_table_df, metadata_df, how='inner', on='sample-data')
+        sample_ids = total_fraction_table_df.pop('sample-id')
+        total_fraction_table_df.insert(0, 'sample-id', sample_ids)
+        total_fraction_table_df.drop('sample-data', axis=1, inplace=True)
+        fraction_tabele_view.updateModel(TableModel(total_fraction_table_df))
         fraction_tabele_view.redraw()
+
+def export_table(table, output_dir_input, out_file_input):
+    #load input
+    output_dir = output_dir_input.get()
+    table_data = table.model.df
+
+    #write output
+    file_name = f"{output_dir}/{out_file_input}"
+    table_data.to_csv(file_name, index=False)
+    #print(table_data)
+    
+

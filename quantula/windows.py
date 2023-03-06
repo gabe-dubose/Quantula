@@ -100,7 +100,7 @@ def view_tables_window(parent):
     metadataSelectButton.grid(row=2, column=3, padx=5, pady=5, sticky="w")
 
     #add button for showing table
-    viewTableButton = tk.Button(window, text="Show Tables", command=lambda: uiutils.update_pandas_table(table_qcd_input, raw_table_view, fract_table_view))
+    viewTableButton = tk.Button(window, text="Show Tables", command=lambda: uiutils.update_pandas_table(table_qcd_input, metadata_input, raw_table_view, fract_table_view))
     viewTableButton.grid(row=2, column=1, padx=5, pady=5, sticky="w")
 
     #RAW TABLE VIEW FRAME
@@ -122,6 +122,11 @@ def view_tables_window(parent):
     outputDirSelectButton = tk.Button(window, text="Select Directory", command=lambda: uiutils.select_directory(raw_output_dir_input))
     outputDirSelectButton.grid(row=4, column=1, padx=(300,10), pady=5, sticky="w")
 
+    #add button for exporting raw table
+    exportRawTableButton = tk.Button(window, text="Export", command=lambda: uiutils.export_table(raw_table_view, raw_output_dir_input, 'raw_pixel_color_counts.csv'))
+    exportRawTableButton.grid(row=4, column=1, padx=(435,10), pady=5, sticky="w")
+
+
     #FRACTIONS TABLE VIEW FRAME
     fractionsTableFrame = tk.LabelFrame(window, text="Color Fractions")
     fractionsTableFrame.grid(row=5, column=1, sticky = "ew", pady=5, padx=10)
@@ -134,12 +139,16 @@ def view_tables_window(parent):
     rawOutputFilePrompt.grid(row=6, column=1, pady=5, padx=10, sticky="w")
 
     #add entry for output directory
-    raw_output_dir_input = tk.Entry(window)
-    raw_output_dir_input.grid(row=6, column=1, padx=100, pady=5, sticky='w')
+    fract_output_dir_input = tk.Entry(window)
+    fract_output_dir_input.grid(row=6, column=1, padx=100, pady=5, sticky='w')
 
     #add button for output
-    outputDirSelectButton = tk.Button(window, text="Select Directory", command=lambda: uiutils.select_directory(raw_output_dir_input))
+    outputDirSelectButton = tk.Button(window, text="Select Directory", command=lambda: uiutils.select_directory(fract_output_dir_input))
     outputDirSelectButton.grid(row=6, column=1, padx=(300,10), pady=5, sticky="w")
+
+    #add button for exporting raw table
+    exportFractTableButton = tk.Button(window, text="Export", command=lambda: uiutils.export_table(fract_table_view, fract_output_dir_input, 'color_fractions.csv'))
+    exportFractTableButton.grid(row=6, column=1, padx=(435,10), pady=5, sticky="w")
 
 
 #window for converting pixels

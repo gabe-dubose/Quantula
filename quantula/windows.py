@@ -69,7 +69,7 @@ def import_data_window(parent):
 def view_tables_window(parent):
     window = Toplevel(parent)
     window.title("Pixel Conversion")
-    window.geometry('610x700')
+    window.geometry('610x770')
 
     #INPUT OPTIONS FRAME
     inputFrame = tk.LabelFrame(window, text="Input options")
@@ -87,24 +87,59 @@ def view_tables_window(parent):
     tableQCDSelectButton = tk.Button(inputFrame, text="Select File", command=lambda: uiutils.select_qcd_file(table_qcd_input))
     tableQCDSelectButton.grid(row=1, column=3, padx=5, pady=5, sticky="w")
 
+    #add prompt to select metadata
+    metadataSelectPrompt = tk.Label(inputFrame, text="Metadata (csv):")
+    metadataSelectPrompt.grid(row=2, column=1, pady=5, padx=10, sticky="w")
+
+    #add entry for image qcd
+    metadata_input = tk.Entry(inputFrame)
+    metadata_input.grid(row=2, column=2, padx=10, pady=5, sticky="w")
+
+    #add button for selecting images qcd
+    metadataSelectButton = tk.Button(inputFrame, text="Select File", command=lambda: uiutils.select_csv_file(metadata_input))
+    metadataSelectButton.grid(row=2, column=3, padx=5, pady=5, sticky="w")
+
     #add button for showing table
-    viewTableButton = tk.Button(inputFrame, text="Show Tables", command=lambda: uiutils.update_pandas_table(table_qcd_input, raw_table_view, fract_table_view))
-    viewTableButton.grid(row=2, column=3, padx=5, pady=5, sticky="w")
+    viewTableButton = tk.Button(window, text="Show Tables", command=lambda: uiutils.update_pandas_table(table_qcd_input, raw_table_view, fract_table_view))
+    viewTableButton.grid(row=2, column=1, padx=5, pady=5, sticky="w")
 
     #RAW TABLE VIEW FRAME
     rawTableFrame = tk.LabelFrame(window, text="Raw Counts")
-    rawTableFrame.grid(row=2, column=1, sticky = "ew", pady=5, padx=10)
+    rawTableFrame.grid(row=3, column=1, sticky = "ew", pady=5, padx=10)
 
     raw_table_view = Table(rawTableFrame)
     raw_table_view.show()
 
+    #add prompt to save output file
+    rawOutputFilePrompt = tk.Label(window, text="Export Table:")
+    rawOutputFilePrompt.grid(row=4, column=1, pady=5, padx=10, sticky="w")
+
+    #add entry for output directory
+    raw_output_dir_input = tk.Entry(window)
+    raw_output_dir_input.grid(row=4, column=1, padx=100, pady=5, sticky='w')
+
+    #add button for output
+    outputDirSelectButton = tk.Button(window, text="Select Directory", command=lambda: uiutils.select_directory(raw_output_dir_input))
+    outputDirSelectButton.grid(row=4, column=1, padx=(300,10), pady=5, sticky="w")
+
     #FRACTIONS TABLE VIEW FRAME
     fractionsTableFrame = tk.LabelFrame(window, text="Color Fractions")
-    fractionsTableFrame.grid(row=3, column=1, sticky = "ew", pady=5, padx=10)
+    fractionsTableFrame.grid(row=5, column=1, sticky = "ew", pady=5, padx=10)
 
     fract_table_view = Table(fractionsTableFrame)
     fract_table_view.show()
 
+    #add prompt to save output file
+    rawOutputFilePrompt = tk.Label(window, text="Export Table:")
+    rawOutputFilePrompt.grid(row=6, column=1, pady=5, padx=10, sticky="w")
+
+    #add entry for output directory
+    raw_output_dir_input = tk.Entry(window)
+    raw_output_dir_input.grid(row=6, column=1, padx=100, pady=5, sticky='w')
+
+    #add button for output
+    outputDirSelectButton = tk.Button(window, text="Select Directory", command=lambda: uiutils.select_directory(raw_output_dir_input))
+    outputDirSelectButton.grid(row=6, column=1, padx=(300,10), pady=5, sticky="w")
 
 
 #window for converting pixels

@@ -179,7 +179,7 @@ def add_color_classification_entry(added_colors, new_color_rgb_input, new_color_
 def delete_color_classification_entry(color_mappings, added_colors, colorClassifiersTable):
     selected_color = colorClassifiersTable.selection()
     for selection in selected_color:
-        delete_color = colorClassifiersTable.item(selection)['values'][1]
+        delete_color = colorClassifiersTable.item(selection)['values'][0]
         del color_mappings[delete_color]
         try:
             colorClassifiersTable.delete(selection)

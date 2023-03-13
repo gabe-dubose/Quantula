@@ -4,7 +4,7 @@ from tkinter.ttk import *
 from tkinter import *
 from tkinter import INSERT
 from pandastable import Table
-from quantula import guiutils
+from quantula.gui import guiutils
 from quantula import iutils
 from quantula import qcdutils
 

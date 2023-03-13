@@ -4,8 +4,8 @@ import tkinter as tk
 from tkinter import *				
 from tkinter import ttk
 from tkinter.ttk import *
-from quantula import windows
-from quantula import icons
+from quantula.gui import windows
+from quantula.gui import icons
 from PIL import Image, ImageTk
 import os
 

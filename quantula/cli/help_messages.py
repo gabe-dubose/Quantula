@@ -54,3 +54,58 @@ Required:
   --input-table\tqcd file containing quantification tables to be exported (type=table_data)
   --output-directory\tPath to the directory for output image directory to be saved
 '''
+
+#############################
+#### IMAGE ADJUSTER TOOL ####
+#############################
+
+image_adjuster_help = '''
+Quantula image-adjuster
+
+Commands:
+  recolor-pixels\tUsage: change all pixels of a specified RGB value to a different RGB value
+  adjust-contrast\tUsage: increase or decrease contrast
+  adjust-sharpness\tUsage: increase or decrease sharpness
+  adjust-saturation\tUsage: increase or decrease saturation
+'''
+
+recolor_pixels_help = '''
+Quantula image-adjuster recolor-pixels
+
+Required:
+  --input-images\tqcd file containing images to be exported (type=image_data)
+  --from\t\tRBG value of pixels to be recolored
+  --to\t\t\tRGB value for pixels to be recolored to
+  --output-name\t\tName of output qcd file
+  --output-directory\tPath to directory for output qcd to be saved
+'''
+
+adjust_contrast_help = '''
+Quantula image-adjuster adjust-contrast
+
+Required:
+  --input-images\tqcd file containing images to be exported (type=image_data)
+  --contrast-factor\tFactor to increase or decrease contrast by
+  --output-name\t\tName of output qcd file
+  --output-directory\tPath to directory for output qcd to be saved
+'''
+
+adjust_sharpness_help = '''
+Quantula image-adjuster adjust-sharpness
+
+Required:
+  --input-images\tqcd file containing images to be exported (type=image_data)
+  --sharpness-factor\tFactor to increase or decrease sharpness by
+  --output-name\t\tName of output qcd file
+  --output-directory\tPath to directory for output qcd to be saved
+'''
+
+adjust_saturation_help = '''
+Quantula image-adjuster adjust-saturation
+
+Required:
+  --input-images\tqcd file containing images to be exported (type=image_data)
+  --saturation-factor\tFactor to increase or decrease saturation by
+  --output-name\t\tName of output qcd file
+  --output-directory\tPath to directory for output qcd to be saved
+'''

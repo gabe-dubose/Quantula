@@ -52,18 +52,48 @@ export_table_command.add_argument('--output-directory', dest="export_table_outdi
 #initialize image-adjuster command, subparser, and help option
 image_adjuster_command = command_subparser.add_parser('image-adjuster', add_help=False)
 image_adjuster_parser = image_adjuster_command.add_subparsers(dest="image_adjuster")
-image_adjuster_command.add_argument('--help', action='store_true')
+image_adjuster_command.add_argument('--help', action='store_true', dest="image_adjuster_help")
 
-#image-adjuster:convert-pixels command and subparser
-convert_pixels_command = image_adjuster_parser.add_parser('convert-pixels', add_help=False)
-convert_pixels_command.add_subparsers(dest="image_adjuster_convert_pixels")
-#image-adjuster: convert pixels options
-convert_pixels_command.add_argument('--help', action='store_true')
-convert_pixels_command.add_argument('--input-images', dest="convert_pixels_input_images")
-convert_pixels_command.add_argument('--from', dest="convert_pixels_from_color")
-convert_pixels_command.add_argument('--to', dest="convert_pixels_to_color")
-convert_pixels_command.add_argument('--output-name', dest="convert_pixels_output_name")
-convert_pixels_command.add_argument('--output-directory', dest="import_data_out_dir")
+#image-adjuster:recolor-pixels command and subparser
+recolor_pixels_command = image_adjuster_parser.add_parser('recolor-pixels', add_help=False)
+recolor_pixels_command.add_subparsers(dest="image_adjuster_recolor_pixels")
+#image-adjuster: recolor pixels options
+recolor_pixels_command.add_argument('--help', action='store_true', dest="recolor_pixels_help")
+recolor_pixels_command.add_argument('--input-images', dest="recolor_pixels_input_images")
+recolor_pixels_command.add_argument('--from', dest="recolor_pixels_from_color")
+recolor_pixels_command.add_argument('--to', dest="recolor_pixels_to_color")
+recolor_pixels_command.add_argument('--output-name', dest="recolor_pixels_output_name")
+recolor_pixels_command.add_argument('--output-directory', dest="import_data_out_dir")
+
+#image-adjuster: adjust-contrast command and subparser
+adjust_contrast_command = image_adjuster_parser.add_parser('adjust-contrast', add_help=False)
+adjust_contrast_command.add_subparsers(dest="image_adjuster_adjust_contrast")
+#image-adjuster: adjust contrast
+adjust_contrast_command.add_argument('--help', action='store_true', dest="adjust_contrast_help")
+adjust_contrast_command.add_argument('--input-images', dest="adjust_contrast_input_images")
+adjust_contrast_command.add_argument('--contrast-factor', dest="contrast_factor")
+adjust_contrast_command.add_argument('--output-name', dest="adjust_contrast_output_name")
+adjust_contrast_command.add_argument('--output-directory', dest="adjust_contrast_out_dir")
+
+#image-adjuster: adjust-sharpness command and subparser
+adjust_sharpness_command = image_adjuster_parser.add_parser('adjust-sharpness', add_help=False)
+adjust_sharpness_command.add_subparsers(dest="image_adjuster_adjust_sharpness")
+#image-adjuster: adjust sharpness
+adjust_sharpness_command.add_argument('--help', action='store_true', dest="adjust_sharpness_help")
+adjust_sharpness_command.add_argument('--input-images', dest="adjust_sharpness_input_images")
+adjust_sharpness_command.add_argument('--sharpness-factor', dest="sharpness_factor")
+adjust_sharpness_command.add_argument('--output-name', dest="adjust_sharpness_output_name")
+adjust_sharpness_command.add_argument('--output-directory', dest="adjust_sharpness_out_dir")
+
+#image-adjuster: adjust-saturation command and subparser
+adjust_saturation_command = image_adjuster_parser.add_parser('adjust-saturation', add_help=False)
+adjust_saturation_command.add_subparsers(dest="image_adjuster_adjust_saturation")
+#image-adjuster: adjust saturation
+adjust_saturation_command.add_argument('--help', action='store_true', dest="adjust_saturation_help")
+adjust_saturation_command.add_argument('--input-images', dest="adjust_saturation_input_images")
+adjust_saturation_command.add_argument('--saturation-factor', dest="saturation_factor")
+adjust_saturation_command.add_argument('--output-name', dest="adjust_saturation_output_name")
+adjust_saturation_command.add_argument('--output-directory', dest="adjust_saturation_out_dir")
 
 #parse arguments
 args = main_parser.parse_args()
@@ -97,5 +127,40 @@ except:
 try:
     if args.export_table_help == True or args.data_manager_export_table == None:
         print(help_messages.export_table_help)
+except:
+    pass
+
+#image-adjuster help options
+try:
+    if args.image_adjuster_help == True or args.image_adjuster == None:
+        print(help_messages.image_adjuster_help)
+except:
+    pass
+
+#recolor-pixels command help message
+try:
+    if args.recolor_pixels_help == True or args.image_adjuster_recolor_pixels == None:
+        print(help_messages.recolor_pixels_help)
+except:
+    pass
+
+#adjust-contrast command help message
+try:
+    if args.adjust_contrast_help == True or args.image_adjuster_adjust_contrast == None:
+        print(help_messages.adjust_contrast_help)
+except:
+    pass
+
+#adjust-sharpness command help message
+try:
+    if args.adjust_sharpness_help == True or args.image_adjuster_adjust_sharpness == None:
+        print(help_messages.adjust_sharpness_help)
+except:
+    pass
+
+#adjust-saturation command help message
+try:
+    if args.adjust_saturation_help == True or args.image_adjuster_adjust_saturation == None:
+        print(help_messages.adjust_saturation_help)
 except:
     pass

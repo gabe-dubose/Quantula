@@ -109,3 +109,77 @@ Required:
   --output-name\t\tName of output qcd file
   --output-directory\tPath to directory for output qcd to be saved
 '''
+
+##############################
+#### COLOR SEGMENTER TOOL ####
+##############################
+
+color_segmenter_help = '''
+Quantula color-segmenter
+
+Commands:
+  k-means-recolor\t\tUsage: recolor images using k-means clustering
+  euclidian-recolor\t\tUsage: recolor images by calculating color proximities to a specified color map
+  trace-color-boundaries\tUsage: recolor all pixels that are on the boundary between colors
+'''
+
+k_means_recolor_help = '''
+Quantula color-segmenter k-means-recolor
+
+Required:
+  --input-images\tqcd file containing images to be exported (type=image_data)
+  --k\t\t\tnumber of colors to cluster into
+  --epsilon\t\tdistance to define neighbors, default=0.85
+  --iterations\t\tnumber time to perform re-clustering, default=100
+  --attempts\t\tnumber of times to perform clustering with different labels, default=10
+  --output-name\t\tName of output qcd file
+  --output-directory\tPath to directory for output qcd to be saved
+'''
+
+euclidian_recolor_help = '''
+Quantula color-segmenter euclidian-recolor
+
+Required:
+  --input-images\tqcd file containing images to be exported (type=image_data)
+  --color-names\t\tcolor names in a comma separated list (e.g. red,yellow,blue)
+  --color-values\tRGB values corresponding to color-names (e.g. (255,0,0),(255,255,0),(0,0,255))
+  --output-name\t\tName of output qcd file
+  --output-directory\tPath to directory for output qcd to be saved
+'''
+
+trace_color_boundaries_help = '''
+Quantula color-segmenter trace-color-boundaries
+
+Required:
+  --input-images\tqcd file containing images to be exported (type=image_data)
+  --boundary-color\tRGB value to recolor boundary pixels
+  --threshold\t\tThreshold to define color boundaries (1-8)
+  --output-name\t\tName of output qcd file
+  --output-directory\tPath to directory for output qcd to be saved
+'''
+
+###############################
+#### COLOR QUANTIFIER TOOL ####
+###############################
+
+color_segmenter_help = '''
+Quantula color-quantifier
+
+Commands:
+  quantify-colors\tUsage: quantify the abundance or proportions of each color in an image
+'''
+
+quantify_colors_help = '''
+Quantula color-segmenter trace-color-boundaries
+
+Required:
+  --input-images\tqcd file containing images to be exported (type=image_data)
+  --output-name\t\tName of output qcd file
+  --output-directory\tPath to directory for output qcd to be saved
+
+Options:
+  --color-map\t\tColor map designating color names and RGB values, formatted as: red:(255,0,0),yellow:(255,255,0)
+    Note: --color-map input is not required if euclidian recoloring was performed 
+  --return\t\tspecify which color quantifications to return (raw-counts, color-fractions)
+    Note: both options can be specified
+'''

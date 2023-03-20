@@ -2,6 +2,9 @@
 
 import argparse
 from quantula.cli import help_messages
+from quantula import iutils
+from quantula import qcdutils
+from quantula.cli.tools import data_manager
 
 #primary parser
 main_parser = argparse.ArgumentParser(add_help=False)
@@ -17,7 +20,7 @@ command_subparser = main_parser.add_subparsers(dest="command")
 #initialize data-manager command, subparser, and help option
 data_manager_command = command_subparser.add_parser('data-manager', add_help=False)
 data_manager_parser = data_manager_command.add_subparsers(dest="data_manager")
-data_manager_command.add_argument('--help', action='store_true', dest="data_manager_help")
+data_manager_command.add_argument('--help', action='store_true', dest="data_manager_help", default=False)
 
 #data-manager:import-data command and subparser
 import_data_command = data_manager_parser.add_parser('import-data', add_help=False)
@@ -161,38 +164,20 @@ quantify_colors_command.add_argument('--output-directory', dest="quantify_colors
 
 #parse arguments
 args = main_parser.parse_args()
+user_input = vars(args)
+print(user_input)
 
-#print help options
-if args.command == None or args.command != None and args.main_help == True:
+#print main help options
+if user_input['command'] == None or user_input['main_help'] == True:
     print(help_messages.main_help_message)
 
-#data-manager help options
-try:
-    if args.data_manager == None or args.data_manager != None and args.data_manager_help == True:
-        print(help_messages.data_manager_help)
-except:
-    pass
+###########################
+#### DATA MANAGER TOOL ####
+###########################
 
-#import-data command help message
-try:
-    if args.data_manager_import_data == None or args.data_manager_import_data != None and args.import_data_help == True:
-        print(help_messages.import_data_help) 
-except:
-    pass
+if user_input['command'] == 'data-manager':
+    data_manager.data_manager(user_input)
 
-#export-data command help message
-try:
-    if args.export_images_help == True or args.data_manager_export_images == None:
-        print(help_messages.export_images_help)
-except:
-    pass
-
-#export-table command help message
-try:
-    if args.export_table_help == True or args.data_manager_export_table == None:
-        print(help_messages.export_table_help)
-except:
-    pass
 
 #image-adjuster help options
 try:

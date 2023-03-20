@@ -20,5 +20,5 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     install_requires = ['matplotlib', 'numpy', 'opencv-python', 'pandas', 'tk', 'pandastable'],
-    entry_points = {'console_scripts' : ['quantula-gui = quantula.gui.gui:run_gui']}
+    entry_points = {'console_scripts' : ['quantula-gui = quantula.gui.gui:run_gui', 'quantula = quantula.cli.run_cli:run_cli']}
 )

@@ -1,16 +1,16 @@
 
 #main help message
 main_help_message = '''
-Quantula
+quantula
 
 Commands:
   data-manager\t\tUsage: import and export data
   image-adjuster\tUsage: standard image color adjustments
-  color-segmenter\tUsage: color seqmentation and image re-coloring
+  color-partitioner\tUsage: color seqmentation and image re-coloring
   color-quantifier\tUsage: color quantification
 
 To see options for specific commands, run:
-Quantula {command} --help
+quantula {command} --help
 '''
 
 ###########################
@@ -19,7 +19,7 @@ Quantula {command} --help
 
 #main help message
 data_manager_help = '''
-Quantula data-manager
+quantula data-manager
 
 Commands:
   import-data\t\tUsage: import images and metadata into a Quantula compressed directorye (qcd)
@@ -29,7 +29,7 @@ Commands:
 
 #import data help message
 import_data_help = '''
-Quantula data-manager import-data
+quantula data-manager import-data
 
 Required:
   --image-directory\tDirectory containing images to be imported
@@ -40,7 +40,7 @@ Required:
 
 #export images help message
 export_images_help = '''
-Quantula data-manager export-images
+quantula data-manager export-images
 
 Required:
   --input-images\tqcd file containing images to be exported (type=image_data)
@@ -48,7 +48,7 @@ Required:
 '''
 
 export_table_help = '''
-Quantula data-manager export-table
+quantula data-manager export-table
 
 Required:
   --input-table\tqcd file containing quantification tables to be exported (type=table_data)
@@ -60,7 +60,7 @@ Required:
 #############################
 
 image_adjuster_help = '''
-Quantula image-adjuster
+quantula image-adjuster
 
 Commands:
   recolor-pixels\tUsage: change all pixels of a specified RGB value to a different RGB value
@@ -70,7 +70,7 @@ Commands:
 '''
 
 recolor_pixels_help = '''
-Quantula image-adjuster recolor-pixels
+quantula image-adjuster recolor-pixels
 
 Required:
   --input-images\tqcd file containing images to be exported (type=image_data)
@@ -81,7 +81,7 @@ Required:
 '''
 
 adjust_contrast_help = '''
-Quantula image-adjuster adjust-contrast
+quantula image-adjuster adjust-contrast
 
 Required:
   --input-images\tqcd file containing images to be exported (type=image_data)
@@ -91,7 +91,7 @@ Required:
 '''
 
 adjust_sharpness_help = '''
-Quantula image-adjuster adjust-sharpness
+quantula image-adjuster adjust-sharpness
 
 Required:
   --input-images\tqcd file containing images to be exported (type=image_data)
@@ -101,7 +101,7 @@ Required:
 '''
 
 adjust_saturation_help = '''
-Quantula image-adjuster adjust-saturation
+quantula image-adjuster adjust-saturation
 
 Required:
   --input-images\tqcd file containing images to be exported (type=image_data)
@@ -110,12 +110,12 @@ Required:
   --output-directory\tPath to directory for output qcd to be saved
 '''
 
-##############################
-#### COLOR SEGMENTER TOOL ####
-##############################
+################################
+#### COLOR PARTITIONER TOOL ####
+################################
 
-color_segmenter_help = '''
-Quantula color-segmenter
+color_partitioner_help = '''
+quantula color-partitioner
 
 Commands:
   k-means-recolor\t\tUsage: recolor images using k-means clustering
@@ -124,7 +124,7 @@ Commands:
 '''
 
 k_means_recolor_help = '''
-Quantula color-segmenter k-means-recolor
+quantula color-partitioner k-means-recolor
 
 Required:
   --input-images\tqcd file containing images to be exported (type=image_data)
@@ -137,7 +137,7 @@ Required:
 '''
 
 euclidian_recolor_help = '''
-Quantula color-segmenter euclidian-recolor
+quantula color-partitioner euclidian-recolor
 
 Required:
   --input-images\tqcd file containing images to be exported (type=image_data)
@@ -148,7 +148,7 @@ Required:
 '''
 
 trace_color_boundaries_help = '''
-Quantula color-segmenter trace-color-boundaries
+quantula color-partitioner trace-color-boundaries
 
 Required:
   --input-images\tqcd file containing images to be exported (type=image_data)
@@ -162,15 +162,15 @@ Required:
 #### COLOR QUANTIFIER TOOL ####
 ###############################
 
-color_segmenter_help = '''
-Quantula color-quantifier
+color_partitioner_help = '''
+quantula color-quantifier
 
 Commands:
   quantify-colors\tUsage: quantify the abundance or proportions of each color in an image
 '''
 
 quantify_colors_help = '''
-Quantula color-segmenter trace-color-boundaries
+quantula color-partitioner trace-color-boundaries
 
 Required:
   --input-images\tqcd file containing images to be exported (type=image_data)

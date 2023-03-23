@@ -33,11 +33,28 @@ def data_manager(user_input):
         # EXPORT IMAGES COMMAND
         elif user_input['data_manager'] == 'export-images':
             #print help messages if specified
-            if user_input['export_images_help'] == True or user_input['data_manager_export_images'] == None:
+            if user_input['export_images_help'] == True:
                 print(help_messages.export_images_help)
+            #run tools
+            else:
+                try:
+                    #get input
+                    images_qcd = user_input['export_images_input_images']
+                    output_dir_input = user_input['export_images_outdir']
+                    #run image export
+                    qcdutils.export_images(images_qcd, output_dir_input)
+                except:
+                    print(help_messages.export_images_help)
+                    print('Error')
 
         # EXPORT TABLE COMMAND
         elif user_input['data_manager'] == 'export-table':
             #print help messages if specified
             if user_input['export_table_help'] == True or user_input['data_manager_export_table'] == None:
                 print(help_messages.export_table_help)
+            #run tools
+            else:
+                try:
+                    pass
+                except:
+                    pass

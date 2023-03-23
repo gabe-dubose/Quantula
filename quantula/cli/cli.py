@@ -98,19 +98,19 @@ adjust_saturation_command.add_argument('--saturation-factor', dest="saturation_f
 adjust_saturation_command.add_argument('--output-name', dest="adjust_saturation_output_name")
 adjust_saturation_command.add_argument('--output-directory', dest="adjust_saturation_out_dir")
 
-##############################
-#### COLOR SEGMENTER TOOL ####
-##############################
+################################
+#### COLOR PARTITIONER TOOL ####
+################################
 
-#initialize color-segmenter command, subparser, and help option
-color_segmenter_command = command_subparser.add_parser('color-segmenter', add_help=False)
-color_segmenter_parser = color_segmenter_command.add_subparsers(dest="color_segmenter")
-color_segmenter_command.add_argument('--help', action='store_true', dest="color_segmenter_help")
+#initialize color-partitioner command, subparser, and help option
+color_partitioner_command = command_subparser.add_parser('color-partitioner', add_help=False)
+color_partitioner_parser = color_partitioner_command.add_subparsers(dest="color_partitioner")
+color_partitioner_command.add_argument('--help', action='store_true', dest="color_partitioner_help")
 
-#color-segmenter:k-means-recolor command and subparser
-k_means_recolor_command = color_segmenter_parser.add_parser('k-means-recolor', add_help=False)
-k_means_recolor_command.add_subparsers(dest="color_segmenter_k_means_recolor")
-#color-segmenter: k-means-recolor options
+#color-partitioner:k-means-recolor command and subparser
+k_means_recolor_command = color_partitioner_parser.add_parser('k-means-recolor', add_help=False)
+k_means_recolor_command.add_subparsers(dest="color_partitioner_k_means_recolor")
+#color-partitioner: k-means-recolor options
 k_means_recolor_command.add_argument('--help', action='store_true', dest="k_means_recolor_help")
 k_means_recolor_command.add_argument('--input-images', dest="k_means_recolor_input_images")
 k_means_recolor_command.add_argument('--k', dest="k_means_k_input")
@@ -120,10 +120,10 @@ k_means_recolor_command.add_argument('--attempts', dest="k_means_attempts")
 k_means_recolor_command.add_argument('--output-name', dest="k_means_output_name")
 k_means_recolor_command.add_argument('--output-directory', dest="k_means_out_dir")
 
-#color-segmenter:euclidian-recolor command and subparser
-euclidian_recolor_command = color_segmenter_parser.add_parser('euclidian-recolor', add_help=False)
-euclidian_recolor_command.add_subparsers(dest="color_segmenter_euclidian_recolor")
-#color-segmenter: euclidian-recolor options
+#color-partitioner:euclidian-recolor command and subparser
+euclidian_recolor_command = color_partitioner_parser.add_parser('euclidian-recolor', add_help=False)
+euclidian_recolor_command.add_subparsers(dest="color_partitioner_euclidian_recolor")
+#color-partitioner: euclidian-recolor options
 euclidian_recolor_command.add_argument('--help', action='store_true', dest="euclidian_recolor_help")
 euclidian_recolor_command.add_argument('--input-images', dest="euclidian_recolor_input_images")
 euclidian_recolor_command.add_argument('--color-names', dest="euclidian_recolor_names")
@@ -131,10 +131,10 @@ euclidian_recolor_command.add_argument('--color-values', dest="euclidian_recolor
 euclidian_recolor_command.add_argument('--output-name', dest="euclidian_recolor_output_name")
 euclidian_recolor_command.add_argument('--output-directory', dest="euclidian_recolor_out_dir")
 
-#color-segmenter:trace-color-boundaries command and subparser
-trace_color_boundaries_command = color_segmenter_parser.add_parser('trace-color-boundaries', add_help=False)
-trace_color_boundaries_command.add_subparsers(dest="color_segmenter_trace_color_boundaries")
-#color-segmenter: trace-color-boundaries options
+#color-partitioner:trace-color-boundaries command and subparser
+trace_color_boundaries_command = color_partitioner_parser.add_parser('trace-color-boundaries', add_help=False)
+trace_color_boundaries_command.add_subparsers(dest="color_partitioner_trace_color_boundaries")
+#color-partitioner: trace-color-boundaries options
 trace_color_boundaries_command.add_argument('--help', action='store_true', dest="trace_color_boundaries_help")
 trace_color_boundaries_command.add_argument('--input-images', dest="trace_color_boundaries_input_images")
 trace_color_boundaries_command.add_argument('--boundary-color', dest="boundary_color")
@@ -154,7 +154,7 @@ color_quantifier_command.add_argument('--help', action='store_true', dest="color
 #color-quantifier:quantify-colors command and subparser
 quantify_colors_command = color_quantifier_parser.add_parser('quantify-colors', add_help=False)
 quantify_colors_command.add_subparsers(dest="color_quantifier_quantify_colors")
-#color-segmenter: trace-color-boundaries options
+#color-quantifier: trace-color-boundaries options
 quantify_colors_command.add_argument('--help', action='store_true', dest="quantify_colors_help")
 quantify_colors_command.add_argument('--input-images', dest="quantify_colors_input_images")
 quantify_colors_command.add_argument('--color-map', dest="color_map")
@@ -178,6 +178,9 @@ if user_input['command'] == None or user_input['main_help'] == True:
 if user_input['command'] == 'data-manager':
     data_manager.data_manager(user_input)
 
+#############################
+#### IMAGE ADJUSTER TOOL ####
+#############################
 
 #image-adjuster help options
 try:
@@ -214,30 +217,30 @@ try:
 except:
     pass
 
-#color-segmenter help options
+#color-partitioner help options
 try:
-    if args.color_segmenter_help == True or args.color_segmenter == None:
-        print(help_messages.color_segmenter_help)
+    if args.color_partitioner_help == True or args.color_partitioner == None:
+        print(help_messages.color_partitioner_help)
 except:
     pass
 
 #kmeans-recolor help options
 try:
-    if args.k_means_recolor_help == True or args.color_segmenter_k_means_recolor == None:
+    if args.k_means_recolor_help == True or args.color_partitioner_k_means_recolor == None:
         print(help_messages.k_means_recolor_help)
 except:
     pass
 
 #euclidian-recolor help options
 try:
-    if args.euclidian_recolor_help == True or args.color_segmenter_euclidian_recolor == None:
+    if args.euclidian_recolor_help == True or args.color_partitioner_euclidian_recolor == None:
         print(help_messages.euclidian_recolor_help)
 except:
     pass
 
 #trace-color-boundaries help options
 try:
-    if args.trace_color_boundaries_help == True or args.color_segmenter_trace_color_boundaries == None:
+    if args.trace_color_boundaries_help == True or args.color_partitioner_trace_color_boundaries == None:
         print(help_messages.trace_color_boundaries_help)
 except:
     pass
@@ -245,7 +248,7 @@ except:
 #color-quantifier help options
 try:
     if args.color_quantifier_help == True or args.color_quantifier == None:
-        print(help_messages.color_segmenter_help)
+        print(help_messages.color_partitioner_help)
 except:
     pass
 

@@ -380,3 +380,28 @@ def open_image(images_qcd, image_name):
             image_data = qcd.open(image)
             image_load = Image.open(image_data)
             image_load.show()
+
+#function to get image resize parameters
+def get_image_resize_input(image_qcd_input, size, method, output_file_input, output_dir_input):
+    #get input
+    qcd_input = image_qcd_input.get()
+    size_input = size.get()
+    method_input = method.get()
+    output_file = output_file_input.get()
+    output_dir = output_dir_input.get()
+
+    #split size
+    width =  int(size_input.split(',')[0])
+    height =  int(size_input.split(',')[1])
+
+    #assemble input
+    image_resize_input = {'qcd_input' : qcd_input, 'width' : width, 'height' : height, 'method' : method_input, 'output_file' : output_file, 'output_dir' : output_dir}
+
+    return image_resize_input
+
+#function to resize image
+def resize_image(image_qcd_input, size, method, output_file_input, output_dir_input):
+    #get input
+    input = get_image_resize_input(image_qcd_input, size, method, output_file_input, output_dir_input)
+    #resize image
+    iutils.resize_image(input)

@@ -229,3 +229,21 @@ def euclidian_minimization_recoloring(image, color_map, outfile):
     #create output image
     image.putdata(new_image)
     image.save(outfile)
+
+#function to resize an image
+def resize_image(image, width, height, method, outfile):
+    #read image
+    image = Image.open(image)
+    #resize image
+    if method == 'Nearest Neighbor':
+        image = image.resize((width, height), resample=Image.Resampling.NEAREST)
+        image.save(outfile)
+    elif method == 'Linear Interpolation':
+        image = image.resize((width, height), resample=Image.Resampling.BILINEAR)
+        image.save(outfile)
+    elif method == 'Cubic Spline Interpolation':
+        image = image.resize((width, height), resample=Image.Resampling.BICUBIC)
+        image.save(outfile)
+    elif method == 'Lanczos':
+        image = image.resize((width, height), resample=Image.Resampling.LANCZOS)
+        image.save(outfile)

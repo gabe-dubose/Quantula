@@ -12,7 +12,7 @@ import os
 #initialize main window
 root = tk.Tk()
 root.title("Quantula")
-root.geometry("525x535")
+root.geometry("525x720")
 
 style = Style()
 style.theme_create("tabformat", settings={
@@ -26,7 +26,7 @@ style.theme_use("tabformat")
 style.configure('TFrame', background='#ececec')
 
 #set up tab control
-tabControl = ttk.Notebook(root, height=415)
+tabControl = ttk.Notebook(root, height=600)
 #add tabs
 tabControl.grid(column=0, row=0, pady=25, padx=25, sticky="nsew")
 
@@ -102,10 +102,22 @@ pixelConversionMessage.grid(row=1, column=0, padx=10, pady=10)
 pixelConversionButton = tk.Button(pixelConversionFrame, text="Pixel Conversion", width=10, height=2, justify=CENTER, wraplength=100, command=lambda: windows.convert_pixels_window(root))
 pixelConversionButton.grid(row=2, column=0, padx=10, pady=(5,10), sticky="w")
 
+####   IMAGE RESIZING LABELED FRAME   ####
+imageResizingFrame = tk.LabelFrame(imageAdjustmentTab, text="Image Resizing")
+imageResizingFrame.grid(row=1, column=1, padx=10, pady=10, sticky="new")
 
-#####   IMAGE ADJUSTMENT LABELED FRAME #####
-imageAdjustmentFrame = tk.LabelFrame(imageAdjustmentTab, text="Image Adjustment")
-imageAdjustmentFrame.grid(row=1, column=1, padx=10, pady=10, sticky="new")
+#usage for image resizing
+imageResizingMessage = "Usage: Perform image resizing using nearest neighbor, linear interpolation, cubic spline interpolation, or Lanczos algorithms"
+imageResizingMessage = tk.Label(imageResizingFrame, text=imageResizingMessage, wraplength=400, justify=LEFT)
+imageResizingMessage.grid(row=1, column=0, padx=10, pady=10)
+
+#Button for performing image resizing
+imageResizingButton = tk.Button(imageResizingFrame, text="Image Resizing", height=2, justify=CENTER, wraplength=100, command=lambda: windows.image_resizing_window(root))
+imageResizingButton.grid(row=2, column=0, padx=10, pady=(5,10), sticky="w")
+
+#####   COLOR ADJUSTMENT LABELED FRAME #####
+imageAdjustmentFrame = tk.LabelFrame(imageAdjustmentTab, text="Color Adjustment")
+imageAdjustmentFrame.grid(row=2, column=1, padx=10, pady=10, sticky="new")
 
 #Usage for image adjustments
 imageAdjustmentsMessage = "Usage: Perform standard contrast, sharpness, and saturation adjustments"
@@ -154,7 +166,7 @@ colorBoundaryMessage.grid(row=1, column=0, padx=10, pady=10)
 boundaryTracingButton = tk.Button(colorBoundaryFrame, text="Boundary Tracing", width=10, height=2, justify=CENTER, wraplength=100, command=lambda: windows.color_boundary_tracing_window(root))
 boundaryTracingButton.grid(row=2, column=0, padx=10, pady=(5,10), sticky="w")
 
-#####   COLOR QUANTIFICATION FRAME #####
+#####   COLOR QUANTIFICATION FRAME   #####
 
 colorQuantificationFrame = tk.LabelFrame(colorQuantificationTab, text="Color Classification and Quantification")
 colorQuantificationFrame.grid(row=2, column=1, pady=10, padx=10, sticky = "new")

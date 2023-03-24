@@ -309,6 +309,79 @@ def convert_pixels_window(parent):
     runButton = tk.Button(window, text="Convert Pixels", command=lambda: guiutils.convert_pixel(image_qcd_input, pixel_color_input, pixel_convert_input, output_file_input, output_dir_input))
     runButton.grid(row=4, column=1, padx=10, pady=5, sticky='ew')
 
+def image_resizing_window(parent):
+    window = Toplevel(parent)
+    window.title("Image Resizing")
+    window.geometry('525x400')
+
+    #INPUT OPTIONS FRAME
+    inputFrame = tk.LabelFrame(window, text="Input options")
+    inputFrame.grid(row=1, column=1, sticky = "ew", pady=5, padx=10)
+
+    #add prompt to select image qcd
+    imageQCDSelectPrompt = tk.Label(inputFrame, text="Images (qcd):")
+    imageQCDSelectPrompt.grid(row=1, column=1, pady=5, padx=10, sticky="w")
+
+    #add entry for image qcd
+    image_qcd_input = tk.Entry(inputFrame)
+    image_qcd_input.grid(row=1, column=2, padx=10, pady=5, sticky="w")
+
+    #add button for selecting images qcd
+    imageQCDSelectButton = tk.Button(inputFrame, text="Select File", command=lambda: guiutils.select_qcd_file(image_qcd_input))
+    imageQCDSelectButton.grid(row=1, column=3, padx=5, pady=5, sticky="w")
+
+    #RESIZING PARAMETERS INPUT FRAME
+    resizingParametersFrame = tk.LabelFrame(window, text="Image Resizing Parameters")
+    resizingParametersFrame.grid(row=2, column=1, sticky = "ew", pady=5, padx=10)
+
+    #add prompt for size
+    resizeSizePrompt = tk.Label(resizingParametersFrame, text="Size (w,h):")
+    resizeSizePrompt.grid(row=2, column=1, pady=5, padx=10, sticky="w")
+
+    #add entry for resizing size
+    resize_size_input = tk.Entry(resizingParametersFrame)
+    resize_size_input.grid(row=2, column=2, padx=10, pady=5, sticky="w")
+
+    #add prompt for algorithm
+    resizeAlgorithmPrompt = tk.Label(resizingParametersFrame, text="Method:")
+    resizeAlgorithmPrompt.grid(row=3, column=1, pady=5, padx=10, sticky="w")
+
+    #specify options for resizing method
+    resizing_methods = ['Nearest Neighbor', 'Linear Interpolation', 'Cubic Spline Interpolation', 'Lanczos']
+    #add ooptions menu
+    resizeMethod = StringVar()
+    resizeMethod.set("Nearest Neighbor")
+    resizeMethodsOptionMenu = OptionMenu(resizingParametersFrame, resizeMethod, *resizing_methods)
+    resizeMethodsOptionMenu.grid(row=3, column=2, pady=5, padx=10, sticky="w")
+
+    #OUTPUT OPTIONS FRAME
+    outputFrame = tk.LabelFrame(window, text="Output Options")
+    outputFrame.grid(row=3, column=1, sticky = "ew", pady=5, padx=10)
+
+    #add prompt to save output file
+    outputFilePrompt = tk.Label(outputFrame, text="Output Name:")
+    outputFilePrompt.grid(row=4, column=1, pady=5, padx=10, sticky="w")
+
+    #add entry for output file
+    output_file_input = tk.Entry(outputFrame)
+    output_file_input.grid(row=4, column=2, padx=10, pady=5)
+
+    #add prompt for output directory
+    outputDirPrompt = tk.Label(outputFrame, text="Save To:")
+    outputDirPrompt.grid(row=5, column=1, pady=5, padx=10, sticky="w")
+
+    #add entry for output directory
+    output_dir_input = tk.Entry(outputFrame)
+    output_dir_input.grid(row=5, column=2, padx=10, pady=5)
+
+    #add button for output
+    outputDirSelectButton = tk.Button(outputFrame, text="Select Directory", command=lambda: guiutils.select_directory(output_dir_input))
+    outputDirSelectButton.grid(row=5, column=3, padx=5, pady=5, sticky="w")
+
+    #add run button
+    runButton = tk.Button(window, text="Resize Image", command=lambda: guiutils.resize_image(image_qcd_input, resize_size_input, resizeMethod, output_file_input, output_dir_input))
+    runButton.grid(row=4, column=1, padx=10, pady=5, sticky='ew')
+
 #contrast adjustmnet window
 def contrast_adjustment_window(parent):
     window = Toplevel(parent)

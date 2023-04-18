@@ -73,7 +73,7 @@ recolor_pixels_help = '''
 quantula image-adjuster recolor-pixels
 
 Required:
-  --input-images\tqcd file containing images to be exported (type=image_data)
+  --input-images\tqcd file containing images (type=image_data)
   --from\t\tRBG value of pixels to be recolored
   --to\t\t\tRGB value for pixels to be recolored to
   --output-name\t\tName of output qcd file

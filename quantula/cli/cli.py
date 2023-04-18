@@ -5,6 +5,7 @@ from quantula.cli import help_messages
 from quantula import iutils
 from quantula import qcdutils
 from quantula.cli.tools import data_manager
+from quantula.cli.tools import image_adjuster
 
 #primary parser
 main_parser = argparse.ArgumentParser(add_help=False)
@@ -182,6 +183,13 @@ if user_input['command'] == 'data-manager':
 #### IMAGE ADJUSTER TOOL ####
 #############################
 
+if user_input['command'] == 'image-adjuster':
+    image_adjuster.image_adjuster(user_input)
+
+
+
+'''
+
 #image-adjuster help options
 try:
     if args.image_adjuster_help == True or args.image_adjuster == None:
@@ -216,6 +224,7 @@ try:
         print(help_messages.adjust_saturation_help)
 except:
     pass
+'''
 
 #color-partitioner help options
 try:
